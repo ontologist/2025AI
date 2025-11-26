@@ -18,7 +18,7 @@
         .slide p { font-size: 1.2em; line-height: 1.8; margin-bottom: 15px; color: #444; }
         .slide ul, .slide ol { font-size: 1.2em; line-height: 1.8; margin-left: 40px; margin-bottom: 20px; }
         .slide li { margin-bottom: 10px; }
-        .bilingual { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 20px 0; }
+        .bilingual { display: flex; flex-direction: column; gap: 20px; margin: 20px 0; }
         .english, .japanese { padding: 20px; border-radius: 10px; }
         .english { background: #dbeafe; border-left: 4px solid #2563eb; }
         .japanese { background: #f3e8ff; border-left: 4px solid #7c3aed; }
@@ -39,7 +39,7 @@
             .slide { width: 100vw; height: auto; min-height: 100vh; padding: 20px; border-radius: 0; }
             .slide h1 { font-size: 2em; }
             .slide h2 { font-size: 1.6em; }
-            .bilingual { grid-template-columns: 1fr; gap: 15px; }
+            .bilingual { gap: 15px; }
             .two-column { grid-template-columns: 1fr; }
             .title-slide h1 { font-size: 2.5em; }
             .title-slide .subtitle { font-size: 1.4em; }
