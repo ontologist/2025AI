@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 8 Lecture Notes: Clustering & Overview of AI/ML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2563eb;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #7c3aed;
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2563eb;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2563eb;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .english {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .test-question {
+            background: #fce7f3;
+            border: 3px solid #ec4899;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .test-question h4::before {
+            content: "⚠️ ";
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .navigation a:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .key-terms {
+            background: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .study-tip {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Week 8 Lecture Notes</h1>
+        <p class="subtitle">Clustering & Overview of AI/ML<br>クラスタリング・AI概論</p>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+
+        <h2>📚 Overview / 概要</h2>
+        <div class="bilingual">
+            <div class="english">
+                <p>This week introduces unsupervised learning through clustering algorithms, specifically K-means clustering. We also explore the broader landscape of Artificial Intelligence and Machine Learning, understanding how different concepts fit together in the AI ecosystem.</p>
+                <p><strong>Learning Objectives:</strong></p>
+                <ul>
+                    <li>Understand the difference between supervised and unsupervised learning</li>
+                    <li>Master the K-means clustering algorithm</li>
+                    <li>Recognize the AI/ML/DL hierarchy</li>
+                    <li>Identify real-world clustering applications</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <p>今週は、クラスタリングアルゴリズム、特にK-meansクラスタリングを通じて教師なし学習を紹介します。また、人工知能と機械学習のより広い全体像を探り、AIエコシステムにおいて異なる概念がどのように組み合わさっているかを理解します。</p>
+                <p><strong>学習目標:</strong></p>
+                <ul>
+                    <li>教師ありと教師なし学習の違いを理解する</li>
+                    <li>K-meansクラスタリングアルゴリズムを習得する</li>
+                    <li>AI/ML/DL階層を認識する</li>
+                    <li>実世界のクラスタリング応用を特定する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>1. Supervised vs Unsupervised Learning</h2>
+        <h2>教師あり学習 vs 教師なし学習</h2>
+
+        <div class="definition-box">
+            <h3>Key Definition / 主要定義</h3>
+            <p><strong>Supervised Learning:</strong> A machine learning approach where the algorithm learns from labeled training data to make predictions on new, unseen data.</p>
+            <p><strong>教師あり学習:</strong> アルゴリズムがラベル付きの訓練データから学習し、新しい未見のデータで予測を行う機械学習アプローチ。</p>
+            <hr>
+            <p><strong>Unsupervised Learning:</strong> A machine learning approach where the algorithm discovers hidden patterns and structures in unlabeled data without explicit guidance.</p>
+            <p><strong>教師なし学習:</strong> アルゴリズムが明示的な指導なしにラベルなしデータの隠れたパターンと構造を発見する機械学習アプローチ。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Supervised Learning in Detail</h3>
+                <p>Supervised learning is like learning with a teacher. You are given examples with correct answers (labels), and you learn to predict the correct answer for new examples.</p>
+
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Training Data:</strong> Requires labeled data (input + correct output)</li>
+                    <li><strong>Goal:</strong> Learn a mapping from inputs to outputs</li>
+                    <li><strong>Evaluation:</strong> Can measure accuracy by comparing predictions to known labels</li>
+                    <li><strong>Use Cases:</strong> When you know what you're looking for</li>
+                </ul>
+
+                <h4>Common Examples:</h4>
+                <ul>
+                    <li><strong>Email Spam Filter:</strong> Emails labeled as "spam" or "not spam"</li>
+                    <li><strong>Medical Diagnosis:</strong> Symptoms labeled with disease names</li>
+                    <li><strong>Image Recognition:</strong> Photos labeled with object names</li>
+                    <li><strong>House Price Prediction:</strong> Houses with known sale prices</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>教師あり学習の詳細</h3>
+                <p>教師あり学習は、教師と一緒に学ぶようなものです。正しい答え（ラベル）付きの例が与えられ、新しい例に対して正しい答えを予測することを学びます。</p>
+
+                <h4>主要特性:</h4>
+                <ul>
+                    <li><strong>訓練データ:</strong> ラベル付きデータが必要（入力 + 正しい出力）</li>
+                    <li><strong>目標:</strong> 入力から出力へのマッピングを学習</li>
+                    <li><strong>評価:</strong> 予測を既知のラベルと比較して精度を測定可能</li>
+                    <li><strong>使用例:</strong> 探しているものがわかっている場合</li>
+                </ul>
+
+                <h4>一般的な例:</h4>
+                <ul>
+                    <li><strong>メールスパムフィルター:</strong> 「スパム」または「非スパム」とラベル付けされたメール</li>
+                    <li><strong>医療診断:</strong> 病名でラベル付けされた症状</li>
+                    <li><strong>画像認識:</strong> オブジェクト名でラベル付けされた写真</li>
+                    <li><strong>住宅価格予測:</strong> 既知の販売価格を持つ住宅</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Unsupervised Learning in Detail</h3>
+                <p>Unsupervised learning is like exploring without a map. The algorithm finds patterns, groupings, and structure in data without being told what to look for.</p>
+
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Training Data:</strong> No labels needed - just raw data</li>
+                    <li><strong>Goal:</strong> Discover hidden patterns and structure</li>
+                    <li><strong>Evaluation:</strong> More subjective - depends on business goals</li>
+                    <li><strong>Use Cases:</strong> When you want to explore and discover insights</li>
+                </ul>
+
+                <h4>Common Examples:</h4>
+                <ul>
+                    <li><strong>Customer Segmentation:</strong> Group customers by purchasing behavior</li>
+                    <li><strong>Document Clustering:</strong> Group similar news articles together</li>
+                    <li><strong>Anomaly Detection:</strong> Find unusual patterns in credit card transactions</li>
+                    <li><strong>Recommendation Systems:</strong> Group users with similar preferences</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>教師なし学習の詳細</h3>
+                <p>教師なし学習は、地図なしで探索するようなものです。アルゴリズムは、何を探すべきかを指示されることなく、データのパターン、グループ化、構造を見つけます。</p>
+
+                <h4>主要特性:</h4>
+                <ul>
+                    <li><strong>訓練データ:</strong> ラベル不要 - 生データのみ</li>
+                    <li><strong>目標:</strong> 隠れたパターンと構造を発見</li>
+                    <li><strong>評価:</strong> より主観的 - ビジネス目標に依存</li>
+                    <li><strong>使用例:</strong> 探索して洞察を発見したい場合</li>
+                </ul>
+
+                <h4>一般的な例:</h4>
+                <ul>
+                    <li><strong>顧客セグメンテーション:</strong> 購買行動で顧客をグループ化</li>
+                    <li><strong>文書クラスタリング:</strong> 類似したニュース記事をグループ化</li>
+                    <li><strong>異常検知:</strong> クレジットカード取引の異常パターンを発見</li>
+                    <li><strong>推薦システム:</strong> 類似した嗜好を持つユーザーをグループ化</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>2. What is Clustering? / クラスタリングとは？</h2>
+
+        <div class="definition-box">
+            <h3>Definition / 定義</h3>
+            <p><strong>Clustering:</strong> The task of grouping similar items together based on their characteristics, without predefined labels or categories. Items in the same cluster should be more similar to each other than to items in other clusters.</p>
+            <p><strong>クラスタリング:</strong> 事前定義されたラベルやカテゴリなしに、特性に基づいて類似したアイテムをグループ化するタスク。同じクラスタ内のアイテムは、他のクラスタのアイテムよりも互いにより類似しているべき。</p>
+        </div>
+
+        <div class="key-terms">
+            <h3>Important Clustering Terminology</h3>
+            <h3>重要なクラスタリング用語</h3>
+            <ul>
+                <li><strong>Cluster / クラスタ:</strong> A group of similar data points</li>
+                <li><strong>Centroid / 重心:</strong> The center point of a cluster (mean position of all points in the cluster)</li>
+                <li><strong>Distance Metric / 距離メトリック:</strong> A measure of how different two data points are (e.g., Euclidean distance)</li>
+                <li><strong>Similarity / 類似性:</strong> How close or alike two data points are</li>
+                <li><strong>K:</strong> The number of clusters to create in K-means algorithm</li>
+            </ul>
+        </div>
+
+        <h2>3. K-means Clustering Algorithm</h2>
+        <h2>K-meansクラスタリングアルゴリズム</h2>
+
+        <div class="definition-box">
+            <h3>What is K-means? / K-meansとは？</h3>
+            <p><strong>K-means:</strong> A popular clustering algorithm that partitions data into K distinct clusters by iteratively assigning data points to the nearest cluster centroid and updating centroid positions.</p>
+            <p><strong>K-means:</strong> データポイントを最も近いクラスタ重心に反復的に割り当て、重心位置を更新することで、データをK個の異なるクラスタに分割する人気のクラスタリングアルゴリズム。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>K-means Algorithm Steps</h3>
+                <div class="code-box">Step 1: Choose K
+└─ Decide how many clusters you want to create
+   (e.g., K=3 for customer segments: high/medium/low value)
+
+Step 2: Initialize Centroids
+└─ Randomly place K center points in the data space
+   (These will serve as initial cluster centers)
+
+Step 3: Assign Points to Nearest Centroid
+└─ For each data point:
+   - Calculate distance to each centroid
+   - Assign point to cluster with nearest centroid
+
+Step 4: Update Centroids
+└─ For each cluster:
+   - Calculate mean position of all points in cluster
+   - Move centroid to this mean position
+
+Step 5: Repeat Steps 3-4
+└─ Continue until:
+   - Centroids stop moving (convergence), OR
+   - Maximum iterations reached</div>
+
+                <h4>The Goal:</h4>
+                <p>Minimize the total distance between data points and their assigned cluster centroids. This creates tight, well-separated clusters.</p>
+
+                <h4>Distance Calculation:</h4>
+                <p>K-means typically uses <strong>Euclidean distance</strong>:</p>
+                <div class="code-box">distance = √[(x₁-x₂)² + (y₁-y₂)²]
+
+For 2D points: (x₁, y₁) and (x₂, y₂)
+Can extend to multiple dimensions</div>
+            </div>
+            <div class="japanese">
+                <h3>K-meansアルゴリズムのステップ</h3>
+                <div class="code-box">ステップ1: Kを選択
+└─ 作成したいクラスタ数を決定
+   (例: 顧客セグメントのK=3: 高/中/低価値)
+
+ステップ2: 重心を初期化
+└─ データ空間にK個の中心点をランダムに配置
+   (これらは初期クラスタ中心として機能)
+
+ステップ3: ポイントを最も近い重心に割り当て
+└─ 各データポイントに対して:
+   - 各重心までの距離を計算
+   - 最も近い重心のクラスタにポイントを割り当て
+
+ステップ4: 重心を更新
+└─ 各クラスタに対して:
+   - クラスタ内のすべてのポイントの平均位置を計算
+   - 重心をこの平均位置に移動
+
+ステップ5: ステップ3-4を繰り返し
+└─ 以下まで継続:
+   - 重心が動かなくなる（収束）、または
+   - 最大イテレーション数に到達</div>
+
+                <h4>目標:</h4>
+                <p>データポイントと割り当てられたクラスタ重心間の総距離を最小化します。これにより、タイトで十分に分離されたクラスタが作成されます。</p>
+
+                <h4>距離計算:</h4>
+                <p>K-meansは通常<strong>ユークリッド距離</strong>を使用します:</p>
+                <div class="code-box">distance = √[(x₁-x₂)² + (y₁-y₂)²]
+
+2次元点の場合: (x₁, y₁) と (x₂, y₂)
+複数次元に拡張可能</div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Visual Example: K-means in Action</h3>
+            <p>Imagine you have customer data with two features: Annual Income and Annual Spending.</p>
+            <ol>
+                <li><strong>K=3:</strong> You want to create 3 customer segments</li>
+                <li><strong>Initialize:</strong> Place 3 random centroids on the income-spending plot</li>
+                <li><strong>Iteration 1:</strong> Each customer is assigned to nearest centroid
+                    <ul>
+                        <li>Cluster 1 (Red): Low income, low spending</li>
+                        <li>Cluster 2 (Blue): Medium income, medium spending</li>
+                        <li>Cluster 3 (Green): High income, high spending</li>
+                    </ul>
+                </li>
+                <li><strong>Update:</strong> Centroids move to center of their assigned customers</li>
+                <li><strong>Iteration 2:</strong> Customers reassigned to new nearest centroid</li>
+                <li><strong>Converge:</strong> After 5-10 iterations, centroids stabilize</li>
+            </ol>
+        </div>
+
+        <h2>4. Choosing the Right K / 適切なKの選択</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>How Many Clusters Should You Create?</h3>
+                <p>One of the biggest challenges in K-means is choosing the right value for K. There are two main approaches:</p>
+
+                <h4>1. The Elbow Method (データ駆動)</h4>
+                <p>Plot the total error (sum of distances from points to centroids) for different values of K.</p>
+                <ul>
+                    <li>Try K = 1, 2, 3, 4, 5, ...</li>
+                    <li>Calculate total error for each K</li>
+                    <li>Plot error vs K</li>
+                    <li>Look for the "elbow" - where error stops decreasing rapidly</li>
+                    <li>The elbow point suggests optimal K</li>
+                </ul>
+
+                <div class="code-box">Example Elbow Plot:
+Error |
+  ^   |●
+  |   | ●
+  |   |  ●
+  |   |    ◐ ← Elbow at K=3
+  |   |     ○__○__○
+  |___|________________> K
+      1  2  3  4  5  6</div>
+
+                <h4>2. Domain Knowledge (ビジネス駆動)</h4>
+                <p>Use your understanding of the business problem:</p>
+                <ul>
+                    <li><strong>Customer tiers:</strong> K=3 (Premium, Standard, Basic)</li>
+                    <li><strong>Product categories:</strong> K based on business structure</li>
+                    <li><strong>Geographic regions:</strong> K based on actual regions</li>
+                    <li><strong>Risk levels:</strong> K=3 or 5 (High, Medium, Low, etc.)</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>いくつのクラスタを作成すべきか？</h3>
+                <p>K-meansにおける最大の課題の1つは、Kの適切な値を選択することです。主に2つのアプローチがあります:</p>
+
+                <h4>1. エルボー法 (Data-driven)</h4>
+                <p>異なるKの値に対する総エラー（ポイントから重心までの距離の合計）をプロットします。</p>
+                <ul>
+                    <li>K = 1, 2, 3, 4, 5, ... を試す</li>
+                    <li>各Kに対して総エラーを計算</li>
+                    <li>エラー対Kをプロット</li>
+                    <li>「肘」を探す - エラーが急速に減少しなくなる点</li>
+                    <li>肘の点が最適なKを示唆</li>
+                </ul>
+
+                <div class="code-box">エルボープロットの例:
+エラー |
+  ^    |●
+  |    | ●
+  |    |  ●
+  |    |    ◐ ← K=3で肘
+  |    |     ○__○__○
+  |____|________________> K
+       1  2  3  4  5  6</div>
+
+                <h4>2. ドメイン知識 (Business-driven)</h4>
+                <p>ビジネス問題の理解を使用:</p>
+                <ul>
+                    <li><strong>顧客層:</strong> K=3 (プレミアム、スタンダード、ベーシック)</li>
+                    <li><strong>製品カテゴリ:</strong> ビジネス構造に基づくK</li>
+                    <li><strong>地理的地域:</strong> 実際の地域に基づくK</li>
+                    <li><strong>リスクレベル:</strong> K=3または5 (高、中、低など)</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>5. Real-World Applications / 実世界の応用</h2>
+
+        <div class="highlight-box">
+            <h3>Netflix: User Segmentation</h3>
+            <h4>Link: <a href="https://www.netflix.com" target="_blank">https://www.netflix.com</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Problem:</strong> Netflix has 200M+ subscribers with diverse viewing preferences. How can they personalize recommendations?</p>
+
+                    <p><strong>Clustering Solution:</strong></p>
+                    <ul>
+                        <li><strong>Features Used:</strong>
+                            <ul>
+                                <li>Viewing history (what shows/movies watched)</li>
+                                <li>Watch time and completion rates</li>
+                                <li>Genre preferences</li>
+                                <li>Time of day viewing patterns</li>
+                                <li>Device usage</li>
+                            </ul>
+                        </li>
+                        <li><strong>Clusters Created:</strong> Viewer personas
+                            <ul>
+                                <li>"Binge Watchers" - Complete series quickly</li>
+                                <li>"Movie Buffs" - Prefer films over series</li>
+                                <li>"Family Viewers" - Watch kids/family content</li>
+                                <li>"Documentary Fans" - Educational content</li>
+                                <li>And many more...</li>
+                            </ul>
+                        </li>
+                        <li><strong>Result:</strong> Personalized homepage, targeted recommendations, better content production decisions</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <p><strong>問題:</strong> Netflixには2億人以上の加入者がおり、視聴の好みが多様です。どのように推薦をパーソナライズできるでしょうか？</p>
+
+                    <p><strong>クラスタリングソリューション:</strong></p>
+                    <ul>
+                        <li><strong>使用される特徴:</strong>
+                            <ul>
+                                <li>視聴履歴（視聴した番組/映画）</li>
+                                <li>視聴時間と完了率</li>
+                                <li>ジャンルの好み</li>
+                                <li>一日の視聴パターン</li>
+                                <li>デバイス使用</li>
+                            </ul>
+                        </li>
+                        <li><strong>作成されたクラスタ:</strong> 視聴者ペルソナ
+                            <ul>
+                                <li>「一気見視聴者」 - シリーズを素早く完了</li>
+                                <li>「映画愛好家」 - シリーズより映画を好む</li>
+                                <li>「家族視聴者」 - 子供/家族向けコンテンツを視聴</li>
+                                <li>「ドキュメンタリーファン」 - 教育コンテンツ</li>
+                                <li>その他多数...</li>
+                            </ul>
+                        </li>
+                        <li><strong>結果:</strong> パーソナライズされたホームページ、ターゲット化された推薦、より良いコンテンツ制作決定</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Spotify: Music Clustering</h3>
+            <h4>Link: <a href="https://www.spotify.com" target="_blank">https://www.spotify.com</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Problem:</strong> With millions of songs, how does Spotify group similar music and discover micro-genres?</p>
+
+                    <p><strong>Audio Features Used:</strong></p>
+                    <ul>
+                        <li><strong>Acousticness:</strong> How acoustic vs electronic (0-1)</li>
+                        <li><strong>Danceability:</strong> How suitable for dancing (0-1)</li>
+                        <li><strong>Energy:</strong> Intensity and activity level (0-1)</li>
+                        <li><strong>Instrumentalness:</strong> Likelihood of no vocals (0-1)</li>
+                        <li><strong>Tempo:</strong> Beats per minute (BPM)</li>
+                        <li><strong>Valence:</strong> Musical positiveness/happiness (0-1)</li>
+                    </ul>
+
+                    <p><strong>Applications:</strong></p>
+                    <ul>
+                        <li><strong>"Discover Weekly":</strong> Clusters your listening patterns and finds similar songs you haven't heard</li>
+                        <li><strong>"Radio":</strong> Creates stations by clustering songs similar to a seed track</li>
+                        <li><strong>Genre Discovery:</strong> Automatically identifies micro-genres like "vaporwave" or "lo-fi hip hop"</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <p><strong>問題:</strong> 数百万の曲がある中で、Spotifyはどのように類似した音楽をグループ化し、マイクロジャンルを発見するのでしょうか？</p>
+
+                    <p><strong>使用されるオーディオ特徴:</strong></p>
+                    <ul>
+                        <li><strong>アコースティック性:</strong> アコースティックvs電子的（0-1）</li>
+                        <li><strong>踊りやすさ:</strong> ダンスにどれだけ適しているか（0-1）</li>
+                        <li><strong>エネルギー:</strong> 強度と活動レベル（0-1）</li>
+                        <li><strong>インストルメンタル性:</strong> ボーカルがない可能性（0-1）</li>
+                        <li><strong>テンポ:</strong> 1分あたりのビート（BPM）</li>
+                        <li><strong>感情価:</strong> 音楽的なポジティブさ/幸福度（0-1）</li>
+                    </ul>
+
+                    <p><strong>応用:</strong></p>
+                    <ul>
+                        <li><strong>「Discover Weekly」:</strong> あなたのリスニングパターンをクラスタ化し、まだ聴いていない類似曲を見つける</li>
+                        <li><strong>「ラジオ」:</strong> シードトラックに類似した曲をクラスタ化してステーションを作成</li>
+                        <li><strong>ジャンル発見:</strong> 「ヴェイパーウェイブ」や「lo-fiヒップホップ」などのマイクロジャンルを自動識別</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <h2>6. The AI Landscape / AI全体像</h2>
+
+        <div class="definition-box">
+            <h3>Understanding the AI Hierarchy</h3>
+            <div class="code-box">┌─────────────────────────────────────────────┐
+│  ARTIFICIAL INTELLIGENCE (AI)              │
+│  人工知能 - Broadest concept               │
+│  ┌───────────────────────────────────────┐ │
+│  │  MACHINE LEARNING (ML)                │ │
+│  │  機械学習 - Learning from data         │ │
+│  │  ┌─────────────────────────────────┐ │ │
+│  │  │  DEEP LEARNING (DL)             │ │ │
+│  │  │  深層学習 - Neural networks      │ │ │
+│  │  │  ┌───────────────────────────┐ │ │ │
+│  │  │  │ NEURAL NETWORKS           │ │ │ │
+│  │  │  │ ニューラルネットワーク     │ │ │ │
+│  │  │  └───────────────────────────┘ │ │ │
+│  │  └─────────────────────────────────┘ │ │
+│  └───────────────────────────────────────┘ │
+└─────────────────────────────────────────────┘</div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Breaking Down the Hierarchy</h3>
+
+                <h4>Artificial Intelligence (AI) - 人工知能</h4>
+                <p><strong>Definition:</strong> The broadest concept - any technique that enables computers to mimic human intelligence.</p>
+                <ul>
+                    <li>Includes rule-based systems, expert systems</li>
+                    <li>Encompasses all machine learning</li>
+                    <li>Goal: Machines that can reason, learn, and adapt</li>
+                    <li><strong>Example:</strong> Chess-playing programs (can use rules OR learning)</li>
+                </ul>
+
+                <h4>Machine Learning (ML) - 機械学習</h4>
+                <p><strong>Definition:</strong> A subset of AI where systems learn from data without being explicitly programmed.</p>
+                <ul>
+                    <li>Learns patterns from examples</li>
+                    <li>Improves performance with experience</li>
+                    <li>Includes supervised, unsupervised, and reinforcement learning</li>
+                    <li><strong>Example:</strong> Spam filters that learn from labeled emails</li>
+                </ul>
+
+                <h4>Deep Learning (DL) - 深層学習</h4>
+                <p><strong>Definition:</strong> A subset of ML that uses multi-layered neural networks.</p>
+                <ul>
+                    <li>Inspired by human brain structure</li>
+                    <li>Excels at processing images, speech, text</li>
+                    <li>Requires large amounts of data</li>
+                    <li><strong>Example:</strong> Image recognition in self-driving cars</li>
+                </ul>
+
+                <h4>Neural Networks - ニューラルネットワーク</h4>
+                <p><strong>Definition:</strong> The building blocks of deep learning - networks of interconnected nodes.</p>
+                <ul>
+                    <li>Modeled after biological neurons</li>
+                    <li>Learn through adjusting connection weights</li>
+                    <li>Can have many layers (hence "deep" learning)</li>
+                    <li><strong>Example:</strong> Facial recognition systems</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>階層の分解</h3>
+
+                <h4>Artificial Intelligence (AI) - 人工知能</h4>
+                <p><strong>定義:</strong> 最も広い概念 - コンピュータが人間の知能を模倣することを可能にするあらゆる技術。</p>
+                <ul>
+                    <li>ルールベースシステム、エキスパートシステムを含む</li>
+                    <li>すべての機械学習を包含</li>
+                    <li>目標: 推論、学習、適応できる機械</li>
+                    <li><strong>例:</strong> チェスをするプログラム（ルールまたは学習を使用可能）</li>
+                </ul>
+
+                <h4>Machine Learning (ML) - 機械学習</h4>
+                <p><strong>定義:</strong> AIのサブセットで、システムが明示的にプログラムされることなくデータから学習する。</p>
+                <ul>
+                    <li>例からパターンを学習</li>
+                    <li>経験とともにパフォーマンスが向上</li>
+                    <li>教師あり、教師なし、強化学習を含む</li>
+                    <li><strong>例:</strong> ラベル付きメールから学習するスパムフィルター</li>
+                </ul>
+
+                <h4>Deep Learning (DL) - 深層学習</h4>
+                <p><strong>定義:</strong> 多層ニューラルネットワークを使用するMLのサブセット。</p>
+                <ul>
+                    <li>人間の脳構造に着想</li>
+                    <li>画像、音声、テキストの処理に優れる</li>
+                    <li>大量のデータが必要</li>
+                    <li><strong>例:</strong> 自動運転車の画像認識</li>
+                </ul>
+
+                <h4>Neural Networks - ニューラルネットワーク</h4>
+                <p><strong>定義:</strong> 深層学習の構成要素 - 相互接続されたノードのネットワーク。</p>
+                <ul>
+                    <li>生物学的ニューロンをモデル化</li>
+                    <li>接続の重みを調整して学習</li>
+                    <li>多くの層を持つことができる（したがって「深層」学習）</li>
+                    <li><strong>例:</strong> 顔認識システム</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>7. Limitations of K-means / K-meansの限界</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Challenges to Consider</h3>
+
+                <h4>1. Must Choose K in Advance</h4>
+                <p>You need to decide the number of clusters before running the algorithm. This can be difficult when you don't know the natural groupings in your data.</p>
+                <p><strong>Impact:</strong> Wrong K can lead to over-segmentation or under-segmentation.</p>
+
+                <h4>2. Sensitive to Outliers</h4>
+                <p>Extreme values can significantly distort cluster centroids and assignments.</p>
+                <p><strong>Example:</strong> One billionaire customer could skew a "high-value customer" cluster.</p>
+
+                <h4>3. Assumes Spherical Clusters</h4>
+                <p>K-means works best when clusters are roughly circular/spherical and evenly sized.</p>
+                <p><strong>Problem:</strong> Struggles with elongated, irregular, or nested cluster shapes.</p>
+
+                <h4>4. Random Initialization Problem</h4>
+                <p>Different starting points for centroids can lead to different final clusters.</p>
+                <p><strong>Solution:</strong> Run K-means multiple times and choose the best result.</p>
+
+                <h4>5. Scale Sensitivity</h4>
+                <p>Features with larger ranges dominate the distance calculation.</p>
+                <p><strong>Example:</strong> Income (0-1,000,000) vs Age (0-100) - income will dominate.</p>
+                <p><strong>Solution:</strong> Normalize/standardize features before clustering.</p>
+            </div>
+            <div class="japanese">
+                <h3>考慮すべき課題</h3>
+
+                <h4>1. Kを事前に選択する必要がある</h4>
+                <p>アルゴリズムを実行する前にクラスタ数を決定する必要があります。データ内の自然なグループ化がわからない場合、これは困難な場合があります。</p>
+                <p><strong>影響:</strong> 間違ったKは、過剰セグメンテーションまたは不十分なセグメンテーションにつながる可能性があります。</p>
+
+                <h4>2. 外れ値に敏感</h4>
+                <p>極端な値はクラスタ重心と割り当てを大きく歪める可能性があります。</p>
+                <p><strong>例:</strong> 1人の億万長者の顧客が「高価値顧客」クラスタを歪める可能性があります。</p>
+
+                <h4>3. 球状クラスタを仮定</h4>
+                <p>K-meansは、クラスタがおおよそ円形/球形で均等なサイズの場合に最適に機能します。</p>
+                <p><strong>問題:</strong> 細長い、不規則な、またはネストされたクラスタ形状では苦労します。</p>
+
+                <h4>4. ランダム初期化問題</h4>
+                <p>重心の異なる開始点は、異なる最終クラスタにつながる可能性があります。</p>
+                <p><strong>解決策:</strong> K-meansを複数回実行し、最良の結果を選択します。</p>
+
+                <h4>5. スケール感度</h4>
+                <p>より大きな範囲の特徴が距離計算を支配します。</p>
+                <p><strong>例:</strong> 収入（0-1,000,000）vs 年齢（0-100）- 収入が支配的になります。</p>
+                <p><strong>解決策:</strong> クラスタリング前に特徴を正規化/標準化します。</p>
+            </div>
+        </div>
+
+        <div class="study-tip">
+            <h3>Study Tips for K-means</h3>
+            <ul>
+                <li>Practice drawing the K-means algorithm steps on paper</li>
+                <li>Understand WHY we update centroids (to find the true center)</li>
+                <li>Remember: K-means is UNSUPERVISED (no labels needed)</li>
+                <li>Know when to use elbow method vs domain knowledge for K</li>
+                <li>Be able to explain a real-world application in detail</li>
+            </ul>
+        </div>
+
+        <h2>📝 Test Questions / テスト問題</h2>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 1: Multiple Choice</h4>
+            <p><strong>Which of the following is TRUE about K-means clustering?</strong></p>
+            <ol type="A">
+                <li>It requires labeled training data</li>
+                <li>It is a supervised learning algorithm</li>
+                <li>It groups similar data points without predefined labels</li>
+                <li>It can only work with two-dimensional data</li>
+            </ol>
+            <p><strong>Answer:</strong> C - K-means is an unsupervised algorithm that groups similar data without labels.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 2: Multiple Choice</h4>
+            <p><strong>In the K-means algorithm, what does "K" represent?</strong></p>
+            <ol type="A">
+                <li>The number of data points</li>
+                <li>The number of clusters to create</li>
+                <li>The number of iterations</li>
+                <li>The distance metric used</li>
+            </ol>
+            <p><strong>Answer:</strong> B - K represents the number of clusters.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 3: Multiple Choice</h4>
+            <p><strong>What is the correct order of steps in K-means clustering?</strong></p>
+            <ol type="A">
+                <li>Update centroids → Assign points → Initialize centroids → Choose K</li>
+                <li>Choose K → Initialize centroids → Assign points → Update centroids</li>
+                <li>Assign points → Choose K → Initialize centroids → Update centroids</li>
+                <li>Initialize centroids → Choose K → Update centroids → Assign points</li>
+            </ol>
+            <p><strong>Answer:</strong> B - The correct order is: Choose K, Initialize, Assign, Update (then repeat assign & update).</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 4: Multiple Choice</h4>
+            <p><strong>Which relationship correctly describes the AI hierarchy?</strong></p>
+            <ol type="A">
+                <li>Deep Learning ⊃ Machine Learning ⊃ AI</li>
+                <li>AI ⊃ Deep Learning ⊃ Machine Learning</li>
+                <li>AI ⊃ Machine Learning ⊃ Deep Learning</li>
+                <li>Machine Learning ⊃ AI ⊃ Deep Learning</li>
+            </ol>
+            <p><strong>Answer:</strong> C - AI is the broadest, then ML, then DL is the most specific.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 5: Multiple Choice</h4>
+            <p><strong>How does Netflix use clustering?</strong></p>
+            <ol type="A">
+                <li>To predict exact ratings users will give movies</li>
+                <li>To group users with similar viewing patterns for personalized recommendations</li>
+                <li>To classify movies as "good" or "bad"</li>
+                <li>To determine which movies to produce next</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Netflix uses clustering to segment users with similar preferences.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 6: Short Answer</h4>
+            <p><strong>Explain the difference between supervised and unsupervised learning. Give one example of each.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p>Supervised learning uses labeled training data where the correct output is known, and the algorithm learns to predict labels for new data. Example: Email spam classification where emails are labeled as spam/not spam.</p>
+            <p>Unsupervised learning works with unlabeled data to discover hidden patterns and structures without predefined categories. Example: Customer segmentation using K-means clustering to group customers by purchasing behavior.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 7: Short Answer</h4>
+            <p><strong>Describe the five steps of the K-means clustering algorithm.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <ol>
+                <li><strong>Choose K:</strong> Decide how many clusters to create</li>
+                <li><strong>Initialize Centroids:</strong> Randomly place K center points in the data space</li>
+                <li><strong>Assign Points:</strong> Assign each data point to the nearest centroid</li>
+                <li><strong>Update Centroids:</strong> Move each centroid to the mean position of its assigned points</li>
+                <li><strong>Repeat:</strong> Repeat steps 3-4 until centroids stop moving (convergence)</li>
+            </ol>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 8: Short Answer</h4>
+            <p><strong>What is the "elbow method" and why is it used in K-means clustering?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p>The elbow method is a technique for choosing the optimal number of clusters (K) in K-means. You plot the total error (sum of distances from points to centroids) for different values of K. As K increases, error decreases, but at a certain point the rate of decrease slows dramatically, creating an "elbow" shape in the plot. This elbow point suggests the optimal K because adding more clusters beyond this point provides diminishing returns in terms of reducing error.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 9: Application Question</h4>
+            <p><strong>A retail company wants to segment their customers based on Annual Income and Annual Spending. They decide to use K-means clustering with K=3.</strong></p>
+            <p><strong>a) What might each of the 3 clusters represent?</strong></p>
+            <p><strong>b) How could the company use these clusters to improve their business?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>a) Three possible clusters:</strong></p>
+            <ul>
+                <li><strong>Cluster 1:</strong> High income, high spending - "Premium Customers"</li>
+                <li><strong>Cluster 2:</strong> Medium income, medium spending - "Standard Customers"</li>
+                <li><strong>Cluster 3:</strong> Lower income, lower spending - "Budget Customers"</li>
+            </ul>
+            <p><strong>b) Business applications:</strong></p>
+            <ul>
+                <li>Targeted marketing campaigns for each segment</li>
+                <li>Premium customers: Exclusive products, VIP services</li>
+                <li>Standard customers: Loyalty programs, seasonal promotions</li>
+                <li>Budget customers: Value deals, discount offers</li>
+                <li>Resource allocation based on customer value</li>
+                <li>Product development tailored to each segment's needs</li>
+            </ul>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 10: Essay Question</h4>
+            <p><strong>Explain how Spotify uses clustering for music recommendations. Include:</strong></p>
+            <ul>
+                <li>What features they use</li>
+                <li>How clustering helps create playlists</li>
+                <li>One specific Spotify feature that uses clustering</li>
+            </ul>
+            <p><strong>Sample Answer:</strong></p>
+            <p>Spotify uses K-means clustering to group songs with similar audio characteristics. They extract features from each song including acousticness (how acoustic vs electronic), danceability (how suitable for dancing), energy (intensity level), instrumentalness (likelihood of no vocals), tempo (BPM), and valence (musical positiveness).</p>
+            <p>These features are used to cluster songs into groups with similar sonic qualities. When creating playlists or radio stations, Spotify can select songs from the same cluster as the seed track, ensuring musical consistency.</p>
+            <p>The "Discover Weekly" feature is a perfect example. Spotify clusters your listening history to understand your preferences, then finds songs you haven't heard from clusters that match your taste profile. This creates personalized recommendations that introduce you to new music while staying within your preferred styles.</p>
+            <p>By using multiple audio features rather than just genres, Spotify can discover micro-genres and make more nuanced recommendations than traditional categorization methods.</p>
+        </div>
+
+        <h2>🎯 Key Takeaways / 重要ポイント</h2>
+
+        <div class="highlight-box">
+            <h3>Remember These Core Concepts:</h3>
+            <ul>
+                <li><strong>Unsupervised learning</strong> finds patterns without labels</li>
+                <li><strong>K-means</strong> is simple yet powerful for clustering</li>
+                <li><strong>Choosing K</strong> requires elbow method or domain knowledge</li>
+                <li><strong>AI Hierarchy:</strong> AI ⊃ ML ⊃ DL ⊃ Neural Networks</li>
+                <li><strong>Real applications:</strong> Netflix (user segmentation), Spotify (music clustering), Google News (article grouping)</li>
+                <li><strong>K-means limitations:</strong> Must choose K, sensitive to outliers, assumes spherical clusters</li>
+            </ul>
+        </div>
+
+        <div class="study-tip">
+            <h3>How to Prepare for the Exam</h3>
+            <ol>
+                <li>Be able to draw and explain the K-means algorithm steps</li>
+                <li>Understand the difference between supervised and unsupervised learning</li>
+                <li>Know the AI/ML/DL hierarchy and what each level means</li>
+                <li>Memorize at least 2 real-world clustering applications in detail</li>
+                <li>Practice explaining concepts in both English and Japanese</li>
+                <li>Understand when to use K-means vs other algorithms</li>
+                <li>Know the limitations and how to address them</li>
+            </ol>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+            <a href="../week-09/lecture.html">Next Week →</a>
+        </div>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Week 8 Lecture Notes - Introduction to AI and Data Science</p>
+            <p>Chukyo University - 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

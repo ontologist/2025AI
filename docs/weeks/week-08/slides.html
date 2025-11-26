@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 8: Clustering & Overview of AI/ML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3em;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            color: #7c3aed;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide h4 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .english, .japanese {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 70px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #2563eb;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2em;
+            color: #7c3aed;
+            margin-bottom: 40px;
+        }
+
+        .title-slide .info {
+            font-size: 1.3em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+
+            .slide h1 {
+                font-size: 2.5em;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slide-container {
+                padding: 0;
+            }
+
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .slide h1 {
+                font-size: 2em;
+            }
+
+            .slide h2 {
+                font-size: 1.6em;
+            }
+
+            .bilingual {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5em;
+            }
+
+            .title-slide .subtitle {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        .slides-nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            padding: 10px 20px;
+        }
+
+        .slides-nav .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .slides-nav a {
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .slides-nav a:hover {
+            color: #2563eb;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="lecture.html">Lecture Notes</a>
+            <a href="assignment.html">Assignment</a>
+            <a href="review.html">Review Slides (Weeks 1-7)</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 14</div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Week 8</h1>
+            <p class="subtitle">Clustering & Overview of AI/ML<br>クラスタリング・AI概論</p>
+            <p class="info"><strong>Course:</strong> Introduction to AI and Data Science</p>
+            <p class="info"><strong>Instructor:</strong> Yuri Tijerino</p>
+            <p class="info"><strong>Topics:</strong> K-means Clustering, Unsupervised Learning, AI Landscape</p>
+        </div>
+
+        <!-- Slide 2: Today's Objectives -->
+        <div class="slide">
+            <h2>Today's Objectives / 本日の目標</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What You'll Learn:</h3>
+                    <ul>
+                        <li>Understand unsupervised learning and clustering</li>
+                        <li>Master K-means clustering algorithm</li>
+                        <li>Explore the AI/ML landscape and ecosystem</li>
+                        <li>See real-world clustering applications</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>学ぶこと:</h3>
+                    <ul>
+                        <li>教師なし学習とクラスタリングを理解する</li>
+                        <li>K-meansクラスタリングアルゴリズムを習得する</li>
+                        <li>AI/MLの全体像とエコシステムを探る</li>
+                        <li>実世界のクラスタリング応用を見る</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Supervised vs Unsupervised Learning -->
+        <div class="slide">
+            <h2>Supervised vs Unsupervised Learning</h2>
+            <h2>教師あり学習 vs 教師なし学習</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Supervised Learning</h3>
+                    <h4>教師あり学習</h4>
+                    <div class="code-box">Input + Labels → Model → Predictions
+入力 + ラベル → モデル → 予測</div>
+                    <p><strong>Example:</strong> Email spam classification<br>
+                    <strong>例:</strong> メールスパム分類</p>
+                    <ul>
+                        <li>We have labeled data (spam/not spam)</li>
+                        <li>ラベル付きデータがある</li>
+                        <li>Model learns from examples</li>
+                        <li>モデルは例から学習する</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Unsupervised Learning</h3>
+                    <h4>教師なし学習</h4>
+                    <div class="code-box">Input (No Labels) → Model → Patterns
+入力（ラベルなし）→ モデル → パターン</div>
+                    <p><strong>Example:</strong> Customer segmentation<br>
+                    <strong>例:</strong> 顧客セグメンテーション</p>
+                    <ul>
+                        <li>No labeled data needed</li>
+                        <li>ラベル付きデータは不要</li>
+                        <li>Model discovers hidden patterns</li>
+                        <li>モデルは隠れたパターンを発見</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: What is Clustering? -->
+        <div class="slide">
+            <h2>What is Clustering? / クラスタリングとは？</h2>
+            <div class="highlight-box">
+                <h3>Definition / 定義:</h3>
+                <p><strong>Clustering = Grouping similar items together without predefined labels</strong></p>
+                <p><strong>クラスタリング = 事前定義されたラベルなしで類似アイテムをグループ化すること</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li><strong>Cluster:</strong> A group of similar data points</li>
+                        <li><strong>Similarity:</strong> How close data points are to each other</li>
+                        <li><strong>Distance:</strong> Metric to measure dissimilarity</li>
+                        <li><strong>Centroid:</strong> The center point of a cluster</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>主要概念:</h3>
+                    <ul>
+                        <li><strong>クラスタ:</strong> 類似したデータポイントのグループ</li>
+                        <li><strong>類似性:</strong> データポイント同士がどれだけ近いか</li>
+                        <li><strong>距離:</strong> 非類似性を測定する指標</li>
+                        <li><strong>重心:</strong> クラスタの中心点</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: K-means Clustering Algorithm -->
+        <div class="slide">
+            <h2>K-means Clustering Algorithm</h2>
+            <h2>K-meansクラスタリングアルゴリズム</h2>
+            <h3>How K-means Works / K-meansの仕組み:</h3>
+            <ol>
+                <li><strong>Choose K</strong> → Decide how many clusters you want<br>
+                    <strong>Kを選択</strong> → 必要なクラスタ数を決定</li>
+                <li><strong>Initialize Centroids</strong> → Randomly place K center points<br>
+                    <strong>重心を初期化</strong> → K個の中心点をランダムに配置</li>
+                <li><strong>Assign Points</strong> → Each data point joins nearest centroid's cluster<br>
+                    <strong>ポイントを割り当て</strong> → 各データポイントは最も近い重心のクラスタに参加</li>
+                <li><strong>Update Centroids</strong> → Move centroids to cluster centers<br>
+                    <strong>重心を更新</strong> → 重心をクラスタの中心に移動</li>
+                <li><strong>Repeat</strong> → Steps 3-4 until centroids stop moving<br>
+                    <strong>繰り返し</strong> → 重心が動かなくなるまでステップ3-4を繰り返す</li>
+            </ol>
+            <div class="highlight-box">
+                <p><strong>Goal:</strong> Minimize distance between points and their cluster centroids</p>
+                <p><strong>目標:</strong> ポイントとそのクラスタ重心間の距離を最小化</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Real-World Example: Netflix -->
+        <div class="slide">
+            <h2>Real-World Example: Netflix User Segmentation</h2>
+            <h2>実世界の例: Netflixユーザーセグメンテーション</h2>
+            <div class="highlight-box">
+                <p><strong>Link:</strong> <a href="https://www.netflix.com" target="_blank">https://www.netflix.com</a></p>
+            </div>
+            <h3>How Netflix Uses Clustering / Netflixがクラスタリングを使う方法:</h3>
+            <div class="bilingual">
+                <div class="english">
+                    <ul>
+                        <li><strong>User Segmentation:</strong> Groups viewers by viewing patterns</li>
+                        <li><strong>Content Categories:</strong> Clusters movies/shows by features</li>
+                        <li><strong>Recommendation:</strong> Suggests content based on cluster membership</li>
+                        <li><strong>Marketing:</strong> Targets different user segments differently</li>
+                    </ul>
+                    <p><strong>Result:</strong> Personalized experience for 200M+ subscribers worldwide</p>
+                </div>
+                <div class="japanese">
+                    <ul>
+                        <li><strong>ユーザーセグメンテーション:</strong> 視聴パターンで視聴者をグループ化</li>
+                        <li><strong>コンテンツカテゴリー:</strong> 特徴で映画/番組をクラスタ化</li>
+                        <li><strong>推薦:</strong> クラスタメンバーシップに基づいてコンテンツを提案</li>
+                        <li><strong>マーケティング:</strong> 異なるユーザーセグメントを異なる方法でターゲット化</li>
+                    </ul>
+                    <p><strong>結果:</strong> 世界中の2億人以上の加入者にパーソナライズされた体験</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Real-World Example: Spotify -->
+        <div class="slide">
+            <h2>Real-World Example: Spotify Music Clustering</h2>
+            <h2>実世界の例: Spotify音楽クラスタリング</h2>
+            <div class="highlight-box">
+                <p><strong>Link:</strong> <a href="https://www.spotify.com" target="_blank">https://www.spotify.com</a></p>
+            </div>
+            <h3>Spotify's Clustering Applications / Spotifyのクラスタリング応用:</h3>
+            <div class="bilingual">
+                <div class="english">
+                    <ul>
+                        <li><strong>Song Clustering:</strong> Groups songs by audio features (tempo, energy, valence)</li>
+                        <li><strong>Genre Detection:</strong> Discovers micro-genres automatically</li>
+                        <li><strong>Playlist Generation:</strong> Creates "Discover Weekly" based on listening clusters</li>
+                        <li><strong>Artist Similarity:</strong> Finds similar artists for radio features</li>
+                    </ul>
+                    <p><strong>Features Used:</strong> Acousticness, danceability, energy, instrumentalness, tempo, valence</p>
+                </div>
+                <div class="japanese">
+                    <ul>
+                        <li><strong>曲のクラスタリング:</strong> オーディオ特徴（テンポ、エネルギー、感情価）で曲をグループ化</li>
+                        <li><strong>ジャンル検出:</strong> マイクロジャンルを自動的に発見</li>
+                        <li><strong>プレイリスト生成:</strong> リスニングクラスタに基づいて「Discover Weekly」を作成</li>
+                        <li><strong>アーティストの類似性:</strong> ラジオ機能のために類似アーティストを見つける</li>
+                    </ul>
+                    <p><strong>使用される特徴:</strong> アコースティック性、踊りやすさ、エネルギー、インストルメンタル性、テンポ、感情価</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Choosing K -->
+        <div class="slide">
+            <h2>Choosing the Right K / 適切なKの選択</h2>
+            <h3>How Many Clusters Should You Create?</h3>
+            <h3>いくつのクラスタを作成すべきか？</h3>
+            <div class="two-column">
+                <div>
+                    <h4>Elbow Method</h4>
+                    <h4>エルボー法</h4>
+                    <ul>
+                        <li>Plot error vs number of clusters</li>
+                        <li>エラー対クラスタ数をプロット</li>
+                        <li>Look for "elbow" point where improvement slows</li>
+                        <li>改善が遅くなる「肘」のポイントを探す</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Domain Knowledge</h4>
+                    <h4>ドメイン知識</h4>
+                    <ul>
+                        <li>Use business understanding</li>
+                        <li>ビジネス理解を使用</li>
+                        <li>Consider practical constraints</li>
+                        <li>実用的な制約を考慮</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Example:</strong> Customer segmentation might use K=3 (high/medium/low value) or K=5 for more granularity</p>
+                <p><strong>例:</strong> 顧客セグメンテーションはK=3（高/中/低価値）またはより細かくK=5を使用するかもしれません</p>
+            </div>
+        </div>
+
+        <!-- Slide 9: The AI Landscape -->
+        <div class="slide">
+            <h2>Overview of the AI Landscape</h2>
+            <h2>AI全体像の概観</h2>
+            <div class="highlight-box">
+                <h3>The AI Hierarchy / AI階層:</h3>
+                <div class="code-box">Artificial Intelligence (AI) 人工知能
+    ↓
+Machine Learning (ML) 機械学習
+    ↓
+Deep Learning (DL) 深層学習
+    ↓
+Neural Networks ニューラルネットワーク</div>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Definitions:</h3>
+                    <ul>
+                        <li><strong>AI:</strong> Machines that mimic human intelligence</li>
+                        <li><strong>ML:</strong> Algorithms that learn from data</li>
+                        <li><strong>DL:</strong> Multi-layered neural networks</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>定義:</h3>
+                    <ul>
+                        <li><strong>AI:</strong> 人間の知能を模倣する機械</li>
+                        <li><strong>ML:</strong> データから学習するアルゴリズム</li>
+                        <li><strong>DL:</strong> 多層ニューラルネットワーク</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: ML Paradigms Overview -->
+        <div class="slide">
+            <h2>Three Main ML Paradigms</h2>
+            <h2>MLの3つの主要パラダイム</h2>
+            <div class="two-column">
+                <div>
+                    <h3>1. Supervised Learning</h3>
+                    <h4>教師あり学習</h4>
+                    <ul>
+                        <li>Classification (categorization)</li>
+                        <li>分類（カテゴリ化）</li>
+                        <li>Regression (prediction)</li>
+                        <li>回帰（予測）</li>
+                    </ul>
+                    <p><strong>Example Apps:</strong></p>
+                    <ul>
+                        <li>Gmail spam filter</li>
+                        <li>Stock price prediction</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>2. Unsupervised Learning</h3>
+                    <h4>教師なし学習</h4>
+                    <ul>
+                        <li>Clustering (grouping)</li>
+                        <li>クラスタリング（グループ化）</li>
+                        <li>Dimensionality reduction</li>
+                        <li>次元削減</li>
+                    </ul>
+                    <p><strong>Example Apps:</strong></p>
+                    <ul>
+                        <li>Netflix recommendations</li>
+                        <li>Market segmentation</li>
+                    </ul>
+                </div>
+            </div>
+            <h3>3. Reinforcement Learning / 強化学習</h3>
+            <ul>
+                <li>Learning through trial and error with rewards</li>
+                <li>報酬を伴う試行錯誤による学習</li>
+                <li><strong>Example:</strong> AlphaGo, self-driving cars, game AI</li>
+            </ul>
+        </div>
+
+        <!-- Slide 11: Clustering Applications in Policy -->
+        <div class="slide">
+            <h2>Clustering for Policy Studies</h2>
+            <h2>政策研究のためのクラスタリング</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Government & Public Policy Applications:</h3>
+                    <ul>
+                        <li><strong>Demographic Segmentation:</strong> Group populations for targeted policies</li>
+                        <li><strong>Economic Zones:</strong> Identify regions with similar economic indicators</li>
+                        <li><strong>Crime Patterns:</strong> Detect crime hotspots for resource allocation</li>
+                        <li><strong>Health Clusters:</strong> Group patients for public health interventions</li>
+                        <li><strong>Education:</strong> Identify schools needing similar support</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>政府・公共政策の応用:</h3>
+                    <ul>
+                        <li><strong>人口統計セグメンテーション:</strong> ターゲット政策のために人口をグループ化</li>
+                        <li><strong>経済ゾーン:</strong> 類似した経済指標を持つ地域を特定</li>
+                        <li><strong>犯罪パターン:</strong> リソース配分のために犯罪多発地帯を検出</li>
+                        <li><strong>健康クラスタ:</strong> 公衆衛生介入のために患者をグループ化</li>
+                        <li><strong>教育:</strong> 類似した支援を必要とする学校を特定</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Real-World: Google News -->
+        <div class="slide">
+            <h2>Real-World Example: Google News Clustering</h2>
+            <h2>実世界の例: Googleニュースクラスタリング</h2>
+            <div class="highlight-box">
+                <p><strong>Link:</strong> <a href="https://news.google.com" target="_blank">https://news.google.com</a></p>
+            </div>
+            <h3>How Google News Uses Clustering:</h3>
+            <h3>Googleニュースがクラスタリングを使う方法:</h3>
+            <div class="bilingual">
+                <div class="english">
+                    <ul>
+                        <li><strong>Story Grouping:</strong> Clusters articles covering the same event</li>
+                        <li><strong>Multiple Perspectives:</strong> Shows different sources in same cluster</li>
+                        <li><strong>Topic Detection:</strong> Automatically discovers trending topics</li>
+                        <li><strong>Personalization:</strong> Groups content by user interests</li>
+                    </ul>
+                    <p><strong>Technology:</strong> NLP + K-means clustering on article text and metadata</p>
+                </div>
+                <div class="japanese">
+                    <ul>
+                        <li><strong>ストーリーグループ化:</strong> 同じイベントをカバーする記事をクラスタ化</li>
+                        <li><strong>複数の視点:</strong> 同じクラスタ内の異なる情報源を表示</li>
+                        <li><strong>トピック検出:</strong> トレンドトピックを自動的に発見</li>
+                        <li><strong>パーソナライゼーション:</strong> ユーザーの興味でコンテンツをグループ化</li>
+                    </ul>
+                    <p><strong>技術:</strong> 記事テキストとメタデータに対するNLP + K-meansクラスタリング</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Limitations of K-means -->
+        <div class="slide">
+            <h2>Limitations of K-means Clustering</h2>
+            <h2>K-meansクラスタリングの限界</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Challenges to Consider:</h3>
+                    <ul>
+                        <li><strong>Must Choose K:</strong> Number of clusters must be specified beforehand</li>
+                        <li><strong>Sensitive to Outliers:</strong> Extreme values can distort clusters</li>
+                        <li><strong>Assumes Spherical Clusters:</strong> Works best for round, evenly-sized clusters</li>
+                        <li><strong>Random Initialization:</strong> Different starting points = different results</li>
+                        <li><strong>Scale Matters:</strong> Features with larger ranges dominate</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>考慮すべき課題:</h3>
+                    <ul>
+                        <li><strong>Kの選択が必須:</strong> クラスタ数を事前に指定する必要がある</li>
+                        <li><strong>外れ値に敏感:</strong> 極端な値がクラスタを歪める可能性</li>
+                        <li><strong>球状クラスタを仮定:</strong> 丸く均等なサイズのクラスタに最適</li>
+                        <li><strong>ランダム初期化:</strong> 異なる開始点 = 異なる結果</li>
+                        <li><strong>スケールが重要:</strong> より大きな範囲の特徴が支配的</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Solution:</strong> Normalize data, run multiple times, try other algorithms (DBSCAN, hierarchical)</p>
+                <p><strong>解決策:</strong> データを正規化、複数回実行、他のアルゴリズムを試す（DBSCAN、階層的）</p>
+            </div>
+        </div>
+
+        <!-- Slide 14: Summary -->
+        <div class="slide">
+            <h2>Summary / まとめ</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Takeaways:</h3>
+                    <ul>
+                        <li>Unsupervised learning finds patterns without labels</li>
+                        <li>K-means is a simple, powerful clustering algorithm</li>
+                        <li>Clustering is used everywhere: Netflix, Spotify, Google News</li>
+                        <li>The AI landscape: AI ⊃ ML ⊃ DL ⊃ Neural Networks</li>
+                        <li>Three ML paradigms: Supervised, Unsupervised, Reinforcement</li>
+                        <li>Choose K carefully using domain knowledge or elbow method</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>重要ポイント:</h3>
+                    <ul>
+                        <li>教師なし学習はラベルなしでパターンを見つける</li>
+                        <li>K-meansはシンプルで強力なクラスタリングアルゴリズム</li>
+                        <li>クラスタリングはどこでも使われている: Netflix、Spotify、Googleニュース</li>
+                        <li>AI全体像: AI ⊃ ML ⊃ DL ⊃ ニューラルネットワーク</li>
+                        <li>3つのMLパラダイム: 教師あり、教師なし、強化学習</li>
+                        <li>ドメイン知識またはエルボー法を使ってKを慎重に選択</li>
+                    </ul>
+                </div>
+            </div>
+            <h3 style="text-align: center; margin-top: 40px;">Next Week / 来週:</h3>
+            <p style="text-align: center; font-size: 1.3em;">Overview of AI and ML - Types of AI, Real Applications</p>
+            <p style="text-align: center; font-size: 1.3em;">人工知能と機械学習の導入 - AIの種類、実際の応用</p>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

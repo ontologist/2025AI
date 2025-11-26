@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2: History of Artificial Intelligence 2</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3em;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            color: #7c3aed;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide h4 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .english, .japanese {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .warning-box {
+            background: #fee2e2;
+            border-left: 5px solid #dc2626;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 70px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #2563eb;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2em;
+            color: #7c3aed;
+            margin-bottom: 40px;
+        }
+
+        .title-slide .info {
+            font-size: 1.3em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+
+            .slide h1 {
+                font-size: 2.5em;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slide-container {
+                padding: 0;
+            }
+
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .slide h1 {
+                font-size: 2em;
+            }
+
+            .slide h2 {
+                font-size: 1.6em;
+            }
+
+            .bilingual {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5em;
+            }
+
+            .title-slide .subtitle {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        .slides-nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            padding: 10px 20px;
+        }
+
+        .slides-nav .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .slides-nav a {
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .slides-nav a:hover {
+            color: #2563eb;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="lecture.html">Lecture Notes</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 15</div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Week 2</h1>
+            <p class="subtitle">History of Artificial Intelligence 2<br>人工知能の歴史2</p>
+            <p class="info"><strong>Course:</strong> Artificial Intelligence</p>
+            <p class="info"><strong>Topic:</strong> AI Winters and Expert Systems Era</p>
+            <p class="info"><strong>Duration:</strong> 15-20 minutes / 15-20分</p>
+        </div>
+
+        <!-- Slide 2: Recap -->
+        <div class="slide">
+            <h2>Quick Recap: Week 1</h2>
+            <h2>復習：第1週</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What We Covered:</h3>
+                    <ul>
+                        <li>Alan Turing and the Turing Test (1950)</li>
+                        <li>Dartmouth Conference (1956) - Birth of AI</li>
+                        <li>Early optimism and enthusiasm</li>
+                        <li>First AI programs (Logic Theorist, GPS)</li>
+                        <li>LISP programming language</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>扱った内容：</h3>
+                    <ul>
+                        <li>アラン・チューリングとチューリングテスト（1950年）</li>
+                        <li>ダートマス会議（1956年）- AIの誕生</li>
+                        <li>初期の楽観主義と熱意</li>
+                        <li>最初のAIプログラム（論理理論家、GPS）</li>
+                        <li>LISPプログラミング言語</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Today's Journey -->
+        <div class="slide">
+            <h2>Today's Learning Goals</h2>
+            <h2>本日の学習目標</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What We'll Learn:</h3>
+                    <ul>
+                        <li>Understand why early AI optimism faded</li>
+                        <li>Learn about the first AI Winter (1970s)</li>
+                        <li>Discover the Expert Systems boom (1980s)</li>
+                        <li>Explore the second AI Winter (late 1980s-1990s)</li>
+                        <li>Reflect on lessons from boom-bust cycles</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>学ぶこと：</h3>
+                    <ul>
+                        <li>初期のAI楽観主義がなぜ消えたかを理解する</li>
+                        <li>第一のAI冬について学ぶ（1970年代）</li>
+                        <li>エキスパートシステムブームを発見する（1980年代）</li>
+                        <li>第二のAI冬を探る（1980年代後半-1990年代）</li>
+                        <li>好況不況サイクルからの教訓を考える</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Reality Check -->
+        <div class="slide">
+            <h2>The Reality Check (Late 1960s)</h2>
+            <h2>現実との直面（1960年代後半）</h2>
+            <div class="warning-box">
+                <h3>Problems Emerge / 問題の出現</h3>
+                <p>By the late 1960s, researchers realized AI was much harder than expected</p>
+                <p>1960年代後半までに、研究者たちはAIが予想よりもはるかに困難であることに気づきました</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Challenges:</h4>
+                    <ul>
+                        <li><strong>Computational limitations:</strong> Computers were too slow and had limited memory</li>
+                        <li><strong>Combinatorial explosion:</strong> Problems grew exponentially complex</li>
+                        <li><strong>Narrow applications:</strong> Programs only worked in very specific domains</li>
+                        <li><strong>Common sense gap:</strong> Machines lacked basic human knowledge</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>主な課題：</h4>
+                    <ul>
+                        <li><strong>計算の制限：</strong>コンピュータが遅すぎてメモリが限られていた</li>
+                        <li><strong>組み合わせ爆発：</strong>問題が指数関数的に複雑になった</li>
+                        <li><strong>狭い応用：</strong>プログラムは非常に特定の領域でのみ機能した</li>
+                        <li><strong>常識のギャップ：</strong>機械には基本的な人間の知識が欠けていた</li>
+                    </ul>
+                </div>
+            </div>
+        </slide>
+
+        <!-- Slide 5: The Lighthill Report -->
+        <div class="slide">
+            <h2>The Lighthill Report (1973)</h2>
+            <h2>ライトヒル報告書（1973年）</h2>
+            <div class="warning-box">
+                <h3>A Devastating Critique / 壊滅的な批判</h3>
+                <p><strong>Author:</strong> Sir James Lighthill (British mathematician)</p>
+                <p><strong>著者：</strong>ジェームズ・ライトヒル卿（英国の数学者）</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Main Conclusions:</h4>
+                    <ul>
+                        <li>AI had failed to achieve its "grandiose objectives"</li>
+                        <li>No part of AI had delivered significant discoveries</li>
+                        <li>Recommended cutting most AI funding in the UK</li>
+                    </ul>
+                    <h4>Impact:</h4>
+                    <p>Led to massive reduction in AI research funding in Britain</p>
+                </div>
+                <div class="japanese">
+                    <h4>主な結論：</h4>
+                    <ul>
+                        <li>AIは「壮大な目的」を達成できなかった</li>
+                        <li>AIのどの部分も重要な発見を提供していない</li>
+                        <li>英国のAI資金のほとんどを削減することを推奨</li>
+                    </ul>
+                    <h4>影響：</h4>
+                    <p>英国のAI研究資金の大幅な削減につながった</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: First AI Winter -->
+        <div class="slide">
+            <h2>The First AI Winter (1974-1980)</h2>
+            <h2>第一のAI冬（1974-1980年）</h2>
+            <div class="highlight-box">
+                <h3>What is an "AI Winter"?</h3>
+                <h3>「AI冬」とは？</h3>
+                <p>A period of reduced funding and interest in AI research</p>
+                <p>AI研究への資金と関心が減少する期間</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Characteristics of the First Winter:</h4>
+                    <ul>
+                        <li><strong>Funding cuts:</strong> Government and private funding drastically reduced</li>
+                        <li><strong>Failed promises:</strong> Early predictions proved wildly optimistic</li>
+                        <li><strong>Loss of enthusiasm:</strong> AI became unfashionable in academia</li>
+                        <li><strong>Brain drain:</strong> Researchers moved to other fields</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>第一の冬の特徴：</h4>
+                    <ul>
+                        <li><strong>資金削減：</strong>政府と民間の資金が大幅に削減された</li>
+                        <li><strong>約束の失敗：</strong>初期の予測が非常に楽観的であることが証明された</li>
+                        <li><strong>熱意の喪失：</strong>AIは学界で流行しなくなった</li>
+                        <li><strong>頭脳流出：</strong>研究者が他の分野に移動した</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Perceptron Controversy -->
+        <div class="slide">
+            <h2>The Perceptron Controversy (1969)</h2>
+            <h2>パーセプトロン論争（1969年）</h2>
+            <div class="two-column">
+                <div>
+                    <h3>The Book</h3>
+                    <h3>本</h3>
+                    <p><strong>Authors:</strong> Marvin Minsky & Seymour Papert</p>
+                    <p><strong>著者：</strong>マービン・ミンスキーとシーモア・パパート</p>
+                    <p><strong>Title:</strong> "Perceptrons"</p>
+                </div>
+                <div>
+                    <h3>The Critique</h3>
+                    <h3>批判</h3>
+                    <p>Proved that single-layer perceptrons could not solve the XOR problem</p>
+                    <p>単層パーセプトロンがXOR問題を解決できないことを証明</p>
+                </div>
+            </div>
+            <div class="warning-box">
+                <h4>Unintended Consequences / 意図しない結果:</h4>
+                <p>This critique killed neural network research for nearly 20 years!</p>
+                <p>この批判はニューラルネットワーク研究を約20年間停止させた！</p>
+                <p><strong>Note:</strong> Multi-layer networks could solve XOR, but this wasn't widely pursued until the 1980s</p>
+                <p><strong>注：</strong>多層ネットワークはXORを解決できたが、1980年代まで広く追求されなかった</p>
+            </div>
+        </slide>
+
+        <!-- Slide 8: The Expert Systems Era Begins -->
+        <div class="slide">
+            <h2>The Rise of Expert Systems (1980s)</h2>
+            <h2>エキスパートシステムの台頭（1980年代）</h2>
+            <div class="highlight-box">
+                <h3>What are Expert Systems?</h3>
+                <h3>エキスパートシステムとは？</h3>
+                <p>Computer programs that mimic the decision-making of human experts using if-then rules</p>
+                <p>if-thenルールを使用して人間の専門家の意思決定を模倣するコンピュータプログラム</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Components:</h4>
+                    <ul>
+                        <li><strong>Knowledge Base:</strong> Collection of facts and rules</li>
+                        <li><strong>Inference Engine:</strong> Applies rules to known facts</li>
+                        <li><strong>User Interface:</strong> Allows users to query the system</li>
+                        <li><strong>Explanation Facility:</strong> Explains reasoning process</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>主要コンポーネント：</h4>
+                    <ul>
+                        <li><strong>知識ベース：</strong>事実とルールのコレクション</li>
+                        <li><strong>推論エンジン：</strong>既知の事実にルールを適用</li>
+                        <li><strong>ユーザーインターフェース：</strong>ユーザーがシステムに問い合わせることを可能にする</li>
+                        <li><strong>説明機能：</strong>推論プロセスを説明する</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Notable Expert Systems -->
+        <div class="slide">
+            <h2>Famous Expert Systems</h2>
+            <h2>有名なエキスパートシステム</h2>
+            <div class="two-column">
+                <div>
+                    <h3>DENDRAL (1965-1970s)</h3>
+                    <h3>デンドラル</h3>
+                    <ul>
+                        <li><strong>Purpose:</strong> Identify molecular structures</li>
+                        <li><strong>目的:</strong> 分子構造を識別</li>
+                        <li><strong>Domain:</strong> Chemistry</li>
+                        <li><strong>領域:</strong> 化学</li>
+                        <li>First successful expert system</li>
+                        <li>最初の成功したエキスパートシステム</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>MYCIN (1970s)</h3>
+                    <h3>マイシン</h3>
+                    <ul>
+                        <li><strong>Purpose:</strong> Diagnose blood infections</li>
+                        <li><strong>目的:</strong> 血液感染症を診断</li>
+                        <li><strong>Domain:</strong> Medical diagnosis</li>
+                        <li><strong>領域:</strong> 医療診断</li>
+                        <li>Performed as well as specialists</li>
+                        <li>専門家と同等のパフォーマンス</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Other Notable Systems:</h4>
+                    <ul>
+                        <li><strong>XCON:</strong> Computer configuration (saved DEC $40M annually)</li>
+                        <li><strong>PROSPECTOR:</strong> Geological exploration</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>その他の注目すべきシステム：</h4>
+                    <ul>
+                        <li><strong>XCON:</strong> コンピュータ構成（DECに年間4000万ドル節約）</li>
+                        <li><strong>PROSPECTOR:</strong> 地質探査</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Expert Systems Boom -->
+        <div class="slide">
+            <h2>The Expert Systems Boom (1980-1987)</h2>
+            <h2>エキスパートシステムブーム（1980-1987年）</h2>
+            <div class="highlight-box">
+                <h3>AI Spring! / AI春！</h3>
+                <p>Investment in AI soared to over $1 billion per year</p>
+                <p>AIへの投資は年間10億ドル以上に急増</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Why the Success?</h4>
+                    <ul>
+                        <li><strong>Practical results:</strong> Systems actually worked in real businesses</li>
+                        <li><strong>Clear ROI:</strong> Companies saved money using expert systems</li>
+                        <li><strong>Japanese competition:</strong> Japan's Fifth Generation project sparked fear and investment</li>
+                        <li><strong>Specialized hardware:</strong> LISP machines made development easier</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>なぜ成功したか？</h4>
+                    <ul>
+                        <li><strong>実用的な結果：</strong> システムが実際のビジネスで機能した</li>
+                        <li><strong>明確なROI：</strong> 企業がエキスパートシステムを使用してお金を節約した</li>
+                        <li><strong>日本との競争：</strong> 日本の第五世代プロジェクトが恐怖と投資を引き起こした</li>
+                        <li><strong>専用ハードウェア：</strong> LISPマシンが開発を容易にした</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Japan's Fifth Generation -->
+        <div class="slide">
+            <h2>Japan's Fifth Generation Computer Project</h2>
+            <h2>日本の第五世代コンピュータプロジェクト</h2>
+            <div class="highlight-box">
+                <h3>Timeline: 1982-1992</h3>
+                <h3>期間：1982-1992年</h3>
+                <p><strong>Budget:</strong> $850 million / 8億5000万ドル</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Ambitious Goals:</h4>
+                    <ul>
+                        <li>Create "intelligent" computers with reasoning abilities</li>
+                        <li>Natural language processing</li>
+                        <li>Knowledge representation</li>
+                        <li>Massive parallelism</li>
+                    </ul>
+                    <h4>Western Response:</h4>
+                    <p>US and UK launched competing AI initiatives to avoid being "left behind"</p>
+                </div>
+                <div class="japanese">
+                    <h4>野心的な目標：</h4>
+                    <ul>
+                        <li>推論能力を持つ「知的」コンピュータを作成</li>
+                        <li>自然言語処理</li>
+                        <li>知識表現</li>
+                        <li>大規模並列処理</li>
+                    </ul>
+                    <h4>西側の対応：</h4>
+                    <p>米国と英国が「取り残される」ことを避けるために競合するAIイニシアチブを開始</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Expert Systems Limitations -->
+        <div class="slide">
+            <h2>Limitations of Expert Systems</h2>
+            <h2>エキスパートシステムの限界</h2>
+            <div class="warning-box">
+                <h3>Problems Emerge / 問題の出現</h3>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Critical Limitations:</h4>
+                    <ul>
+                        <li><strong>Knowledge acquisition bottleneck:</strong> Very expensive and time-consuming to build</li>
+                        <li><strong>Brittle systems:</strong> Couldn't handle unexpected situations</li>
+                        <li><strong>Maintenance nightmare:</strong> Rules became impossibly complex</li>
+                        <li><strong>No learning:</strong> Couldn't improve from experience</li>
+                        <li><strong>Narrow domains:</strong> Only worked in very specific areas</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>重大な制限：</h4>
+                    <ul>
+                        <li><strong>知識獲得のボトルネック：</strong> 構築に非常に高価で時間がかかる</li>
+                        <li><strong>脆弱なシステム：</strong> 予期しない状況に対処できなかった</li>
+                        <li><strong>メンテナンスの悪夢：</strong> ルールが不可能なほど複雑になった</li>
+                        <li><strong>学習なし：</strong> 経験から改善できなかった</li>
+                        <li><strong>狭い領域：</strong> 非常に特定の分野でのみ機能した</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Second AI Winter -->
+        <div class="slide">
+            <h2>The Second AI Winter (1987-1993)</h2>
+            <h2>第二のAI冬（1987-1993年）</h2>
+            <div class="warning-box">
+                <h3>The Bubble Bursts / バブル崩壊</h3>
+                <p>Even more severe than the first winter</p>
+                <p>第一の冬よりもさらに深刻</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>What Happened:</h4>
+                    <ul>
+                        <li><strong>1987:</strong> LISP machine market collapsed (desktop PCs were cheaper and better)</li>
+                        <li><strong>Late 1980s:</strong> Expert systems proved too expensive to maintain</li>
+                        <li><strong>1991:</strong> Japan's Fifth Generation project ended without achieving goals</li>
+                        <li><strong>Result:</strong> Massive loss of funding and credibility</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>何が起こったか：</h4>
+                    <ul>
+                        <li><strong>1987年：</strong> LISPマシン市場が崩壊（デスクトップPCがより安く優れていた）</li>
+                        <li><strong>1980年代後半：</strong> エキスパートシステムはメンテナンスに高すぎることが証明された</li>
+                        <li><strong>1991年：</strong> 日本の第五世代プロジェクトが目標を達成せずに終了</li>
+                        <li><strong>結果：</strong> 資金と信頼性の大幅な喪失</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Lessons Learned -->
+        <div class="slide">
+            <h2>Lessons from the AI Winters</h2>
+            <h2>AI冬からの教訓</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Important Insights:</h3>
+                    <ul>
+                        <li><strong>Avoid hype cycles:</strong> Overpromising leads to backlash</li>
+                        <li><strong>Focus on practical results:</strong> Real applications matter more than grand visions</li>
+                        <li><strong>Incremental progress:</strong> AI advances step-by-step, not in revolutionary leaps</li>
+                        <li><strong>Learn from failure:</strong> Each winter taught valuable lessons</li>
+                        <li><strong>Long-term thinking:</strong> Fundamental research needs sustained support</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>重要な洞察：</h3>
+                    <ul>
+                        <li><strong>誇大宣伝サイクルを避ける：</strong> 過剰な約束は反発を招く</li>
+                        <li><strong>実用的な結果に焦点を当てる：</strong> 実際の応用は壮大なビジョンよりも重要</li>
+                        <li><strong>段階的な進歩：</strong> AIは革命的な飛躍ではなく段階的に進歩する</li>
+                        <li><strong>失敗から学ぶ：</strong> 各冬は貴重な教訓を教えた</li>
+                        <li><strong>長期的思考：</strong> 基礎研究には持続的なサポートが必要</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Preview Next Week -->
+        <div class="slide">
+            <h2>Preview: Week 3</h2>
+            <h2>プレビュー：第3週</h2>
+            <div class="highlight-box">
+                <h3>From Winter to Spring to Summer!</h3>
+                <h3>冬から春、そして夏へ！</h3>
+                <p><strong>Topic:</strong> The Deep Learning Revolution and Current Trends</p>
+                <p><strong>トピック：</strong> ディープラーニング革命と現在のトレンド</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>What's Coming:</h4>
+                    <ul>
+                        <li>The return of neural networks (1990s-2000s)</li>
+                        <li>Big Data and computational power</li>
+                        <li>The deep learning breakthrough (2012)</li>
+                        <li>Modern AI applications everywhere</li>
+                        <li>Current state and future directions</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>次回予告：</h4>
+                    <ul>
+                        <li>ニューラルネットワークの復活（1990年代-2000年代）</li>
+                        <li>ビッグデータと計算能力</li>
+                        <li>ディープラーニングのブレークスルー（2012年）</li>
+                        <li>至る所での現代のAI応用</li>
+                        <li>現在の状態と将来の方向性</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 9 Lecture Notes: Overview of AI and ML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2563eb;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #7c3aed;
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2563eb;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2563eb;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .english {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .test-question {
+            background: #fce7f3;
+            border: 3px solid #ec4899;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .test-question h4::before {
+            content: "⚠️ ";
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .navigation a:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .key-terms {
+            background: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .study-tip {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Week 9 Lecture Notes</h1>
+        <p class="subtitle">Overview of AI and ML<br>AI・ML概論</p>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-08/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+
+        <h2>📚 Overview / 概要</h2>
+        <div class="bilingual">
+            <div class="english">
+                <p>This week provides a comprehensive overview of Artificial Intelligence and Machine Learning, exploring the fundamental concepts, history, and applications that shape modern AI systems. We'll examine the different types of machine learning and understand how they fit into the broader AI landscape.</p>
+                <p><strong>Learning Objectives:</strong></p>
+                <ul>
+                    <li>Understand the definition and scope of Artificial Intelligence</li>
+                    <li>Explore the history and evolution of AI</li>
+                    <li>Identify the three main types of machine learning</li>
+                    <li>Recognize real-world AI applications across industries</li>
+                    <li>Understand the relationship between AI, ML, DL, and Data Science</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <p>今週は、人工知能と機械学習の包括的な概要を提供し、現代のAIシステムを形作る基本概念、歴史、応用を探ります。機械学習の異なるタイプを調べ、それらがより広いAI全体像にどのように適合するかを理解します。</p>
+                <p><strong>学習目標:</strong></p>
+                <ul>
+                    <li>人工知能の定義と範囲を理解する</li>
+                    <li>AIの歴史と進化を探る</li>
+                    <li>機械学習の3つの主要なタイプを特定する</li>
+                    <li>産業全体での実世界のAI応用を認識する</li>
+                    <li>AI、ML、DL、データサイエンスの関係を理解する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>1. What is Artificial Intelligence?</h2>
+        <h2>人工知能とは何か？</h2>
+
+        <div class="definition-box">
+            <h3>Key Definition / 主要定義</h3>
+            <p><strong>Artificial Intelligence (AI):</strong> The science of creating machines and software that can perform tasks that typically require human intelligence, such as visual perception, speech recognition, decision-making, and language translation.</p>
+            <p><strong>人工知能 (AI):</strong> 視覚認識、音声認識、意思決定、言語翻訳など、通常は人間の知能を必要とするタスクを実行できる機械やソフトウェアを作成する科学。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>The Foundations of AI</h3>
+                <p>Artificial Intelligence is built on several foundational concepts:</p>
+
+                <h4>1. Reasoning and Problem Solving</h4>
+                <p>AI systems can analyze situations, evaluate options, and make logical decisions. This includes:</p>
+                <ul>
+                    <li>Search algorithms (finding optimal solutions)</li>
+                    <li>Game playing (chess, Go, poker)</li>
+                    <li>Planning and scheduling</li>
+                    <li>Constraint satisfaction</li>
+                </ul>
+
+                <h4>2. Knowledge Representation</h4>
+                <p>Storing and organizing information in ways machines can use:</p>
+                <ul>
+                    <li>Semantic networks</li>
+                    <li>Ontologies and knowledge graphs</li>
+                    <li>Rules and logic systems</li>
+                    <li>Databases and data structures</li>
+                </ul>
+
+                <h4>3. Learning</h4>
+                <p>The ability to improve performance through experience:</p>
+                <ul>
+                    <li>Pattern recognition</li>
+                    <li>Adaptation to new situations</li>
+                    <li>Generalization from examples</li>
+                    <li>Self-improvement over time</li>
+                </ul>
+
+                <h4>4. Natural Language Processing</h4>
+                <p>Understanding and generating human language:</p>
+                <ul>
+                    <li>Text analysis and generation</li>
+                    <li>Machine translation</li>
+                    <li>Sentiment analysis</li>
+                    <li>Chatbots and virtual assistants</li>
+                </ul>
+
+                <h4>5. Perception</h4>
+                <p>Interpreting sensory input:</p>
+                <ul>
+                    <li>Computer vision (image and video analysis)</li>
+                    <li>Speech recognition</li>
+                    <li>Object detection and tracking</li>
+                    <li>Facial recognition</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>AIの基礎</h3>
+                <p>人工知能はいくつかの基礎概念に基づいています:</p>
+
+                <h4>1. 推論と問題解決</h4>
+                <p>AIシステムは状況を分析し、選択肢を評価し、論理的な決定を下すことができます。これには以下が含まれます:</p>
+                <ul>
+                    <li>検索アルゴリズム（最適解の発見）</li>
+                    <li>ゲームプレイ（チェス、囲碁、ポーカー）</li>
+                    <li>計画とスケジューリング</li>
+                    <li>制約充足</li>
+                </ul>
+
+                <h4>2. 知識表現</h4>
+                <p>機械が使用できる方法で情報を保存し整理する:</p>
+                <ul>
+                    <li>意味ネットワーク</li>
+                    <li>オントロジーと知識グラフ</li>
+                    <li>ルールと論理システム</li>
+                    <li>データベースとデータ構造</li>
+                </ul>
+
+                <h4>3. 学習</h4>
+                <p>経験を通じてパフォーマンスを向上させる能力:</p>
+                <ul>
+                    <li>パターン認識</li>
+                    <li>新しい状況への適応</li>
+                    <li>例からの一般化</li>
+                    <li>時間とともに自己改善</li>
+                </ul>
+
+                <h4>4. 自然言語処理</h4>
+                <p>人間の言語を理解し生成する:</p>
+                <ul>
+                    <li>テキスト分析と生成</li>
+                    <li>機械翻訳</li>
+                    <li>感情分析</li>
+                    <li>チャットボットと仮想アシスタント</li>
+                </ul>
+
+                <h4>5. 知覚</h4>
+                <p>感覚入力を解釈する:</p>
+                <ul>
+                    <li>コンピュータビジョン（画像とビデオ分析）</li>
+                    <li>音声認識</li>
+                    <li>オブジェクトの検出と追跡</li>
+                    <li>顔認識</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>2. History of AI / AIの歴史</h2>
+
+        <div class="highlight-box">
+            <h3>The Evolution of Artificial Intelligence</h3>
+            <div class="code-box">1950s - The Birth of AI
+├─ 1950: Alan Turing proposes the "Turing Test"
+├─ 1956: Dartmouth Conference - AI term coined
+└─ 1959: Arthur Samuel creates first learning program
+
+1960s-1970s - Early Optimism & First Winter
+├─ 1966: ELIZA chatbot created
+├─ 1970s: Expert systems emerge
+└─ 1974-1980: First "AI Winter" (reduced funding)
+
+1980s - Knowledge-Based Systems
+├─ Expert systems gain commercial success
+├─ Neural networks research revival
+└─ 1987-1993: Second "AI Winter"
+
+1990s-2000s - Statistical AI & Machine Learning
+├─ 1997: IBM Deep Blue beats Garry Kasparov at chess
+├─ 2000s: Focus shifts to machine learning
+└─ Big Data enables new approaches
+
+2010s - Deep Learning Revolution
+├─ 2012: AlexNet wins ImageNet competition
+├─ 2016: AlphaGo defeats Lee Sedol at Go
+├─ 2018: GPT and BERT transform NLP
+└─ AI becomes mainstream
+
+2020s - Current Era
+├─ 2020: GPT-3 demonstrates few-shot learning
+├─ 2022: ChatGPT reaches 100M users
+├─ 2023: Large Language Models everywhere
+└─ AI integration in daily life</div>
+        </div>
+
+        <h2>3. Types of Machine Learning / 機械学習の種類</h2>
+
+        <div class="definition-box">
+            <h3>The Three Main Paradigms</h3>
+            <div class="code-box">MACHINE LEARNING
+機械学習
+│
+├─── SUPERVISED LEARNING
+│    教師あり学習
+│    └─ Learn from labeled examples
+│       ラベル付き例から学習
+│
+├─── UNSUPERVISED LEARNING
+│    教師なし学習
+│    └─ Discover patterns in unlabeled data
+│       ラベルなしデータのパターン発見
+│
+└─── REINFORCEMENT LEARNING
+     強化学習
+     └─ Learn through trial and error
+        試行錯誤を通じた学習</div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>1. Supervised Learning (教師あり学習)</h3>
+                <p><strong>Definition:</strong> Learning from labeled training data to make predictions on new, unseen data.</p>
+
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Input:</strong> Features (X) and Labels (Y)</li>
+                    <li><strong>Goal:</strong> Learn function f: X → Y</li>
+                    <li><strong>Training:</strong> Algorithm learns from correct examples</li>
+                    <li><strong>Evaluation:</strong> Test on held-out labeled data</li>
+                </ul>
+
+                <h4>Two Main Types:</h4>
+                <p><strong>Classification:</strong> Predicting categories</p>
+                <ul>
+                    <li>Email: Spam or Not Spam</li>
+                    <li>Image: Cat, Dog, or Bird</li>
+                    <li>Medical: Disease or Healthy</li>
+                </ul>
+
+                <p><strong>Regression:</strong> Predicting continuous values</p>
+                <ul>
+                    <li>House prices</li>
+                    <li>Stock prices</li>
+                    <li>Temperature forecasting</li>
+                </ul>
+
+                <h4>Common Algorithms:</h4>
+                <ul>
+                    <li>Linear Regression</li>
+                    <li>Logistic Regression</li>
+                    <li>Decision Trees</li>
+                    <li>Random Forests</li>
+                    <li>Support Vector Machines (SVM)</li>
+                    <li>Neural Networks</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>1. 教師あり学習 (Supervised Learning)</h3>
+                <p><strong>定義:</strong> ラベル付き訓練データから学習し、新しい未見のデータで予測を行う。</p>
+
+                <h4>主要特性:</h4>
+                <ul>
+                    <li><strong>入力:</strong> 特徴量（X）とラベル（Y）</li>
+                    <li><strong>目標:</strong> 関数 f: X → Y を学習</li>
+                    <li><strong>訓練:</strong> アルゴリズムは正しい例から学習</li>
+                    <li><strong>評価:</strong> 保留されたラベル付きデータでテスト</li>
+                </ul>
+
+                <h4>2つの主要タイプ:</h4>
+                <p><strong>分類:</strong> カテゴリを予測</p>
+                <ul>
+                    <li>メール: スパムか非スパムか</li>
+                    <li>画像: 猫、犬、または鳥</li>
+                    <li>医療: 病気か健康か</li>
+                </ul>
+
+                <p><strong>回帰:</strong> 連続値を予測</p>
+                <ul>
+                    <li>住宅価格</li>
+                    <li>株価</li>
+                    <li>温度予測</li>
+                </ul>
+
+                <h4>一般的なアルゴリズム:</h4>
+                <ul>
+                    <li>線形回帰</li>
+                    <li>ロジスティック回帰</li>
+                    <li>決定木</li>
+                    <li>ランダムフォレスト</li>
+                    <li>サポートベクターマシン（SVM）</li>
+                    <li>ニューラルネットワーク</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>2. Unsupervised Learning (教師なし学習)</h3>
+                <p><strong>Definition:</strong> Discovering hidden patterns and structures in unlabeled data without predefined categories.</p>
+
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Input:</strong> Only features (X), no labels</li>
+                    <li><strong>Goal:</strong> Find structure and patterns</li>
+                    <li><strong>Training:</strong> Algorithm explores data independently</li>
+                    <li><strong>Evaluation:</strong> Subjective, domain-dependent</li>
+                </ul>
+
+                <h4>Main Types:</h4>
+                <p><strong>Clustering:</strong> Grouping similar items</p>
+                <ul>
+                    <li>Customer segmentation</li>
+                    <li>Document organization</li>
+                    <li>Image compression</li>
+                </ul>
+
+                <p><strong>Dimensionality Reduction:</strong> Simplifying data</p>
+                <ul>
+                    <li>Feature extraction</li>
+                    <li>Visualization</li>
+                    <li>Noise reduction</li>
+                </ul>
+
+                <p><strong>Anomaly Detection:</strong> Finding outliers</p>
+                <ul>
+                    <li>Fraud detection</li>
+                    <li>Network intrusion</li>
+                    <li>Manufacturing defects</li>
+                </ul>
+
+                <h4>Common Algorithms:</h4>
+                <ul>
+                    <li>K-means Clustering</li>
+                    <li>Hierarchical Clustering</li>
+                    <li>Principal Component Analysis (PCA)</li>
+                    <li>Autoencoders</li>
+                    <li>DBSCAN</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>2. 教師なし学習 (Unsupervised Learning)</h3>
+                <p><strong>定義:</strong> 事前定義されたカテゴリなしに、ラベルなしデータの隠れたパターンと構造を発見する。</p>
+
+                <h4>主要特性:</h4>
+                <ul>
+                    <li><strong>入力:</strong> 特徴量（X）のみ、ラベルなし</li>
+                    <li><strong>目標:</strong> 構造とパターンを発見</li>
+                    <li><strong>訓練:</strong> アルゴリズムが独立してデータを探索</li>
+                    <li><strong>評価:</strong> 主観的、ドメイン依存</li>
+                </ul>
+
+                <h4>主要タイプ:</h4>
+                <p><strong>クラスタリング:</strong> 類似アイテムをグループ化</p>
+                <ul>
+                    <li>顧客セグメンテーション</li>
+                    <li>文書整理</li>
+                    <li>画像圧縮</li>
+                </ul>
+
+                <p><strong>次元削減:</strong> データの簡素化</p>
+                <ul>
+                    <li>特徴抽出</li>
+                    <li>可視化</li>
+                    <li>ノイズ除去</li>
+                </ul>
+
+                <p><strong>異常検知:</strong> 外れ値の発見</p>
+                <ul>
+                    <li>不正検知</li>
+                    <li>ネットワーク侵入</li>
+                    <li>製造欠陥</li>
+                </ul>
+
+                <h4>一般的なアルゴリズム:</h4>
+                <ul>
+                    <li>K-meansクラスタリング</li>
+                    <li>階層的クラスタリング</li>
+                    <li>主成分分析（PCA）</li>
+                    <li>オートエンコーダ</li>
+                    <li>DBSCAN</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>3. Reinforcement Learning (強化学習)</h3>
+                <p><strong>Definition:</strong> Learning to make decisions by taking actions in an environment to maximize cumulative reward.</p>
+
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li><strong>Agent:</strong> The learner/decision maker</li>
+                    <li><strong>Environment:</strong> What the agent interacts with</li>
+                    <li><strong>Actions:</strong> Choices the agent can make</li>
+                    <li><strong>Rewards:</strong> Feedback from environment</li>
+                    <li><strong>Goal:</strong> Maximize total reward over time</li>
+                </ul>
+
+                <h4>How It Works:</h4>
+                <ol>
+                    <li>Agent observes current state</li>
+                    <li>Agent takes an action</li>
+                    <li>Environment provides reward</li>
+                    <li>Environment transitions to new state</li>
+                    <li>Agent learns from experience</li>
+                    <li>Repeat</li>
+                </ol>
+
+                <h4>Applications:</h4>
+                <ul>
+                    <li><strong>Game Playing:</strong> AlphaGo, Atari games</li>
+                    <li><strong>Robotics:</strong> Robot navigation and control</li>
+                    <li><strong>Autonomous Vehicles:</strong> Self-driving cars</li>
+                    <li><strong>Resource Management:</strong> Energy optimization</li>
+                    <li><strong>Finance:</strong> Trading strategies</li>
+                </ul>
+
+                <h4>Common Algorithms:</h4>
+                <ul>
+                    <li>Q-Learning</li>
+                    <li>Deep Q-Networks (DQN)</li>
+                    <li>Policy Gradient Methods</li>
+                    <li>Actor-Critic</li>
+                    <li>Proximal Policy Optimization (PPO)</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>3. 強化学習 (Reinforcement Learning)</h3>
+                <p><strong>定義:</strong> 累積報酬を最大化するために環境でアクションを取ることで、意思決定を学習する。</p>
+
+                <h4>主要特性:</h4>
+                <ul>
+                    <li><strong>エージェント:</strong> 学習者/意思決定者</li>
+                    <li><strong>環境:</strong> エージェントが相互作用するもの</li>
+                    <li><strong>アクション:</strong> エージェントが行える選択</li>
+                    <li><strong>報酬:</strong> 環境からのフィードバック</li>
+                    <li><strong>目標:</strong> 時間経過とともに総報酬を最大化</li>
+                </ul>
+
+                <h4>仕組み:</h4>
+                <ol>
+                    <li>エージェントが現在の状態を観察</li>
+                    <li>エージェントがアクションを取る</li>
+                    <li>環境が報酬を提供</li>
+                    <li>環境が新しい状態に遷移</li>
+                    <li>エージェントが経験から学習</li>
+                    <li>繰り返し</li>
+                </ol>
+
+                <h4>応用:</h4>
+                <ul>
+                    <li><strong>ゲームプレイ:</strong> AlphaGo、Atariゲーム</li>
+                    <li><strong>ロボット工学:</strong> ロボットナビゲーションと制御</li>
+                    <li><strong>自動運転車:</strong> セルフドライビングカー</li>
+                    <li><strong>リソース管理:</strong> エネルギー最適化</li>
+                    <li><strong>金融:</strong> トレーディング戦略</li>
+                </ul>
+
+                <h4>一般的なアルゴリズム:</h4>
+                <ul>
+                    <li>Q学習</li>
+                    <li>深層Qネットワーク（DQN）</li>
+                    <li>ポリシー勾配法</li>
+                    <li>Actor-Critic</li>
+                    <li>近接ポリシー最適化（PPO）</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>4. Real-World Applications / 実世界の応用</h2>
+
+        <div class="highlight-box">
+            <h3>Google Search: AI-Powered Information Retrieval</h3>
+            <h4>Link: <a href="https://www.google.com" target="_blank">https://www.google.com</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Problem:</strong> How can Google understand billions of web pages and return the most relevant results in milliseconds?</p>
+
+                    <p><strong>AI Solutions Used:</strong></p>
+                    <ul>
+                        <li><strong>Natural Language Processing:</strong>
+                            <ul>
+                                <li>Understanding search intent</li>
+                                <li>Recognizing synonyms and related terms</li>
+                                <li>Processing voice searches</li>
+                                <li>Handling misspellings</li>
+                            </ul>
+                        </li>
+                        <li><strong>Machine Learning:</strong>
+                            <ul>
+                                <li>RankBrain algorithm (2015) uses ML to interpret queries</li>
+                                <li>Learning from user click behavior</li>
+                                <li>Personalizing results based on history</li>
+                                <li>Continuous improvement from billions of searches</li>
+                            </ul>
+                        </li>
+                        <li><strong>Computer Vision:</strong>
+                            <ul>
+                                <li>Google Lens for image search</li>
+                                <li>Reverse image search</li>
+                                <li>Object recognition in images</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>Impact:</strong> Over 8.5 billion searches per day, with AI making results more accurate and relevant than ever before.</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>問題:</strong> Googleはどのようにして数十億のWebページを理解し、ミリ秒で最も関連性の高い結果を返すことができるのでしょうか？</p>
+
+                    <p><strong>使用されるAIソリューション:</strong></p>
+                    <ul>
+                        <li><strong>自然言語処理:</strong>
+                            <ul>
+                                <li>検索意図の理解</li>
+                                <li>同義語と関連用語の認識</li>
+                                <li>音声検索の処理</li>
+                                <li>スペルミスの処理</li>
+                            </ul>
+                        </li>
+                        <li><strong>機械学習:</strong>
+                            <ul>
+                                <li>RankBrainアルゴリズム（2015年）はMLを使用してクエリを解釈</li>
+                                <li>ユーザークリック行動から学習</li>
+                                <li>履歴に基づく結果のパーソナライズ</li>
+                                <li>数十億の検索から継続的改善</li>
+                            </ul>
+                        </li>
+                        <li><strong>コンピュータビジョン:</strong>
+                            <ul>
+                                <li>画像検索のためのGoogle Lens</li>
+                                <li>逆画像検索</li>
+                                <li>画像内のオブジェクト認識</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>影響:</strong> 1日あたり85億以上の検索があり、AIが結果をこれまで以上に正確で関連性の高いものにしています。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Tesla Autopilot: Self-Driving Technology</h3>
+            <h4>Link: <a href="https://www.tesla.com/autopilot" target="_blank">https://www.tesla.com/autopilot</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Challenge:</strong> Enable vehicles to navigate roads safely without human intervention.</p>
+
+                    <p><strong>AI Technologies:</strong></p>
+                    <ul>
+                        <li><strong>Computer Vision:</strong>
+                            <ul>
+                                <li>8 cameras providing 360° visibility</li>
+                                <li>Object detection (cars, pedestrians, cyclists, obstacles)</li>
+                                <li>Lane detection and tracking</li>
+                                <li>Traffic sign and signal recognition</li>
+                            </ul>
+                        </li>
+                        <li><strong>Deep Learning:</strong>
+                            <ul>
+                                <li>Neural networks trained on billions of miles of driving data</li>
+                                <li>Convolutional Neural Networks (CNNs) for image processing</li>
+                                <li>Continuous learning from fleet data</li>
+                            </ul>
+                        </li>
+                        <li><strong>Sensor Fusion:</strong>
+                            <ul>
+                                <li>Combining camera, radar, and ultrasonic sensors</li>
+                                <li>Real-time processing of multiple data streams</li>
+                                <li>Creating 3D understanding of environment</li>
+                            </ul>
+                        </li>
+                        <li><strong>Decision Making:</strong>
+                            <ul>
+                                <li>Path planning algorithms</li>
+                                <li>Collision avoidance</li>
+                                <li>Adaptive cruise control</li>
+                                <li>Automatic lane changing</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>Result:</strong> Over 3 billion miles driven on Autopilot, continuously improving safety and capabilities.</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>課題:</strong> 人間の介入なしに車両が道路を安全にナビゲートできるようにする。</p>
+
+                    <p><strong>AI技術:</strong></p>
+                    <ul>
+                        <li><strong>コンピュータビジョン:</strong>
+                            <ul>
+                                <li>360°の視界を提供する8台のカメラ</li>
+                                <li>オブジェクト検出（車、歩行者、自転車、障害物）</li>
+                                <li>車線検出と追跡</li>
+                                <li>交通標識と信号の認識</li>
+                            </ul>
+                        </li>
+                        <li><strong>深層学習:</strong>
+                            <ul>
+                                <li>数十億マイルの運転データで訓練されたニューラルネットワーク</li>
+                                <li>画像処理のための畳み込みニューラルネットワーク（CNN）</li>
+                                <li>フリートデータからの継続的学習</li>
+                            </ul>
+                        </li>
+                        <li><strong>センサフュージョン:</strong>
+                            <ul>
+                                <li>カメラ、レーダー、超音波センサの組み合わせ</li>
+                                <li>複数のデータストリームのリアルタイム処理</li>
+                                <li>環境の3D理解の作成</li>
+                            </ul>
+                        </li>
+                        <li><strong>意思決定:</strong>
+                            <ul>
+                                <li>経路計画アルゴリズム</li>
+                                <li>衝突回避</li>
+                                <li>適応クルーズコントロール</li>
+                                <li>自動車線変更</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>結果:</strong> オートパイロットで30億マイル以上走行し、安全性と能力を継続的に改善しています。</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>5. The AI Ecosystem / AIエコシステム</h2>
+
+        <div class="definition-box">
+            <h3>Understanding the Relationships</h3>
+            <div class="code-box">┌─────────────────────────────────────────────────────────┐
+│  DATA SCIENCE (データサイエンス)                        │
+│  ├─ Statistics (統計学)                                 │
+│  ├─ Data Analysis (データ分析)                          │
+│  ├─ Data Visualization (データ可視化)                   │
+│  └─ Domain Expertise (ドメイン専門知識)                 │
+│     │                                                    │
+│     └─── ARTIFICIAL INTELLIGENCE (人工知能)             │
+│          ├─ Expert Systems (エキスパートシステム)       │
+│          ├─ Rule-based Systems (ルールベースシステム)   │
+│          └─── MACHINE LEARNING (機械学習)               │
+│               ├─ Supervised Learning                    │
+│               ├─ Unsupervised Learning                  │
+│               ├─ Reinforcement Learning                 │
+│               └─── DEEP LEARNING (深層学習)             │
+│                    ├─ Convolutional Neural Networks     │
+│                    ├─ Recurrent Neural Networks         │
+│                    └─ Transformers                      │
+└─────────────────────────────────────────────────────────┘</div>
+        </div>
+
+        <div class="key-terms">
+            <h3>Important AI/ML Terminology</h3>
+            <h3>重要なAI/ML用語</h3>
+            <ul>
+                <li><strong>Algorithm / アルゴリズム:</strong> Step-by-step procedure for solving a problem</li>
+                <li><strong>Model / モデル:</strong> The learned representation from training data</li>
+                <li><strong>Training / 訓練:</strong> Process of learning from data</li>
+                <li><strong>Features / 特徴量:</strong> Input variables used for prediction</li>
+                <li><strong>Labels / ラベル:</strong> The target output in supervised learning</li>
+                <li><strong>Accuracy / 精度:</strong> Percentage of correct predictions</li>
+                <li><strong>Overfitting / 過学習:</strong> Model performs well on training data but poorly on new data</li>
+                <li><strong>Underfitting / 未学習:</strong> Model is too simple to capture patterns</li>
+                <li><strong>Hyperparameters / ハイパーパラメータ:</strong> Settings that control the learning process</li>
+                <li><strong>Epoch / エポック:</strong> One complete pass through the training dataset</li>
+            </ul>
+        </div>
+
+        <div class="study-tip">
+            <h3>Study Tips for AI/ML Fundamentals</h3>
+            <ul>
+                <li>Create a comparison table of the three ML types</li>
+                <li>Draw the AI hierarchy from memory</li>
+                <li>Find 3 real-world examples for each ML type</li>
+                <li>Understand the difference between AI and ML</li>
+                <li>Be able to explain when to use supervised vs unsupervised learning</li>
+                <li>Know key milestones in AI history</li>
+                <li>Practice explaining concepts in both English and Japanese</li>
+            </ul>
+        </div>
+
+        <h2>📝 Test Questions / テスト問題</h2>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 1: Multiple Choice</h4>
+            <p><strong>Which statement best describes the relationship between AI, ML, and DL?</strong></p>
+            <ol type="A">
+                <li>They are three completely separate fields</li>
+                <li>AI ⊃ ML ⊃ DL (AI contains ML, which contains DL)</li>
+                <li>DL ⊃ ML ⊃ AI (DL contains ML, which contains AI)</li>
+                <li>ML and DL are separate subsets of AI</li>
+            </ol>
+            <p><strong>Answer:</strong> B - AI is the broadest concept, ML is a subset of AI, and DL is a subset of ML.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 2: Multiple Choice</h4>
+            <p><strong>Which type of machine learning would be best for organizing customers into groups based on purchasing behavior without predefined categories?</strong></p>
+            <ol type="A">
+                <li>Supervised Learning</li>
+                <li>Unsupervised Learning</li>
+                <li>Reinforcement Learning</li>
+                <li>Semi-supervised Learning</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Unsupervised learning (specifically clustering) is used to discover natural groupings without predefined labels.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 3: Multiple Choice</h4>
+            <p><strong>What was the significance of the 1956 Dartmouth Conference?</strong></p>
+            <ol type="A">
+                <li>First computer was invented</li>
+                <li>The term "Artificial Intelligence" was coined</li>
+                <li>Deep Learning was discovered</li>
+                <li>The Internet was created</li>
+            </ol>
+            <p><strong>Answer:</strong> B - The 1956 Dartmouth Conference is considered the birth of AI as a field, where the term was first coined.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 4: Multiple Choice</h4>
+            <p><strong>In reinforcement learning, what is the "agent"?</strong></p>
+            <ol type="A">
+                <li>The reward system</li>
+                <li>The learning algorithm/decision maker</li>
+                <li>The training data</li>
+                <li>The environment</li>
+            </ol>
+            <p><strong>Answer:</strong> B - The agent is the learner or decision-maker that interacts with the environment.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 5: Multiple Choice</h4>
+            <p><strong>Which AI technology does Google primarily use to understand search queries?</strong></p>
+            <ol type="A">
+                <li>Expert Systems</li>
+                <li>Genetic Algorithms</li>
+                <li>Natural Language Processing and Machine Learning</li>
+                <li>Only keyword matching</li>
+            </ol>
+            <p><strong>Answer:</strong> C - Google uses NLP and ML (RankBrain algorithm) to understand and interpret search queries.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 6: Short Answer</h4>
+            <p><strong>Explain the difference between classification and regression in supervised learning. Give one example of each.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>Classification</strong> predicts categorical labels (discrete classes). The output is a category or class label. Example: Predicting whether an email is "spam" or "not spam" - there are distinct categories.</p>
+            <p><strong>Regression</strong> predicts continuous numerical values. The output can be any value within a range. Example: Predicting house prices - the output can be any dollar amount like $250,000 or $375,500.</p>
+            <p>The key difference is that classification outputs discrete categories while regression outputs continuous numbers.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 7: Short Answer</h4>
+            <p><strong>Describe how reinforcement learning works. Include the main components and the learning process.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p>Reinforcement learning involves an <strong>agent</strong> learning to make decisions through trial and error in an <strong>environment</strong>.</p>
+            <p><strong>Main components:</strong></p>
+            <ul>
+                <li>Agent: The learner/decision maker</li>
+                <li>Environment: The world the agent interacts with</li>
+                <li>State: Current situation</li>
+                <li>Action: What the agent can do</li>
+                <li>Reward: Feedback from the environment</li>
+            </ul>
+            <p><strong>Learning process:</strong> The agent observes the current state, takes an action, receives a reward (positive or negative), and transitions to a new state. Through many iterations, the agent learns which actions maximize cumulative rewards over time. Example: AlphaGo learned to play Go by playing millions of games and receiving rewards for winning.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 8: Short Answer</h4>
+            <p><strong>List and briefly explain the five foundational concepts of AI.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <ol>
+                <li><strong>Reasoning and Problem Solving:</strong> AI systems can analyze situations and make logical decisions (e.g., game playing, planning)</li>
+                <li><strong>Knowledge Representation:</strong> Storing and organizing information in ways machines can use (e.g., knowledge graphs, databases)</li>
+                <li><strong>Learning:</strong> Improving performance through experience (e.g., pattern recognition, adaptation)</li>
+                <li><strong>Natural Language Processing:</strong> Understanding and generating human language (e.g., translation, chatbots)</li>
+                <li><strong>Perception:</strong> Interpreting sensory input (e.g., computer vision, speech recognition)</li>
+            </ol>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 9: Application Question</h4>
+            <p><strong>Tesla Autopilot uses multiple AI technologies. Describe three different AI technologies used in self-driving cars and explain what each one does.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <ol>
+                <li><strong>Computer Vision:</strong> Tesla uses 8 cameras providing 360° visibility. Deep learning algorithms process these images to detect objects (cars, pedestrians, cyclists), recognize lanes, and identify traffic signs and signals. This allows the car to "see" its environment.</li>
+                <li><strong>Deep Learning (Neural Networks):</strong> Convolutional Neural Networks (CNNs) are trained on billions of miles of driving data. These networks learn to recognize patterns and make predictions about the environment, continuously improving from the entire Tesla fleet's driving experience.</li>
+                <li><strong>Sensor Fusion:</strong> AI combines data from multiple sensors (cameras, radar, ultrasonic sensors) to create a comprehensive 3D understanding of the environment. This redundancy increases safety and accuracy by cross-referencing different data sources.</li>
+            </ol>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 10: Essay Question</h4>
+            <p><strong>Compare and contrast the three main types of machine learning (supervised, unsupervised, and reinforcement learning). For each type, explain:</strong></p>
+            <ul>
+                <li>What kind of data it uses</li>
+                <li>What it learns to do</li>
+                <li>One real-world application</li>
+                <li>One advantage and one limitation</li>
+            </ul>
+            <p><strong>Sample Answer:</strong></p>
+
+            <p><strong>Supervised Learning:</strong></p>
+            <p><strong>Data:</strong> Uses labeled data with known correct outputs (X → Y pairs)</p>
+            <p><strong>Learning Goal:</strong> Learn to predict labels for new data by finding patterns in labeled examples</p>
+            <p><strong>Application:</strong> Email spam filtering - emails are labeled as spam/not spam, and the system learns to classify new emails</p>
+            <p><strong>Advantage:</strong> High accuracy when sufficient labeled data is available</p>
+            <p><strong>Limitation:</strong> Requires expensive and time-consuming data labeling</p>
+
+            <p><strong>Unsupervised Learning:</strong></p>
+            <p><strong>Data:</strong> Uses unlabeled data with no predefined categories</p>
+            <p><strong>Learning Goal:</strong> Discover hidden patterns, structures, and groupings in data</p>
+            <p><strong>Application:</strong> Customer segmentation - grouping customers by behavior without predetermined categories</p>
+            <p><strong>Advantage:</strong> No labeling required, can discover unexpected patterns</p>
+            <p><strong>Limitation:</strong> Evaluation is subjective, results may be difficult to interpret</p>
+
+            <p><strong>Reinforcement Learning:</strong></p>
+            <p><strong>Data:</strong> Generates its own data through interaction with environment</p>
+            <p><strong>Learning Goal:</strong> Learn optimal actions to maximize cumulative rewards</p>
+            <p><strong>Application:</strong> Game playing (AlphaGo) - learning winning strategies through trial and error</p>
+            <p><strong>Advantage:</strong> Can learn complex behaviors without explicit examples</p>
+            <p><strong>Limitation:</strong> Requires many iterations and can be computationally expensive</p>
+
+            <p><strong>Comparison:</strong> All three are machine learning approaches, but they differ in how they learn. Supervised learning needs a teacher (labeled data), unsupervised learning explores independently, and reinforcement learning learns through trial and error with rewards.</p>
+        </div>
+
+        <h2>🎯 Key Takeaways / 重要ポイント</h2>
+
+        <div class="highlight-box">
+            <h3>Remember These Core Concepts:</h3>
+            <ul>
+                <li><strong>AI Definition:</strong> Machines performing tasks requiring human intelligence</li>
+                <li><strong>AI Hierarchy:</strong> AI ⊃ Machine Learning ⊃ Deep Learning</li>
+                <li><strong>Three ML Types:</strong> Supervised (labeled data), Unsupervised (discover patterns), Reinforcement (learn from rewards)</li>
+                <li><strong>Supervised Learning:</strong> Classification (categories) and Regression (continuous values)</li>
+                <li><strong>Key AI Milestones:</strong> 1950 Turing Test, 1956 Dartmouth Conference, 1997 Deep Blue, 2012 AlexNet, 2016 AlphaGo</li>
+                <li><strong>Real Applications:</strong> Google Search (NLP), Tesla Autopilot (Computer Vision), Netflix (Clustering)</li>
+                <li><strong>Five AI Foundations:</strong> Reasoning, Knowledge, Learning, NLP, Perception</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-08/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+            <a href="../week-10/lecture.html">Next Week →</a>
+        </div>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Week 9 Lecture Notes - Introduction to AI and Data Science</p>
+            <p>Chukyo University - 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

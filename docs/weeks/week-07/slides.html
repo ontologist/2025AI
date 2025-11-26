@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 7: Probability Theory and Bayes' Theorem</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: #333; overflow: hidden; padding-top: 50px; }
+        .slide-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+        .slide { display: none; background: white; width: 90%; max-width: 1200px; height: 85vh; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); padding: 60px 80px; position: relative; overflow-y: auto; }
+        .slide.active { display: block; animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .slide h1 { font-size: 3em; color: #2563eb; margin-bottom: 20px; text-align: center; }
+        .slide h2 { font-size: 2.2em; color: #7c3aed; margin-bottom: 30px; border-bottom: 3px solid #2563eb; padding-bottom: 10px; }
+        .slide h3 { font-size: 1.8em; color: #2563eb; margin-top: 30px; margin-bottom: 15px; }
+        .slide h4 { font-size: 1.4em; color: #555; margin-top: 20px; margin-bottom: 10px; }
+        .slide p { font-size: 1.2em; line-height: 1.8; margin-bottom: 15px; color: #444; }
+        .slide ul, .slide ol { font-size: 1.2em; line-height: 1.8; margin-left: 40px; margin-bottom: 20px; }
+        .slide li { margin-bottom: 10px; }
+        .bilingual { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 20px 0; }
+        .english, .japanese { padding: 20px; border-radius: 10px; }
+        .english { background: #dbeafe; border-left: 4px solid #2563eb; }
+        .japanese { background: #f3e8ff; border-left: 4px solid #7c3aed; }
+        .highlight-box { background: #fef3cd; border-left: 5px solid #f59e0b; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .success-box { background: #d1fae5; border-left: 5px solid #10b981; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .formula-box { background: #e0e7ff; border: 2px solid #4f46e5; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: center; font-size: 1.3em; }
+        .code-box { background: #f4f4f4; border: 1px solid #ddd; border-radius: 5px; padding: 15px; font-family: 'Courier New', monospace; margin: 15px 0; overflow-x: auto; white-space: pre-wrap; font-size: 1em; }
+        .navigation { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 1000; }
+        .nav-btn { background: white; color: #2563eb; border: 2px solid #2563eb; padding: 12px 30px; font-size: 1.1em; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+        .nav-btn:hover { background: #2563eb; color: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .slide-number { position: fixed; top: 70px; right: 30px; background: rgba(255, 255, 255, 0.9); padding: 10px 20px; border-radius: 20px; font-size: 1.1em; color: #2563eb; font-weight: bold; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); z-index: 1000; }
+        .title-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; }
+        .title-slide h1 { font-size: 4em; margin-bottom: 20px; }
+        .title-slide .subtitle { font-size: 2em; color: #7c3aed; margin-bottom: 40px; }
+        .title-slide .info { font-size: 1.3em; color: #666; margin: 10px 0; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 20px 0; }
+        .slides-nav { background-color: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1001; padding: 10px 20px; }
+        .slides-nav .container { display: flex; gap: 20px; align-items: center; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
+        .slides-nav a { color: #1f2937; text-decoration: none; font-weight: 500; transition: color 0.3s ease; font-size: 0.95em; }
+        .slides-nav a:hover { color: #2563eb; }
+        @media screen and (max-width: 768px) {
+            .slide { width: 100vw; height: auto; min-height: 100vh; padding: 20px; border-radius: 0; }
+            .slide h1 { font-size: 2em; }
+            .slide h2 { font-size: 1.6em; }
+            .bilingual { grid-template-columns: 1fr; gap: 15px; }
+            .two-column { grid-template-columns: 1fr; }
+            .title-slide h1 { font-size: 2.5em; }
+            .title-slide .subtitle { font-size: 1.4em; }
+        }
+    </style>
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="lecture.html">Lecture Notes</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 15</div>
+
+    <div class="slide-container">
+        <div class="slide active title-slide">
+            <h1>Week 7</h1>
+            <p class="subtitle">Probability Theory and Bayes' Theorem<br>確率論とベイズの定理</p>
+            <p class="info"><strong>Course:</strong> Artificial Intelligence</p>
+            <p class="info"><strong>Topic:</strong> Reasoning Under Uncertainty</p>
+            <p class="info"><strong>Duration:</strong> 15-20 minutes / 15-20分</p>
+        </div>
+
+        <div class="slide">
+            <h2>Why Probability in AI?</h2>
+            <h2>AIにおいて確率が重要な理由</h2>
+            <div class="highlight-box">
+                <h3>The Real World is Uncertain / 現実世界は不確実</h3>
+                <p>AI must make decisions with incomplete or noisy information</p>
+                <p>AIは不完全またはノイズのある情報で決定を下す必要があります</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Sources of Uncertainty:</h4>
+                    <ul>
+                        <li><strong>Incomplete information:</strong> Don't know everything about the world</li>
+                        <li><strong>Sensor noise:</strong> Measurements are imperfect</li>
+                        <li><strong>Unpredictability:</strong> Complex systems are hard to model</li>
+                        <li><strong>Partial observability:</strong> Can't see the full state</li>
+                    </ul>
+                    <h4>AI Applications Using Probability:</h4>
+                    <ul>
+                        <li>Spam filtering, Medical diagnosis, Weather forecasting</li>
+                        <li>Speech recognition, Autonomous driving, Recommendation systems</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>不確実性の原因：</h4>
+                    <ul>
+                        <li><strong>不完全な情報：</strong>世界についてすべてを知らない</li>
+                        <li><strong>センサーノイズ：</strong>測定が不完全</li>
+                        <li><strong>予測不可能性：</strong>複雑なシステムはモデル化が困難</li>
+                        <li><strong>部分的観測可能性：</strong>完全な状態を見られない</li>
+                    </ul>
+                    <h4>確率を使用するAI応用：</h4>
+                    <ul>
+                        <li>スパムフィルタリング、医療診断、天気予報</li>
+                        <li>音声認識、自動運転、推薦システム</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Basic Probability Concepts</h2>
+            <h2>基本的な確率の概念</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Probability P(A):</h4>
+                    <p>The likelihood that event A occurs</p>
+                    <ul>
+                        <li><strong>Range:</strong> 0 ≤ P(A) ≤ 1</li>
+                        <li><strong>P(A) = 0:</strong> Impossible event</li>
+                        <li><strong>P(A) = 1:</strong> Certain event</li>
+                        <li><strong>P(A) = 0.5:</strong> 50-50 chance</li>
+                    </ul>
+                    <h4>Examples:</h4>
+                    <ul>
+                        <li>P(coin = heads) = 0.5</li>
+                        <li>P(die = 6) = 1/6 ≈ 0.167</li>
+                        <li>P(rain tomorrow) = 0.3 (30% chance)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>確率P(A)：</h4>
+                    <p>イベントAが発生する可能性</p>
+                    <ul>
+                        <li><strong>範囲：</strong> 0 ≤ P(A) ≤ 1</li>
+                        <li><strong>P(A) = 0：</strong>不可能なイベント</li>
+                        <li><strong>P(A) = 1：</strong>確実なイベント</li>
+                        <li><strong>P(A) = 0.5：</strong>50-50の確率</li>
+                    </ul>
+                    <h4>例：</h4>
+                    <ul>
+                        <li>P(コイン = 表) = 0.5</li>
+                        <li>P(サイコロ = 6) = 1/6 ≈ 0.167</li>
+                        <li>P(明日雨) = 0.3（30%の確率）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Joint and Conditional Probability</h2>
+            <h2>同時確率と条件付き確率</h2>
+            <div class="formula-box">
+                <h3>Joint Probability / 同時確率</h3>
+                <p><strong>P(A, B) = P(A AND B)</strong></p>
+                <p>Probability that both A and B occur</p>
+            </div>
+            <div class="formula-box">
+                <h3>Conditional Probability / 条件付き確率</h3>
+                <p><strong>P(A | B) = "Probability of A given B"</strong></p>
+                <p><strong>P(A | B) = P(A, B) / P(B)</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Example: Weather and Traffic</h4>
+                    <ul>
+                        <li>P(rain) = 0.3 (30% chance of rain)</li>
+                        <li>P(traffic jam) = 0.2 (20% chance of traffic)</li>
+                        <li>P(traffic jam | rain) = 0.5 (50% if it rains)</li>
+                        <li>P(rain AND traffic) = P(rain) × P(traffic | rain) = 0.3 × 0.5 = 0.15</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>例：天気と交通</h4>
+                    <ul>
+                        <li>P(雨) = 0.3（雨の確率30%）</li>
+                        <li>P(交通渋滞) = 0.2（交通渋滞の確率20%）</li>
+                        <li>P(交通渋滞 | 雨) = 0.5（雨なら50%）</li>
+                        <li>P(雨 AND 交通渋滞) = P(雨) × P(交通渋滞 | 雨) = 0.3 × 0.5 = 0.15</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Bayes' Theorem</h2>
+            <h2>ベイズの定理</h2>
+            <div class="success-box">
+                <h3>The Most Important Formula in AI / AIで最も重要な公式</h3>
+                <div class="formula-box">
+                    <p><strong>P(A | B) = [P(B | A) × P(A)] / P(B)</strong></p>
+                </div>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Components:</h4>
+                    <ul>
+                        <li><strong>P(A | B):</strong> Posterior probability (what we want)</li>
+                        <li><strong>P(B | A):</strong> Likelihood (how well A explains B)</li>
+                        <li><strong>P(A):</strong> Prior probability (initial belief)</li>
+                        <li><strong>P(B):</strong> Evidence (normalizing constant)</li>
+                    </ul>
+                    <h4>Intuition:</h4>
+                    <p>Update beliefs based on new evidence</p>
+                    <p>Start with prior knowledge, adjust based on observations</p>
+                </div>
+                <div class="japanese">
+                    <h4>構成要素：</h4>
+                    <ul>
+                        <li><strong>P(A | B):</strong>事後確率（求めたいもの）</li>
+                        <li><strong>P(B | A):</strong>尤度（AがBをどれだけ説明するか）</li>
+                        <li><strong>P(A):</strong>事前確率（初期信念）</li>
+                        <li><strong>P(B):</strong>証拠（正規化定数）</li>
+                    </ul>
+                    <h4>直感：</h4>
+                    <p>新しい証拠に基づいて信念を更新する</p>
+                    <p>事前知識から始めて、観測に基づいて調整する</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Bayes' Theorem Example: Medical Diagnosis</h2>
+            <h2>ベイズの定理の例：医療診断</h2>
+            <div class="highlight-box">
+                <h4>Problem / 問題:</h4>
+                <p>A disease affects 1% of the population. A test is 99% accurate.</p>
+                <p>If you test positive, what's the probability you have the disease?</p>
+                <p>病気が人口の1%に影響を与えます。テストは99%正確です。</p>
+                <p>陽性の場合、病気を持つ確率は？</p>
+            </div>
+            <div class="code-box">
+Given / 与えられた情報:
+P(Disease) = 0.01          (1% have disease)
+P(Positive | Disease) = 0.99    (99% true positive)
+P(Positive | No Disease) = 0.01 (1% false positive)
+
+Want to find / 求めたい:
+P(Disease | Positive) = ?
+
+Using Bayes' Theorem:
+P(D | +) = P(+ | D) × P(D) / P(+)
+
+P(+) = P(+ | D) × P(D) + P(+ | ¬D) × P(¬D)
+     = 0.99 × 0.01 + 0.01 × 0.99
+     = 0.0099 + 0.0099 = 0.0198
+
+P(D | +) = (0.99 × 0.01) / 0.0198 = 0.5
+
+Answer / 答え: 50% chance of having disease!
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Surprising result:</strong> Even with 99% accurate test, only 50% chance of being sick!</p>
+                    <p><strong>Why?</strong> Disease is rare (low prior), so false positives are common</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>驚くべき結果：</strong>99%正確なテストでも、病気である確率は50%だけ！</p>
+                    <p><strong>なぜ？</strong>病気はまれ（低事前確率）なので、偽陽性が一般的</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Bayes Example: Spam Filtering</h2>
+            <h2>ベイズの例：スパムフィルタリング</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>How Email Spam Filters Work:</h4>
+                    <p><strong>Goal:</strong> P(Spam | "viagra" appears)</p>
+                    <ol>
+                        <li><strong>Prior:</strong> P(Spam) = 0.5 (assume 50% of emails are spam)</li>
+                        <li><strong>Likelihood:</strong> P("viagra" | Spam) = 0.9 (90% of spam contains "viagra")</li>
+                        <li><strong>Evidence:</strong> P("viagra" | Not Spam) = 0.01 (1% of legitimate emails)</li>
+                    </ol>
+                    <h4>Calculate:</h4>
+                    <p>P("viagra") = 0.9 × 0.5 + 0.01 × 0.5 = 0.455</p>
+                    <p>P(Spam | "viagra") = (0.9 × 0.5) / 0.455 = 0.989</p>
+                    <p><strong>Result:</strong> 98.9% probability it's spam!</p>
+                </div>
+                <div class="japanese">
+                    <h4>メールスパムフィルターの仕組み：</h4>
+                    <p><strong>目標：</strong>P(スパム | 「viagra」が現れる)</p>
+                    <ol>
+                        <li><strong>事前確率：</strong>P(スパム) = 0.5（メールの50%がスパムと仮定）</li>
+                        <li><strong>尤度：</strong>P(「viagra」| スパム) = 0.9（スパムの90%に「viagra」が含まれる）</li>
+                        <li><strong>証拠：</strong>P(「viagra」| スパムでない) = 0.01（正当なメールの1%）</li>
+                    </ol>
+                    <h4>計算：</h4>
+                    <p>P(「viagra」) = 0.9 × 0.5 + 0.01 × 0.5 = 0.455</p>
+                    <p>P(スパム | 「viagra」) = (0.9 × 0.5) / 0.455 = 0.989</p>
+                    <p><strong>結果：</strong>98.9%の確率でスパム！</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Naive Bayes Classifier</h2>
+            <h2>ナイーブベイズ分類器</h2>
+            <div class="highlight-box">
+                <h3>"Naive" Assumption / 「ナイーブ」な仮定:</h3>
+                <p>Features are conditionally independent given the class</p>
+                <p>クラスが与えられた場合、特徴は条件付き独立</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Formula for Classification:</h4>
+                    <p><strong>P(Class | Features) ∝ P(Class) × ∏ P(Feature_i | Class)</strong></p>
+                    <h4>Spam Example with Multiple Words:</h4>
+                    <p>P(Spam | "viagra", "free", "money") ∝</p>
+                    <p>P(Spam) × P("viagra"|Spam) × P("free"|Spam) × P("money"|Spam)</p>
+                    <h4>Why "Naive"?</h4>
+                    <p>Assumes words are independent (they're not!)</p>
+                    <p>But it works surprisingly well in practice</p>
+                </div>
+                <div class="japanese">
+                    <h4>分類の公式：</h4>
+                    <p><strong>P(クラス | 特徴) ∝ P(クラス) × ∏ P(特徴_i | クラス)</strong></p>
+                    <h4>複数の単語を使用したスパムの例：</h4>
+                    <p>P(スパム | 「viagra」、「free」、「money」) ∝</p>
+                    <p>P(スパム) × P(「viagra」|スパム) × P(「free」|スパム) × P(「money」|スパム)</p>
+                    <h4>なぜ「ナイーブ」？</h4>
+                    <p>単語が独立していると仮定（実際はそうではない！）</p>
+                    <p>しかし実際には驚くほどうまく機能する</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Bayesian Networks</h2>
+            <h2>ベイジアンネットワーク</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What are Bayesian Networks?</h3>
+                    <p>Graphical models representing probabilistic relationships between variables</p>
+                    <h4>Components:</h4>
+                    <ul>
+                        <li><strong>Nodes:</strong> Random variables</li>
+                        <li><strong>Edges:</strong> Direct dependencies</li>
+                        <li><strong>Tables:</strong> Conditional probability distributions</li>
+                    </ul>
+                    <h4>Example: Car Won't Start</h4>
+                    <p>Battery Dead → Car Won't Start ← Out of Gas</p>
+                    <p>Can reason about causes and effects</p>
+                </div>
+                <div class="japanese">
+                    <h3>ベイジアンネットワークとは？</h3>
+                    <p>変数間の確率的関係を表すグラフィカルモデル</p>
+                    <h4>構成要素：</h4>
+                    <ul>
+                        <li><strong>ノード：</strong>確率変数</li>
+                        <li><strong>エッジ：</strong>直接的依存関係</li>
+                        <li><strong>テーブル：</strong>条件付き確率分布</li>
+                    </ul>
+                    <h4>例：車が始動しない</h4>
+                    <p>バッテリー切れ → 車が始動しない ← ガス欠</p>
+                    <p>原因と結果について推論できる</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Applications in Modern AI</h2>
+            <h2>現代AIにおける応用</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Natural Language</h3>
+                    <h3>自然言語</h3>
+                    <ul>
+                        <li><strong>Spam filtering:</strong> Naive Bayes</li>
+                        <li><strong>スパムフィルタリング：</strong>ナイーブベイズ</li>
+                        <li><strong>Auto-correct:</strong> P(intended word | typed)</li>
+                        <li><strong>自動修正：</strong>P(意図した単語 | 入力)</li>
+                        <li><strong>Speech recognition:</strong> P(sentence | audio)</li>
+                        <li><strong>音声認識：</strong>P(文 | 音声)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Robotics</h3>
+                    <h3>ロボティクス</h3>
+                    <ul>
+                        <li><strong>Localization:</strong> Where am I?</li>
+                        <li><strong>位置推定：</strong>私はどこにいる？</li>
+                        <li><strong>Sensor fusion:</strong> Combine noisy sensors</li>
+                        <li><strong>センサー融合：</strong>ノイズの多いセンサーを結合</li>
+                        <li><strong>Planning:</strong> Uncertain outcomes</li>
+                        <li><strong>計画：</strong>不確実な結果</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Other Applications:</h4>
+                    <ul>
+                        <li><strong>Medical diagnosis:</strong> P(disease | symptoms)</li>
+                        <li><strong>Recommendation systems:</strong> P(user likes item | history)</li>
+                        <li><strong>Fraud detection:</strong> P(fraudulent | transaction features)</li>
+                        <li><strong>Weather forecasting:</strong> P(rain | sensor data)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>その他の応用：</h4>
+                    <ul>
+                        <li><strong>医療診断：</strong>P(病気 | 症状)</li>
+                        <li><strong>推薦システム：</strong>P(ユーザーがアイテムを好む | 履歴)</li>
+                        <li><strong>不正検出：</strong>P(不正 | 取引特徴)</li>
+                        <li><strong>天気予報：</strong>P(雨 | センサーデータ)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Key Probability Rules</h2>
+            <h2>主要な確率の規則</h2>
+            <div class="formula-box">
+                <h3>1. Sum Rule / 和の規則</h3>
+                <p><strong>P(A) + P(not A) = 1</strong></p>
+            </div>
+            <div class="formula-box">
+                <h3>2. Product Rule / 積の規則</h3>
+                <p><strong>P(A, B) = P(A | B) × P(B) = P(B | A) × P(A)</strong></p>
+            </div>
+            <div class="formula-box">
+                <h3>3. Chain Rule / 連鎖規則</h3>
+                <p><strong>P(A, B, C) = P(A | B, C) × P(B | C) × P(C)</strong></p>
+            </div>
+            <div class="formula-box">
+                <h3>4. Marginalization / 周辺化</h3>
+                <p><strong>P(A) = Σ P(A, B) = Σ P(A | B) × P(B)</strong></p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Common Misconceptions</h2>
+            <h2>よくある誤解</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Confusing P(A|B) with P(B|A)</h3>
+                    <p><strong>Example:</strong></p>
+                    <ul>
+                        <li>P(positive test | disease) ≠ P(disease | positive test)</li>
+                        <li>P(clouds | rain) = 1.0 (always clouds when it rains)</li>
+                        <li>P(rain | clouds) = 0.3 (only 30% of cloudy days have rain)</li>
+                    </ul>
+                    <h3>The Gambler's Fallacy</h3>
+                    <p>Past independent events don't affect future probabilities</p>
+                    <p><strong>Wrong:</strong> "Coin landed heads 5 times, tails is 'due'"</p>
+                    <p><strong>Right:</strong> Each flip still has P(heads) = 0.5</p>
+                </div>
+                <div class="japanese">
+                    <h3>P(A|B)とP(B|A)を混同する</h3>
+                    <p><strong>例：</strong></p>
+                    <ul>
+                        <li>P(陽性テスト | 病気) ≠ P(病気 | 陽性テスト)</li>
+                        <li>P(雲 | 雨) = 1.0（雨のときは常に雲）</li>
+                        <li>P(雨 | 雲) = 0.3（曇りの日の30%だけが雨）</li>
+                    </ul>
+                    <h3>ギャンブラーの誤謬</h3>
+                    <p>過去の独立したイベントは将来の確率に影響しない</p>
+                    <p><strong>間違い：</strong>「コインが5回表だった、裏が『来る』」</p>
+                    <p><strong>正しい：</strong>各フリップはまだP(表) = 0.5</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Why Bayesian Reasoning is Powerful</h2>
+            <h2>ベイズ推論が強力な理由</h2>
+            <div class="success-box">
+                <h3>Key Advantages / 主な利点:</h3>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <ol>
+                        <li><strong>Handles uncertainty naturally</strong>
+                            <ul><li>Quantifies confidence in beliefs</li></ul>
+                        </li>
+                        <li><strong>Updates incrementally</strong>
+                            <ul><li>Prior becomes posterior, which becomes new prior</li></ul>
+                        </li>
+                        <li><strong>Combines multiple evidence sources</strong>
+                            <ul><li>Integrates different observations coherently</li></ul>
+                        </li>
+                        <li><strong>Works with incomplete data</strong>
+                            <ul><li>Can still make decisions with missing information</li></ul>
+                        </li>
+                        <li><strong>Mathematically principled</strong>
+                            <ul><li>Follows laws of probability theory</li></ul>
+                        </li>
+                    </ol>
+                </div>
+                <div class="japanese">
+                    <ol>
+                        <li><strong>不確実性を自然に処理</strong>
+                            <ul><li>信念の確信度を定量化</li></ul>
+                        </li>
+                        <li><strong>段階的に更新</strong>
+                            <ul><li>事前確率が事後確率になり、それが新しい事前確率になる</li></ul>
+                        </li>
+                        <li><strong>複数の証拠源を結合</strong>
+                            <ul><li>異なる観測を一貫して統合</li></ul>
+                        </li>
+                        <li><strong>不完全なデータで機能</strong>
+                            <ul><li>情報が欠けていても決定を下せる</li></ul>
+                        </li>
+                        <li><strong>数学的に原理的</strong>
+                            <ul><li>確率論の法則に従う</li></ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Practical Tips for Using Bayes</h2>
+            <h2>ベイズを使用する実用的なヒント</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>When Building Probabilistic Models:</h3>
+                    <ol>
+                        <li><strong>Start with good priors</strong>
+                            <ul><li>Use domain knowledge, not just uniform distributions</li></ul>
+                        </li>
+                        <li><strong>Collect representative data</strong>
+                            <ul><li>Training data should match real-world distribution</li></ul>
+                        </li>
+                        <li><strong>Check independence assumptions</strong>
+                            <ul><li>Naive Bayes assumes independence - is this reasonable?</li></ul>
+                        </li>
+                        <li><strong>Handle zero probabilities</strong>
+                            <ul><li>Use smoothing (add small constant) to avoid P=0</li></ul>
+                        </li>
+                        <li><strong>Validate on held-out data</strong>
+                            <ul><li>Test on data not used for training</li></ul>
+                        </li>
+                    </ol>
+                </div>
+                <div class="japanese">
+                    <h3>確率モデルを構築する際：</h3>
+                    <ol>
+                        <li><strong>良い事前確率から始める</strong>
+                            <ul><li>一様分布だけでなく、ドメイン知識を使用</li></ul>
+                        </li>
+                        <li><strong>代表的なデータを収集</strong>
+                            <ul><li>訓練データは実世界の分布と一致すべき</li></ul>
+                        </li>
+                        <li><strong>独立性の仮定を確認</strong>
+                            <ul><li>ナイーブベイズは独立性を仮定 - これは合理的か？</li></ul>
+                        </li>
+                        <li><strong>ゼロ確率を処理</strong>
+                            <ul><li>P=0を避けるために平滑化（小さな定数を追加）を使用</li></ul>
+                        </li>
+                        <li><strong>保留データで検証</strong>
+                            <ul><li>訓練に使用されていないデータでテスト</li></ul>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Summary and Course Reflection</h2>
+            <h2>まとめとコースの振り返り</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Week 7 Key Takeaways:</h3>
+                    <ul>
+                        <li><strong>Probability theory:</strong> Foundation for reasoning under uncertainty</li>
+                        <li><strong>Bayes' theorem:</strong> Update beliefs based on evidence</li>
+                        <li><strong>Naive Bayes:</strong> Simple but powerful classifier</li>
+                        <li><strong>Applications:</strong> Spam filters, diagnosis, recommendation systems</li>
+                    </ul>
+                    <h3>Weeks 1-7 Journey:</h3>
+                    <ul>
+                        <li><strong>Weeks 1-3:</strong> AI History - From dreams to reality</li>
+                        <li><strong>Week 4:</strong> Uninformed Search - BFS and DFS</li>
+                        <li><strong>Week 5:</strong> Informed Search - A* algorithm</li>
+                        <li><strong>Week 6:</strong> Game Theory - Minimax and alpha-beta</li>
+                        <li><strong>Week 7:</strong> Probability - Bayesian reasoning</li>
+                    </ul>
+                    <p><strong>Next weeks:</strong> Advanced topics with your professor!</p>
+                </div>
+                <div class="japanese">
+                    <h3>第7週の重要なポイント：</h3>
+                    <ul>
+                        <li><strong>確率論：</strong>不確実性下での推論の基礎</li>
+                        <li><strong>ベイズの定理：</strong>証拠に基づいて信念を更新</li>
+                        <li><strong>ナイーブベイズ：</strong>シンプルだが強力な分類器</li>
+                        <li><strong>応用：</strong>スパムフィルター、診断、推薦システム</li>
+                    </ul>
+                    <h3>第1-7週の旅：</h3>
+                    <ul>
+                        <li><strong>第1-3週：</strong>AI歴史 - 夢から現実へ</li>
+                        <li><strong>第4週：</strong>情報なし探索 - BFSとDFS</li>
+                        <li><strong>第5週：</strong>情報あり探索 - A*アルゴリズム</li>
+                        <li><strong>第6週：</strong>ゲーム理論 - ミニマックスとアルファベータ</li>
+                        <li><strong>第7週：</strong>確率 - ベイズ推論</li>
+                    </ul>
+                    <p><strong>次週以降：</strong>教授との高度なトピック！</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+        function changeSlide(direction) { showSlide(currentSlide + direction); }
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') { changeSlide(-1); }
+            else if (event.key === 'ArrowRight' || event.key === ' ') { event.preventDefault(); changeSlide(1); }
+            else if (event.key === 'Home') { showSlide(0); }
+            else if (event.key === 'End') { showSlide(totalSlides - 1); }
+        });
+        showSlide(0);
+    </script>
+</body>
+</html>

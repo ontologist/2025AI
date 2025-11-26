@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 14: In-Class Examination Review</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: #333; overflow: hidden; padding-top: 50px; }
+        .slide-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+        .slide { display: none; background: white; width: 90%; max-width: 1200px; height: 85vh; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); padding: 60px 80px; position: relative; overflow-y: auto; }
+        .slide.active { display: block; animation: slideIn 0.5s ease-out; }
+        @keyframes slideIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .slide h1 { font-size: 3em; color: #2563eb; margin-bottom: 20px; text-align: center; }
+        .slide h2 { font-size: 2.2em; color: #7c3aed; margin-bottom: 30px; border-bottom: 3px solid #2563eb; padding-bottom: 10px; }
+        .slide h3 { font-size: 1.8em; color: #2563eb; margin-top: 30px; margin-bottom: 15px; }
+        .slide h4 { font-size: 1.4em; color: #555; margin-top: 20px; margin-bottom: 10px; }
+        .slide p { font-size: 1.2em; line-height: 1.8; margin-bottom: 15px; color: #444; }
+        .slide ul, .slide ol { font-size: 1.2em; line-height: 1.8; margin-left: 40px; margin-bottom: 20px; }
+        .slide li { margin-bottom: 10px; }
+        .bilingual { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin: 20px 0; }
+        .english, .japanese { padding: 20px; border-radius: 10px; }
+        .english { background: #dbeafe; border-left: 4px solid #2563eb; }
+        .japanese { background: #f3e8ff; border-left: 4px solid #7c3aed; }
+        .highlight-box { background: #fef3cd; border-left: 5px solid #f59e0b; padding: 20px; margin: 20px 0; border-radius: 5px; }
+        .code-box { background: #f4f4f4; border: 1px solid #ddd; border-radius: 5px; padding: 15px; font-family: 'Courier New', monospace; margin: 15px 0; overflow-x: auto; white-space: pre-wrap; }
+        .navigation { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); display: flex; gap: 20px; z-index: 1000; }
+        .nav-btn { background: white; color: #2563eb; border: 2px solid #2563eb; padding: 12px 30px; font-size: 1.1em; border-radius: 30px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2); }
+        .nav-btn:hover { background: #2563eb; color: white; transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); }
+        .nav-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .slide-number { position: fixed; top: 70px; right: 30px; background: rgba(255, 255, 255, 0.9); padding: 10px 20px; border-radius: 20px; font-size: 1.1em; color: #2563eb; font-weight: bold; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); z-index: 1000; }
+        .title-slide { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; height: 100%; }
+        .title-slide h1 { font-size: 4em; margin-bottom: 20px; }
+        .title-slide .subtitle { font-size: 2em; color: #7c3aed; margin-bottom: 40px; }
+        .title-slide .info { font-size: 1.3em; color: #666; margin: 10px 0; }
+        .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 20px 0; }
+        .slides-nav { background-color: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1001; padding: 10px 20px; }
+        .slides-nav .container { display: flex; gap: 20px; align-items: center; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
+        .slides-nav a { color: #1f2937; text-decoration: none; font-weight: 500; transition: color 0.3s ease; font-size: 0.95em; }
+        .slides-nav a:hover { color: #2563eb; }
+        @media screen and (max-width: 768px) {
+            .slide { width: 100vw; height: auto; min-height: 100vh; padding: 20px; border-radius: 0; }
+            .bilingual, .two-column { grid-template-columns: 1fr; gap: 15px; }
+        }
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 16</div>
+
+    <div class="slide-container">
+        <div class="slide active title-slide">
+            <h1>Week 14</h1>
+            <p class="subtitle">In-Class Examination Review<br>授業中試験</p>
+            <p class="info"><strong>Course:</strong> Introduction to AI and Data Science</p>
+            <p class="info"><strong>Coverage:</strong> Comprehensive Review of Weeks 8-13</p>
+        </div>
+
+        <div class="slide">
+            <h2>Examination Information / 試験情報</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Format:</h3>
+                    <ul>
+                        <li>In-class written examination</li>
+                        <li>Duration: 90 minutes</li>
+                        <li>Coverage: Weeks 8-13 material</li>
+                        <li>Mix of multiple choice, short answer, and conceptual questions</li>
+                    </ul>
+                    <h3>What to Bring:</h3>
+                    <ul>
+                        <li>Pen/pencil</li>
+                        <li>Calculator (optional)</li>
+                        <li>Student ID</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>形式:</h3>
+                    <ul>
+                        <li>授業中筆記試験</li>
+                        <li>時間: 90分</li>
+                        <li>範囲: 第8-13週の教材</li>
+                        <li>多肢選択、短答、概念問題の組み合わせ</li>
+                    </ul>
+                    <h3>持ち物:</h3>
+                    <ul>
+                        <li>ペン/鉛筆</li>
+                        <li>計算機（任意）</li>
+                        <li>学生証</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Course Journey Overview</h2>
+            <h2>コース全体の概要</h2>
+            <div class="highlight-box">
+                <h3>Weeks 8-13 Coverage / 第8-13週の範囲:</h3>
+                <div class="code-box">Week 8:  Clustering & AI/ML Overview
+Week 9:  Types of AI, ML Paradigms  
+Week 10: Supervised Learning Basics
+Week 11: Classification Algorithms
+Week 12: Neural Networks & Gradient Descent
+Week 13: Reinforcement Learning</div>
+            </div>
+            <p style="text-align: center; font-size: 1.3em;"><strong>Focus: Understanding concepts, algorithms, and real-world applications</strong></p>
+            <p style="text-align: center; font-size: 1.3em;"><strong>焦点: 概念、アルゴリズム、実世界の応用を理解する</strong></p>
+        </div>
+
+        <div class="slide">
+            <h2>Week 8 Review: Clustering & AI Overview</h2>
+            <h2>第8週復習: クラスタリング・AI概論</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Concepts:</h3>
+                    <ul>
+                        <li><strong>Unsupervised Learning:</strong> Finding patterns without labels</li>
+                        <li><strong>K-means Algorithm:</strong>
+                            <ol>
+                                <li>Choose K (number of clusters)</li>
+                                <li>Initialize centroids</li>
+                                <li>Assign points to nearest centroid</li>
+                                <li>Update centroids</li>
+                                <li>Repeat until convergence</li>
+                            </ol>
+                        </li>
+                        <li><strong>AI Hierarchy:</strong> AI ⊃ ML ⊃ DL ⊃ Neural Networks</li>
+                        <li><strong>Applications:</strong> Netflix recommendations, Spotify playlists</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>主要概念:</h3>
+                    <ul>
+                        <li><strong>教師なし学習:</strong> ラベルなしでパターンを発見</li>
+                        <li><strong>K-meansアルゴリズム:</strong>
+                            <ol>
+                                <li>K（クラスタ数）を選択</li>
+                                <li>重心を初期化</li>
+                                <li>ポイントを最も近い重心に割り当て</li>
+                                <li>重心を更新</li>
+                                <li>収束まで繰り返し</li>
+                            </ol>
+                        </li>
+                        <li><strong>AI階層:</strong> AI ⊃ ML ⊃ DL ⊃ ニューラルネットワーク</li>
+                        <li><strong>応用:</strong> Netflix推薦、Spotifyプレイリスト</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Week 9 Review: AI Types & ML Paradigms</h2>
+            <h2>第9週復習: AIのタイプ・MLパラダイム</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Types of AI</h3>
+                    <h4>AIのタイプ</h4>
+                    <ul>
+                        <li><strong>Narrow AI (ANI):</strong> Specific tasks (current)</li>
+                        <li><strong>General AI (AGI):</strong> Human-level (future)</li>
+                        <li><strong>Super AI (ASI):</strong> Beyond human (speculative)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>3 ML Paradigms</h3>
+                    <h4>3つのMLパラダイム</h4>
+                    <ul>
+                        <li><strong>Supervised:</strong> Labeled data → predictions</li>
+                        <li><strong>Unsupervised:</strong> Find patterns</li>
+                        <li><strong>Reinforcement:</strong> Trial & error with rewards</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Real Examples:</strong> Gmail (supervised), Amazon (unsupervised), AlphaGo (RL)</p>
+                <p><strong>実例:</strong> Gmail（教師あり）、Amazon（教師なし）、AlphaGo（強化学習）</p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Week 10 Review: Supervised Learning Basics</h2>
+            <h2>第10週復習: 教師あり学習基礎</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Core Concepts:</h3>
+                    <ul>
+                        <li><strong>Classification:</strong> Predict discrete categories</li>
+                        <li><strong>Regression:</strong> Predict continuous values</li>
+                        <li><strong>Training Data Split:</strong>
+                            <ul>
+                                <li>Training: 70-80%</li>
+                                <li>Validation: 10-15%</li>
+                                <li>Test: 10-15%</li>
+                            </ul>
+                        </li>
+                        <li><strong>Overfitting:</strong> Model memorizes training data</li>
+                        <li><strong>Underfitting:</strong> Model too simple</li>
+                    </ul>
+                    <p><strong>Applications:</strong> Credit fraud detection, house price prediction</p>
+                </div>
+                <div class="japanese">
+                    <h3>中核概念:</h3>
+                    <ul>
+                        <li><strong>分類:</strong> 離散カテゴリを予測</li>
+                        <li><strong>回帰:</strong> 連続値を予測</li>
+                        <li><strong>訓練データ分割:</strong>
+                            <ul>
+                                <li>訓練: 70-80%</li>
+                                <li>検証: 10-15%</li>
+                                <li>テスト: 10-15%</li>
+                            </ul>
+                        </li>
+                        <li><strong>過学習:</strong> モデルが訓練データを記憶</li>
+                        <li><strong>学習不足:</strong> モデルが単純すぎる</li>
+                    </ul>
+                    <p><strong>応用:</strong> クレジット不正検出、住宅価格予測</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Week 11 Review: Classification Algorithms</h2>
+            <h2>第11週復習: 分類アルゴリズム</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Decision Trees</h3>
+                    <h4>決定木</h4>
+                    <ul>
+                        <li>Tree structure with decision nodes</li>
+                        <li>ツリー構造と決定ノード</li>
+                        <li>Easy to interpret</li>
+                        <li>解釈しやすい</li>
+                        <li>Prone to overfitting</li>
+                        <li>過学習しやすい</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Logistic Regression</h3>
+                    <h4>ロジスティック回帰</h4>
+                    <ul>
+                        <li>Outputs probabilities (0-1)</li>
+                        <li>確率を出力（0-1）</li>
+                        <li>Linear decision boundary</li>
+                        <li>線形決定境界</li>
+                        <li>Fast and simple</li>
+                        <li>高速でシンプル</li>
+                    </ul>
+                </div>
+            </div>
+            <h3>Support Vector Machines (SVM) / サポートベクターマシン</h3>
+            <ul>
+                <li>Finds maximum margin hyperplane / 最大マージン超平面を見つける</li>
+                <li>Effective in high dimensions / 高次元で効果的</li>
+            </ul>
+        </div>
+
+        <div class="slide">
+            <h2>Week 12 Review: Neural Networks</h2>
+            <h2>第12週復習: ニューラルネットワーク</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Components:</h3>
+                    <ul>
+                        <li><strong>Layers:</strong> Input → Hidden → Output</li>
+                        <li><strong>Neurons:</strong> Processing units</li>
+                        <li><strong>Weights:</strong> Connection strengths</li>
+                        <li><strong>Activation Functions:</strong> ReLU, Sigmoid, Tanh</li>
+                    </ul>
+                    <h3>Gradient Descent:</h3>
+                    <ul>
+                        <li>Optimization algorithm</li>
+                        <li>Iteratively adjusts weights to minimize error</li>
+                        <li>Learning rate controls step size</li>
+                        <li>Types: Batch, SGD, Mini-batch</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>主要コンポーネント:</h3>
+                    <ul>
+                        <li><strong>層:</strong> 入力 → 隠れ → 出力</li>
+                        <li><strong>ニューロン:</strong> 処理ユニット</li>
+                        <li><strong>重み:</strong> 接続の強度</li>
+                        <li><strong>活性化関数:</strong> ReLU、シグモイド、Tanh</li>
+                    </ul>
+                    <h3>勾配降下法:</h3>
+                    <ul>
+                        <li>最適化アルゴリズム</li>
+                        <li>エラーを最小化するために重みを反復的に調整</li>
+                        <li>学習率がステップサイズを制御</li>
+                        <li>タイプ: バッチ、SGD、ミニバッチ</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Week 13 Review: Reinforcement Learning</h2>
+            <h2>第13週復習: 強化学習</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>RL Framework:</h3>
+                    <ul>
+                        <li><strong>Agent:</strong> Learner/decision maker</li>
+                        <li><strong>Environment:</strong> What agent interacts with</li>
+                        <li><strong>Actions:</strong> What agent can do</li>
+                        <li><strong>Rewards:</strong> Feedback signals</li>
+                        <li><strong>Policy:</strong> Strategy for choosing actions</li>
+                    </ul>
+                    <h3>N-Armed Bandit:</h3>
+                    <ul>
+                        <li>Foundation RL problem</li>
+                        <li>Balance exploration vs exploitation</li>
+                        <li>ε-Greedy strategy: Explore with probability ε</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>RLフレームワーク:</h3>
+                    <ul>
+                        <li><strong>エージェント:</strong> 学習者/意思決定者</li>
+                        <li><strong>環境:</strong> エージェントが相互作用するもの</li>
+                        <li><strong>行動:</strong> エージェントができること</li>
+                        <li><strong>報酬:</strong> フィードバック信号</li>
+                        <li><strong>ポリシー:</strong> 行動を選択する戦略</li>
+                    </ul>
+                    <h3>N本腕バンディット:</h3>
+                    <ul>
+                        <li>基礎的なRL問題</li>
+                        <li>探索と活用のバランス</li>
+                        <li>ε-貪欲戦略: 確率εで探索</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Real-World Applications Summary</h2>
+            <h2>実世界応用のまとめ</h2>
+            <div class="code-box">Week 8:  Netflix (Clustering), Spotify (Music Clustering)
+Week 9:  Gmail (Supervised), Amazon (Unsupervised), AlphaGo (RL)
+Week 10: Stripe/PayPal (Fraud), Zillow (House Prices)
+Week 11: Medical Diagnosis, Credit Scoring, Face Detection
+Week 12: Image Recognition, Google Translate, Voice Assistants
+Week 13: A/B Testing, News Recommendations, Robotics</div>
+            <div class="highlight-box">
+                <p style="text-align: center;"><strong>Remember: Know the application + which ML technique is used!</strong></p>
+                <p style="text-align: center;"><strong>覚えておく: 応用 + どのML技術が使われているかを知る！</strong></p>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Algorithm Comparison Chart</h2>
+            <h2>アルゴリズム比較表</h2>
+            <div class="code-box">┌─────────────────┬──────────────┬─────────────┬──────────────┐
+│ Algorithm       │ Type         │ Strengths   │ Use Cases    │
+│ アルゴリズム    │ タイプ       │ 強み        │ 使用例       │
+├─────────────────┼──────────────┼─────────────┼──────────────┤
+│ K-means         │ Unsupervised │ Simple,fast │ Segmentation │
+│ Decision Tree   │ Supervised   │ Interpret   │ Diagnosis    │
+│ Log Regression  │ Supervised   │ Probabilities│ Credit score│
+│ SVM             │ Supervised   │ High-dim    │ Images       │
+│ Neural Network  │ Supervised   │ Complex     │ Vision,NLP   │
+│ RL (Bandit)     │ RL           │ Sequential  │ A/B Test     │
+└─────────────────┴──────────────┴─────────────┴──────────────┘</div>
+        </div>
+
+        <div class="slide">
+            <h2>Key Terminology Review</h2>
+            <h2>主要用語復習</h2>
+            <div class="two-column">
+                <div>
+                    <h4>General ML / 一般的なML:</h4>
+                    <ul>
+                        <li>Features (X) / 特徴</li>
+                        <li>Labels (y) / ラベル</li>
+                        <li>Training data / 訓練データ</li>
+                        <li>Test data / テストデータ</li>
+                        <li>Overfitting / 過学習</li>
+                        <li>Underfitting / 学習不足</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Specific Terms / 特定用語:</h4>
+                    <ul>
+                        <li>Centroid / 重心</li>
+                        <li>Hyperplane / 超平面</li>
+                        <li>Activation function / 活性化関数</li>
+                        <li>Gradient / 勾配</li>
+                        <li>Learning rate / 学習率</li>
+                        <li>Policy / ポリシー</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Common Exam Question Types</h2>
+            <h2>一般的な試験問題タイプ</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Expect Questions On:</h3>
+                    <ol>
+                        <li><strong>Definitions:</strong> What is K-means? What is gradient descent?</li>
+                        <li><strong>Comparisons:</strong> Classification vs Regression, Supervised vs Unsupervised</li>
+                        <li><strong>Applications:</strong> Which algorithm for which problem?</li>
+                        <li><strong>Process:</strong> Describe the K-means algorithm steps</li>
+                        <li><strong>Concepts:</strong> Explain exploration vs exploitation</li>
+                        <li><strong>Real-world:</strong> How does Netflix use clustering?</li>
+                    </ol>
+                </div>
+                <div class="japanese">
+                    <h3>予想される質問:</h3>
+                    <ol>
+                        <li><strong>定義:</strong> K-meansとは？勾配降下法とは？</li>
+                        <li><strong>比較:</strong> 分類 vs 回帰、教師あり vs 教師なし</li>
+                        <li><strong>応用:</strong> どの問題にどのアルゴリズム？</li>
+                        <li><strong>プロセス:</strong> K-meansアルゴリズムのステップを説明</li>
+                        <li><strong>概念:</strong> 探索 vs 活用を説明</li>
+                        <li><strong>実世界:</strong> Netflixはどのようにクラスタリングを使うか？</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Study Tips / 学習のヒント</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>How to Prepare:</h3>
+                    <ul>
+                        <li>Review all lecture slides (Weeks 8-13)</li>
+                        <li>Understand concepts, not just memorize</li>
+                        <li>Know real-world applications for each technique</li>
+                        <li>Practice explaining concepts in your own words</li>
+                        <li>Understand when to use each algorithm</li>
+                        <li>Review assignment work and bot conversations</li>
+                    </ul>
+                    <h3>Focus Areas:</h3>
+                    <ul>
+                        <li>Algorithm steps and processes</li>
+                        <li>Strengths and limitations of each method</li>
+                        <li>Real-world applications</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>準備方法:</h3>
+                    <ul>
+                        <li>すべての講義スライドを復習（第8-13週）</li>
+                        <li>暗記だけでなく概念を理解する</li>
+                        <li>各技術の実世界応用を知る</li>
+                        <li>自分の言葉で概念を説明する練習</li>
+                        <li>各アルゴリズムをいつ使うか理解する</li>
+                        <li>課題作業とボットの会話を復習</li>
+                    </ul>
+                    <h3>重点分野:</h3>
+                    <ul>
+                        <li>アルゴリズムのステップとプロセス</li>
+                        <li>各手法の強みと限界</li>
+                        <li>実世界の応用</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Quick Reference: ML Paradigms</h2>
+            <h2>クイックリファレンス: MLパラダイム</h2>
+            <div class="code-box">Supervised Learning / 教師あり学習:
+✓ Has labeled training data
+✓ Goal: Predict labels for new data
+✓ Examples: Classification, Regression
+✓ Apps: Spam filter, house prices
+
+Unsupervised Learning / 教師なし学習:
+✓ No labels needed
+✓ Goal: Find hidden patterns
+✓ Examples: Clustering, Dimensionality reduction
+✓ Apps: Customer segmentation, recommendations
+
+Reinforcement Learning / 強化学習:
+✓ Learns through interaction
+✓ Goal: Maximize cumulative reward
+✓ Examples: Bandit problems, game AI
+✓ Apps: A/B testing, robotics, games</div>
+        </div>
+
+        <div class="slide">
+            <h2>Important Formulas / 重要な公式</h2>
+            <div class="highlight-box">
+                <h3>You Should Know:</h3>
+                <div class="code-box">K-means Distance:
+d = √((x₁-x₂)² + (y₁-y₂)²)
+
+Sigmoid Function (Logistic Regression):
+σ(x) = 1 / (1 + e⁻ˣ)
+
+Gradient Descent Update:
+w_new = w_old - learning_rate × gradient
+
+ε-Greedy Strategy:
+- Explore: probability ε (e.g., 0.1)
+- Exploit: probability 1-ε (e.g., 0.9)</code-box>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Final Checklist / 最終チェックリスト</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Can You Answer These?</h3>
+                    <ul>
+                        <li>✓ Explain the difference between supervised and unsupervised learning</li>
+                        <li>✓ Describe how K-means clustering works</li>
+                        <li>✓ Compare classification and regression</li>
+                        <li>✓ Explain what overfitting means</li>
+                        <li>✓ Describe the three types of AI by capability</li>
+                        <li>✓ Explain how gradient descent optimizes neural networks</li>
+                        <li>✓ Describe the exploration-exploitation tradeoff</li>
+                        <li>✓ Give examples of real-world ML applications</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>これらに答えられますか？</h3>
+                    <ul>
+                        <li>✓ 教師ありと教師なし学習の違いを説明</li>
+                        <li>✓ K-meansクラスタリングの仕組みを説明</li>
+                        <li>✓ 分類と回帰を比較</li>
+                        <li>✓ 過学習の意味を説明</li>
+                        <li>✓ 能力による3つのAIタイプを説明</li>
+                        <li>✓ 勾配降下法がニューラルネットワークを最適化する方法を説明</li>
+                        <li>✓ 探索-活用トレードオフを説明</li>
+                        <li>✓ 実世界のML応用の例を挙げる</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="slide">
+            <h2>Good Luck! / 頑張ってください！</h2>
+            <div class="highlight-box">
+                <h3 style="text-align: center; font-size: 2em;">You've Got This!</h3>
+                <h3 style="text-align: center; font-size: 2em;">できます！</h3>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Final Reminders:</h3>
+                    <ul>
+                        <li>Read each question carefully</li>
+                        <li>Answer what you know first</li>
+                        <li>Manage your time (90 minutes)</li>
+                        <li>Show your understanding, even if unsure</li>
+                        <li>Use examples when explaining concepts</li>
+                        <li>Stay calm and confident</li>
+                    </ul>
+                    <p style="text-align: center; font-size: 1.5em; margin-top: 30px;"><strong>You've learned a lot this semester!</strong></p>
+                </div>
+                <div class="japanese">
+                    <h3>最後のリマインダー:</h3>
+                    <ul>
+                        <li>各質問を注意深く読む</li>
+                        <li>わかるものから答える</li>
+                        <li>時間を管理（90分）</li>
+                        <li>不確かでも理解を示す</li>
+                        <li>概念を説明するときは例を使う</li>
+                        <li>落ち着いて自信を持つ</li>
+                    </ul>
+                    <p style="text-align: center; font-size: 1.5em; margin-top: 30px;"><strong>今学期たくさん学びました！</strong></p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        showSlide(0);
+    </script>
+</body>
+</html>

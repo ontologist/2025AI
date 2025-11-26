@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 8 Assignment: Clustering & AI Overview</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2563eb;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 15px;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #7c3aed;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 5px solid #2563eb;
+            padding-left: 15px;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #2563eb;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .english, .japanese {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .info-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .nav-links {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .nav-links a {
+            color: #2563eb;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #cbd5e1;
+        }
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+        }
+        @media screen and (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2em; }
+            .bilingual { grid-template-columns: 1fr; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+
+        <h1>Week 8 Assignment</h1>
+        <h1>第8週課題</h1>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Assignment Title:</h3>
+                <p><strong>Clustering in Daily Life & AI/ML Applications</strong></p>
+            </div>
+            <div class="japanese">
+                <h3>課題タイトル:</h3>
+                <p><strong>日常生活におけるクラスタリングとAI/ML応用</strong></p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Due Date:</strong> Before next class (Week 9)</p>
+                    <p><strong>Estimated Time:</strong> 45-60 minutes</p>
+                    <p><strong>Grade Weight:</strong> Part of 40% Individual Reports</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>締切:</strong> 次回授業前（第9週）</p>
+                    <p><strong>予想時間:</strong> 45-60分</p>
+                    <p><strong>成績配分:</strong> 個別レポート40%の一部</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Learning Objectives / 学習目標</h2>
+        <div class="bilingual">
+            <div class="english">
+                <ul>
+                    <li>Identify real-world applications of clustering</li>
+                    <li>Understand the AI/ML/DL hierarchy</li>
+                    <li>Analyze how unsupervised learning differs from supervised learning</li>
+                    <li>Connect K-means clustering concepts to practical scenarios</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <ul>
+                    <li>クラスタリングの実世界の応用を特定する</li>
+                    <li>AI/ML/DL階層を理解する</li>
+                    <li>教師なし学習と教師あり学習の違いを分析する</li>
+                    <li>K-meansクラスタリングの概念を実践的なシナリオに結び付ける</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Part 1: Clustering Applications in Daily Life (30 points)</h2>
+        <h2>パート1: 日常生活におけるクラスタリング応用（30点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.1 (15 points)</h3>
+                <p>Identify THREE real-world examples where clustering is used (different from Netflix, Spotify, and Google News mentioned in class). For each example, explain:</p>
+                <ul>
+                    <li>What is being clustered? (the data points)</li>
+                    <li>What features might be used for clustering?</li>
+                    <li>What is the benefit of clustering in this application?</li>
+                </ul>
+                <p><em>Write 100-150 words per example.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.1（15点）</h3>
+                <p>クラスタリングが使用されている実世界の例を3つ特定してください（授業で言及されたNetflix、Spotify、Googleニュース以外）。各例について説明してください:</p>
+                <ul>
+                    <li>何がクラスタリングされているか？（データポイント）</li>
+                    <li>クラスタリングにどのような特徴が使用される可能性があるか？</li>
+                    <li>この応用におけるクラスタリングの利点は何か？</li>
+                </ul>
+                <p><em>各例について100-150語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.2 (15 points)</h3>
+                <p>Choose ONE of your examples from Question 1.1 and analyze it in detail:</p>
+                <ul>
+                    <li>How many clusters (K) would be appropriate? Justify your choice.</li>
+                    <li>Would the clusters be stable over time, or would they change? Why?</li>
+                    <li>What challenges might arise when applying K-means to this problem?</li>
+                    <li>Could this problem be solved without clustering? What would be the disadvantages?</li>
+                </ul>
+                <p><em>Write 200-250 words.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.2（15点）</h3>
+                <p>質問1.1の例の中から1つを選び、詳細に分析してください:</p>
+                <ul>
+                    <li>いくつのクラスタ（K）が適切か？選択を正当化してください。</li>
+                    <li>クラスタは時間とともに安定しているか、それとも変化するか？なぜですか？</li>
+                    <li>この問題にK-meansを適用する際にどのような課題が生じる可能性があるか？</li>
+                    <li>この問題はクラスタリングなしで解決できるか？欠点は何か？</li>
+                </ul>
+                <p><em>200-250語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 2: Understanding the AI Landscape (30 points)</h2>
+        <h2>パート2: AI全体像の理解（30点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.1 (15 points)</h3>
+                <p>Create a comparison chart that categorizes the following AI/ML applications into the correct category:</p>
+                <p><strong>Applications:</strong> Email spam filter, Customer segmentation for marketing, Self-driving car navigation, Face recognition in photos, Product recommendation system, Stock price prediction, AlphaGo, Medical diagnosis, Music playlist generation, Credit card fraud detection</p>
+                <p>Create a table with these columns:</p>
+                <ul>
+                    <li>Application Name</li>
+                    <li>ML Type (Supervised/Unsupervised/Reinforcement)</li>
+                    <li>Specific Task (Classification/Regression/Clustering/Other)</li>
+                    <li>Brief Justification (1-2 sentences why you categorized it this way)</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>質問2.1（15点）</h3>
+                <p>以下のAI/ML応用を正しいカテゴリに分類する比較表を作成してください:</p>
+                <p><strong>応用:</strong> メールスパムフィルター、マーケティングのための顧客セグメンテーション、自動運転車のナビゲーション、写真の顔認識、製品推薦システム、株価予測、AlphaGo、医療診断、音楽プレイリスト生成、クレジットカード不正検出</p>
+                <p>以下の列を含む表を作成してください:</p>
+                <ul>
+                    <li>応用名</li>
+                    <li>MLタイプ（教師あり/教師なし/強化学習）</li>
+                    <li>特定のタスク（分類/回帰/クラスタリング/その他）</li>
+                    <li>簡潔な正当化（このように分類した理由を1-2文で）</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.2 (15 points)</h3>
+                <p>Select ONE real AI system you use regularly (e.g., virtual assistant, social media feed, online shopping, streaming service, etc.) and analyze it:</p>
+                <ul>
+                    <li>What is the system and what does it do?</li>
+                    <li>Which ML paradigms does it likely use? (May be multiple)</li>
+                    <li>What data does the system collect to function?</li>
+                    <li>How does the system improve over time?</li>
+                    <li>What are potential ethical concerns with how this system uses AI?</li>
+                </ul>
+                <p><em>Write 250-300 words.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問2.2（15点）</h3>
+                <p>定期的に使用している実際のAIシステムを1つ選択し、分析してください（例: バーチャルアシスタント、ソーシャルメディアフィード、オンラインショッピング、ストリーミングサービスなど）:</p>
+                <ul>
+                    <li>システムは何で、何をするのか？</li>
+                    <li>どのMLパラダイムを使用している可能性があるか？（複数の場合もある）</li>
+                    <li>システムが機能するためにどのようなデータを収集するか？</li>
+                    <li>システムは時間とともにどのように改善するか？</li>
+                    <li>このシステムがAIを使用する方法に関する潜在的な倫理的懸念は何か？</li>
+                </ul>
+                <p><em>250-300語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 3: Critical Thinking (20 points)</h2>
+        <h2>パート3: クリティカル・シンキング（20点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 3.1 (20 points)</h3>
+                <p>Consider this scenario:</p>
+                <p><em>A government wants to use K-means clustering to group neighborhoods in a city for targeted social services (healthcare, education, infrastructure). They have data on income levels, education rates, crime statistics, population density, and age demographics.</em></p>
+                <p>Analyze this scenario by addressing:</p>
+                <ul>
+                    <li>What are the potential benefits of using clustering for this purpose?</li>
+                    <li>What ethical concerns should be considered?</li>
+                    <li>How might the choice of K (number of clusters) affect policy decisions?</li>
+                    <li>What are the risks of over-relying on clustering results for policy?</li>
+                    <li>What additional information would help make better decisions beyond clustering results?</li>
+                </ul>
+                <p><em>Write 300-350 words with clear reasoning.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問3.1（20点）</h3>
+                <p>次のシナリオを考えてください:</p>
+                <p><em>政府が、ターゲットを絞った社会サービス（医療、教育、インフラ）のために、都市の近隣地域をグループ化するためにK-meansクラスタリングを使用したいと考えています。収入レベル、教育率、犯罪統計、人口密度、年齢人口統計に関するデータを持っています。</em></p>
+                <p>このシナリオを以下の点について分析してください:</p>
+                <ul>
+                    <li>この目的でクラスタリングを使用することの潜在的な利点は何か？</li>
+                    <li>考慮すべき倫理的懸念は何か？</li>
+                    <li>K（クラスタ数）の選択は政策決定にどのように影響するか？</li>
+                    <li>政策のためにクラスタリング結果に過度に依存するリスクは何か？</li>
+                    <li>クラスタリング結果を超えてより良い決定を行うために、どのような追加情報が役立つか？</li>
+                </ul>
+                <p><em>明確な推論で300-350語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Submission Instructions / 提出方法</h2>
+        <div class="bilingual">
+            <div class="english">
+                <h3>Format:</h3>
+                <ul>
+                    <li>Submit as a PDF or Word document</li>
+                    <li>Include your name and student ID at the top</li>
+                    <li>Clearly label each question (Part 1.1, 1.2, etc.)</li>
+                    <li>Use clear headings and formatting</li>
+                    <li>For Question 2.1, include the table in your document</li>
+                </ul>
+                <h3>Language:</h3>
+                <ul>
+                    <li>You may write in English, Japanese, or a combination of both</li>
+                    <li>Clarity and depth of analysis are more important than perfect language</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>形式:</h3>
+                <ul>
+                    <li>PDFまたはWordドキュメントとして提出</li>
+                    <li>上部に氏名と学生IDを記載</li>
+                    <li>各質問に明確にラベルを付ける（パート1.1、1.2など）</li>
+                    <li>明確な見出しとフォーマットを使用</li>
+                    <li>質問2.1には、ドキュメントに表を含める</li>
+                </ul>
+                <h3>言語:</h3>
+                <ul>
+                    <li>英語、日本語、または両方の組み合わせで記述可能</li>
+                    <li>完璧な言語よりも、明確さと分析の深さが重要</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Grading Rubric / 採点基準</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category / 項目</th>
+                    <th>Excellent (90-100%)</th>
+                    <th>Good (80-89%)</th>
+                    <th>Satisfactory (70-79%)</th>
+                    <th>Needs Improvement (&lt;70%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Understanding / 理解</strong></td>
+                    <td>Deep understanding of clustering concepts and AI landscape<br>クラスタリング概念とAI全体像の深い理解</td>
+                    <td>Good grasp of key concepts with minor gaps<br>主要概念の良好な把握、わずかなギャップ</td>
+                    <td>Basic understanding with some confusion<br>基本的な理解、一部混乱</td>
+                    <td>Limited understanding<br>限定的な理解</td>
+                </tr>
+                <tr>
+                    <td><strong>Analysis / 分析</strong></td>
+                    <td>Insightful, well-reasoned analysis with clear connections<br>洞察力のある、よく推論された分析、明確な関連性</td>
+                    <td>Solid analysis with good reasoning<br>良好な推論による堅実な分析</td>
+                    <td>Basic analysis, some reasoning<br>基本的な分析、いくつかの推論</td>
+                    <td>Superficial analysis<br>表面的な分析</td>
+                </tr>
+                <tr>
+                    <td><strong>Examples / 例</strong></td>
+                    <td>Relevant, creative, well-explained examples<br>関連性があり、創造的で、よく説明された例</td>
+                    <td>Good examples with clear explanation<br>明確な説明のある良い例</td>
+                    <td>Adequate examples, limited explanation<br>適切な例、限定的な説明</td>
+                    <td>Weak or irrelevant examples<br>弱いまたは無関係な例</td>
+                </tr>
+                <tr>
+                    <td><strong>Critical Thinking / 批判的思考</strong></td>
+                    <td>Demonstrates strong critical thinking, considers multiple perspectives<br>強い批判的思考を示し、複数の視点を考慮</td>
+                    <td>Shows critical thinking with some depth<br>ある程度の深さで批判的思考を示す</td>
+                    <td>Basic critical thinking<br>基本的な批判的思考</td>
+                    <td>Lacks critical analysis<br>批判的分析が欠如</td>
+                </tr>
+                <tr>
+                    <td><strong>Communication / コミュニケーション</strong></td>
+                    <td>Clear, well-organized, professional writing<br>明確で、よく整理され、プロフェッショナルな文章</td>
+                    <td>Clear writing with good structure<br>良好な構造の明確な文章</td>
+                    <td>Adequate clarity, some organization<br>適切な明確さ、いくつかの組織化</td>
+                    <td>Unclear or poorly organized<br>不明瞭または組織化が不十分</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box">
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Tips for Success:</h3>
+                    <ul>
+                        <li>Review the lecture slides and notes before starting</li>
+                        <li>Use specific examples from real companies/applications</li>
+                        <li>Show your reasoning - don't just state facts</li>
+                        <li>Connect concepts to real-world implications</li>
+                        <li>Proofread before submission</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>成功のためのヒント:</h3>
+                    <ul>
+                        <li>開始する前に講義スライドとノートを確認</li>
+                        <li>実際の企業/応用からの具体的な例を使用</li>
+                        <li>推論を示す - 単に事実を述べるだけではない</li>
+                        <li>概念を実世界の影響に結び付ける</li>
+                        <li>提出前に校正する</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-links" style="margin-top: 30px;">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+    </div>
+</body>
+</html>

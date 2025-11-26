@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 12 Lecture Notes: Neural Networks & ML Algorithms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2563eb;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #7c3aed;
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2563eb;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2563eb;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .english {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .test-question {
+            background: #fce7f3;
+            border: 3px solid #ec4899;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .test-question h4::before {
+            content: "⚠️ ";
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .navigation a:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .key-terms {
+            background: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .study-tip {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Week 12 Lecture Notes</h1>
+        <p class="subtitle">Neural Networks & ML Algorithms<br>ニューラルネットワークと機械学習アルゴリズム</p>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-11/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+
+        <h2>📚 Overview / 概要</h2>
+        <div class="bilingual">
+            <div class="english">
+                <p>This week introduces Neural Networks, the foundation of modern deep learning and AI. We'll explore how artificial neurons work, understand network architectures, and learn about training through backpropagation. We'll also cover Convolutional Neural Networks (CNNs) for computer vision.</p>
+                <p><strong>Learning Objectives:</strong></p>
+                <ul>
+                    <li>Understand the structure of artificial neurons and neural networks</li>
+                    <li>Learn how neural networks learn through backpropagation</li>
+                    <li>Explore activation functions and their purposes</li>
+                    <li>Understand Convolutional Neural Networks (CNNs)</li>
+                    <li>Recognize applications of neural networks in real-world problems</li>
+                    <li>Compare deep learning with traditional ML algorithms</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <p>今週は、現代の深層学習とAIの基盤であるニューラルネットワークを紹介します。人工ニューロンの仕組み、ネットワークアーキテクチャを理解し、バックプロパゲーションによる訓練について学びます。また、コンピュータビジョンのための畳み込みニューラルネットワーク（CNN）もカバーします。</p>
+                <p><strong>学習目標:</strong></p>
+                <ul>
+                    <li>人工ニューロンとニューラルネットワークの構造を理解する</li>
+                    <li>バックプロパゲーションによるニューラルネットワークの学習方法を学ぶ</li>
+                    <li>活性化関数とその目的を探る</li>
+                    <li>畳み込みニューラルネットワーク（CNN）を理解する</li>
+                    <li>実世界の問題におけるニューラルネットワークの応用を認識する</li>
+                    <li>深層学習と従来のMLアルゴリズムを比較する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>1. Introduction to Neural Networks / ニューラルネットワーク入門</h2>
+
+        <div class="definition-box">
+            <h3>What is a Neural Network? / ニューラルネットワークとは？</h3>
+            <p><strong>Neural Network:</strong> A machine learning model inspired by biological neurons in the brain, consisting of interconnected layers of artificial neurons that process information and learn patterns from data.</p>
+            <p><strong>ニューラルネットワーク:</strong> 脳内の生物学的ニューロンに触発された機械学習モデルで、情報を処理しデータからパターンを学習する相互接続された人工ニューロンの層で構成されます。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>From Biological to Artificial Neurons</h3>
+
+                <h4>Biological Neuron</h4>
+                <ul>
+                    <li><strong>Dendrites:</strong> Receive signals from other neurons</li>
+                    <li><strong>Cell Body:</strong> Processes incoming signals</li>
+                    <li><strong>Axon:</strong> Sends signal to other neurons</li>
+                    <li><strong>Synapses:</strong> Connections between neurons</li>
+                </ul>
+
+                <h4>Artificial Neuron (Perceptron)</h4>
+                <div class="code-box">ARTIFICIAL NEURON STRUCTURE
+
+Inputs (x₁, x₂, x₃...)  ──→  [NEURON]  ──→  Output (y)
+    │                           │
+    │                           │
+    ↓                           ↓
+Weights (w₁, w₂, w₃...)    Activation
+                            Function
+
+Process:
+1. Multiply each input by its weight: x₁×w₁, x₂×w₂, x₃×w₃
+2. Sum all weighted inputs: Σ(xᵢ × wᵢ)
+3. Add bias: z = Σ(xᵢ × wᵢ) + b
+4. Apply activation function: y = f(z)
+5. Output final value
+
+Example:
+Inputs: [2, 3, 1]
+Weights: [0.5, 0.3, 0.2]
+Bias: 1
+
+z = (2×0.5) + (3×0.3) + (1×0.2) + 1 = 1 + 0.9 + 0.2 + 1 = 3.1
+y = activation(3.1)</div>
+
+                <h4>Key Components:</h4>
+                <ul>
+                    <li><strong>Inputs (x):</strong> Features from data</li>
+                    <li><strong>Weights (w):</strong> Learned parameters that determine importance of each input</li>
+                    <li><strong>Bias (b):</strong> Allows shifting the activation function</li>
+                    <li><strong>Activation Function:</strong> Introduces non-linearity</li>
+                    <li><strong>Output (y):</strong> Final prediction or signal</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>生物学的ニューロンから人工ニューロンへ</h3>
+
+                <h4>生物学的ニューロン</h4>
+                <ul>
+                    <li><strong>樹状突起:</strong> 他のニューロンから信号を受信</li>
+                    <li><strong>細胞体:</strong> 入力信号を処理</li>
+                    <li><strong>軸索:</strong> 他のニューロンに信号を送信</li>
+                    <li><strong>シナプス:</strong> ニューロン間の接続</li>
+                </ul>
+
+                <h4>人工ニューロン（パーセプトロン）</h4>
+                <div class="code-box">人工ニューロンの構造
+
+入力 (x₁, x₂, x₃...)  ──→  [ニューロン]  ──→  出力 (y)
+    │                           │
+    │                           │
+    ↓                           ↓
+重み (w₁, w₂, w₃...)        活性化
+                            関数
+
+プロセス:
+1. 各入力にその重みを掛ける: x₁×w₁, x₂×w₂, x₃×w₃
+2. すべての重み付き入力を合計: Σ(xᵢ × wᵢ)
+3. バイアスを追加: z = Σ(xᵢ × wᵢ) + b
+4. 活性化関数を適用: y = f(z)
+5. 最終値を出力
+
+例:
+入力: [2, 3, 1]
+重み: [0.5, 0.3, 0.2]
+バイアス: 1
+
+z = (2×0.5) + (3×0.3) + (1×0.2) + 1 = 1 + 0.9 + 0.2 + 1 = 3.1
+y = 活性化(3.1)</div>
+
+                <h4>主要コンポーネント:</h4>
+                <ul>
+                    <li><strong>入力（x）:</strong> データからの特徴量</li>
+                    <li><strong>重み（w）:</strong> 各入力の重要度を決定する学習されたパラメータ</li>
+                    <li><strong>バイアス（b）:</strong> 活性化関数をシフトできるようにする</li>
+                    <li><strong>活性化関数:</strong> 非線形性を導入</li>
+                    <li><strong>出力（y）:</strong> 最終予測または信号</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>2. Neural Network Architecture / ニューラルネットワークアーキテクチャ</h2>
+
+        <div class="definition-box">
+            <h3>Multi-Layer Neural Network</h3>
+            <div class="code-box">NEURAL NETWORK LAYERS
+
+INPUT LAYER    HIDDEN LAYERS    OUTPUT LAYER
+入力層          隠れ層            出力層
+
+   x₁  ○           ○                ○
+              ╱   ╱  ╲   ╲      ╱     ╲
+   x₂  ○     ○        ○        ○   →  y₁
+              ╲   ╲  ╱   ╱      ╲     ╱
+   x₃  ○           ○                ○
+
+   x₄  ○     ○        ○            y₂
+
+Layer 1       Layer 2   Layer 3   Layer 4
+(Features)    (Hidden)  (Hidden)  (Output)
+
+Connections:
+- Fully Connected: Each neuron connects to all neurons in next layer
+- Weights: Each connection has a learned weight
+- Forward Propagation: Data flows left to right</div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Types of Layers</h3>
+
+                <h4>1. Input Layer (入力層)</h4>
+                <ul>
+                    <li>Receives raw data features</li>
+                    <li>One neuron per feature</li>
+                    <li>Example: For image 28×28 pixels = 784 input neurons</li>
+                    <li>No computation, just passes data forward</li>
+                </ul>
+
+                <h4>2. Hidden Layers (隠れ層)</h4>
+                <ul>
+                    <li>Perform computations and feature extraction</li>
+                    <li>Can have multiple hidden layers (= "deep" learning)</li>
+                    <li>Each layer learns increasingly complex patterns</li>
+                    <li>Layer 1: Simple edges and shapes</li>
+                    <li>Layer 2: Combinations of edges (corners, curves)</li>
+                    <li>Layer 3: Complex patterns (faces, objects)</li>
+                </ul>
+
+                <h4>3. Output Layer (出力層)</h4>
+                <ul>
+                    <li>Produces final predictions</li>
+                    <li>Number of neurons = number of outputs
+                        <ul>
+                            <li>Binary classification: 1 neuron (0 or 1)</li>
+                            <li>Multi-class: N neurons (one per class)</li>
+                            <li>Regression: 1 neuron (continuous value)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Network Depth</h4>
+                <ul>
+                    <li><strong>Shallow Network:</strong> 1-2 hidden layers</li>
+                    <li><strong>Deep Network:</strong> 3+ hidden layers (Deep Learning)</li>
+                    <li><strong>Very Deep:</strong> 50-200+ layers (ResNet, GPT models)</li>
+                </ul>
+
+                <h4>Why Multiple Layers?</h4>
+                <p><strong>Hierarchical Feature Learning:</strong></p>
+                <ul>
+                    <li>Each layer learns features of increasing complexity</li>
+                    <li>Like how humans recognize objects:
+                        <ul>
+                            <li>Level 1: See edges and colors</li>
+                            <li>Level 2: Combine into shapes</li>
+                            <li>Level 3: Recognize parts (eyes, nose)</li>
+                            <li>Level 4: Identify whole object (face)</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>層のタイプ</h3>
+
+                <h4>1. 入力層 (Input Layer)</h4>
+                <ul>
+                    <li>生のデータ特徴量を受け取る</li>
+                    <li>特徴量ごとに1つのニューロン</li>
+                    <li>例: 28×28ピクセルの画像 = 784個の入力ニューロン</li>
+                    <li>計算なし、データを前方に渡すだけ</li>
+                </ul>
+
+                <h4>2. 隠れ層 (Hidden Layers)</h4>
+                <ul>
+                    <li>計算と特徴抽出を実行</li>
+                    <li>複数の隠れ層を持つことができる（=「深層」学習）</li>
+                    <li>各層がますます複雑なパターンを学習</li>
+                    <li>層1: 単純なエッジと形状</li>
+                    <li>層2: エッジの組み合わせ（角、曲線）</li>
+                    <li>層3: 複雑なパターン（顔、オブジェクト）</li>
+                </ul>
+
+                <h4>3. 出力層 (Output Layer)</h4>
+                <ul>
+                    <li>最終予測を生成</li>
+                    <li>ニューロン数 = 出力数
+                        <ul>
+                            <li>二値分類: 1ニューロン（0または1）</li>
+                            <li>多クラス: Nニューロン（クラスごとに1つ）</li>
+                            <li>回帰: 1ニューロン（連続値）</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>ネットワークの深さ</h4>
+                <ul>
+                    <li><strong>浅いネットワーク:</strong> 1-2隠れ層</li>
+                    <li><strong>深いネットワーク:</strong> 3以上の隠れ層（深層学習）</li>
+                    <li><strong>非常に深い:</strong> 50-200以上の層（ResNet、GPTモデル）</li>
+                </ul>
+
+                <h4>なぜ複数の層？</h4>
+                <p><strong>階層的特徴学習:</strong></p>
+                <ul>
+                    <li>各層が複雑さを増す特徴を学習</li>
+                    <li>人間がオブジェクトを認識する方法に似ている:
+                        <ul>
+                            <li>レベル1: エッジと色を見る</li>
+                            <li>レベル2: 形状に組み合わせる</li>
+                            <li>レベル3: パーツを認識（目、鼻）</li>
+                            <li>レベル4: 全体のオブジェクトを識別（顔）</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>3. Activation Functions / 活性化関数</h2>
+
+        <div class="key-terms">
+            <h3>Why Activation Functions? / なぜ活性化関数？</h3>
+            <p>Without activation functions, a neural network would just be a series of linear transformations, equivalent to a single linear model. Activation functions introduce <strong>non-linearity</strong>, allowing networks to learn complex patterns.</p>
+            <p>活性化関数がなければ、ニューラルネットワークは一連の線形変換にすぎず、単一の線形モデルと同等になります。活性化関数は<strong>非線形性</strong>を導入し、ネットワークが複雑なパターンを学習できるようにします。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Common Activation Functions</h3>
+
+                <h4>1. Sigmoid (シグモイド)</h4>
+                <div class="code-box">Formula: σ(x) = 1 / (1 + e^(-x))
+Output Range: 0 to 1
+
+Graph:     1 ________
+          /
+         /
+    0 __/
+
+Use: Output layer for binary classification
+Pros: Smooth, probability interpretation
+Cons: Vanishing gradient problem</div>
+
+                <h4>2. ReLU (Rectified Linear Unit)</h4>
+                <div class="code-box">Formula: f(x) = max(0, x)
+         = x if x > 0
+         = 0 if x ≤ 0
+
+Graph:      /
+           /
+    ______/
+          0
+
+Use: Hidden layers (most common!)
+Pros: Fast, prevents vanishing gradient
+Cons: "Dying ReLU" (neurons can die)</div>
+
+                <h4>3. Tanh (Hyperbolic Tangent)</h4>
+                <div class="code-box">Formula: tanh(x) = (e^x - e^(-x)) / (e^x + e^(-x))
+Output Range: -1 to 1
+
+Graph:  1 ________
+          /
+    _____/
+   -1
+
+Use: Hidden layers
+Pros: Zero-centered (better than sigmoid)
+Cons: Still has vanishing gradient</div>
+
+                <h4>4. Softmax</h4>
+                <div class="code-box">Formula: softmax(xᵢ) = e^xᵢ / Σe^xⱼ
+Output: Probability distribution (sums to 1)
+
+Example:
+Input: [2.0, 1.0, 0.1]
+Output: [0.66, 0.24, 0.10]
+(66% Class 1, 24% Class 2, 10% Class 3)
+
+Use: Output layer for multi-class classification
+Pros: Converts to probabilities
+Cons: Only for output layer</div>
+
+                <h4>Choosing Activation Functions:</h4>
+                <ul>
+                    <li><strong>Hidden Layers:</strong> Use ReLU (default choice)</li>
+                    <li><strong>Binary Classification Output:</strong> Use Sigmoid</li>
+                    <li><strong>Multi-class Output:</strong> Use Softmax</li>
+                    <li><strong>Regression Output:</strong> No activation (linear)</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>一般的な活性化関数</h3>
+
+                <h4>1. シグモイド (Sigmoid)</h4>
+                <div class="code-box">式: σ(x) = 1 / (1 + e^(-x))
+出力範囲: 0から1
+
+グラフ:    1 ________
+          /
+         /
+    0 __/
+
+用途: 二値分類の出力層
+長所: 滑らか、確率解釈
+短所: 勾配消失問題</div>
+
+                <h4>2. ReLU (Rectified Linear Unit)</h4>
+                <div class="code-box">式: f(x) = max(0, x)
+    = x if x > 0
+    = 0 if x ≤ 0
+
+グラフ:      /
+           /
+    ______/
+          0
+
+用途: 隠れ層（最も一般的！）
+長所: 高速、勾配消失を防ぐ
+短所: 「死にゆくReLU」（ニューロンが死ぬ可能性）</div>
+
+                <h4>3. Tanh (双曲線正接)</h4>
+                <div class="code-box">式: tanh(x) = (e^x - e^(-x)) / (e^x + e^(-x))
+出力範囲: -1から1
+
+グラフ:  1 ________
+          /
+    _____/
+   -1
+
+用途: 隠れ層
+長所: ゼロ中心（シグモイドより良い）
+短所: まだ勾配消失がある</div>
+
+                <h4>4. Softmax</h4>
+                <div class="code-box">式: softmax(xᵢ) = e^xᵢ / Σe^xⱼ
+出力: 確率分布（合計1）
+
+例:
+入力: [2.0, 1.0, 0.1]
+出力: [0.66, 0.24, 0.10]
+(66%クラス1、24%クラス2、10%クラス3)
+
+用途: 多クラス分類の出力層
+長所: 確率に変換
+短所: 出力層のみ</div>
+
+                <h4>活性化関数の選択:</h4>
+                <ul>
+                    <li><strong>隠れ層:</strong> ReLUを使用（デフォルトの選択）</li>
+                    <li><strong>二値分類出力:</strong> シグモイドを使用</li>
+                    <li><strong>多クラス出力:</strong> Softmaxを使用</li>
+                    <li><strong>回帰出力:</strong> 活性化なし（線形）</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>4. Training Neural Networks: Backpropagation / ニューラルネットワークの訓練: バックプロパゲーション</h2>
+
+        <div class="definition-box">
+            <h3>How Neural Networks Learn</h3>
+            <div class="code-box">TRAINING PROCESS (訓練プロセス)
+
+1. FORWARD PROPAGATION (順伝播)
+   ├─ Input data flows through network
+   ├─ Each layer computes: z = Wx + b, then a = activation(z)
+   └─ Produce prediction at output
+
+2. CALCULATE LOSS (損失計算)
+   ├─ Compare prediction to actual label
+   ├─ Loss function measures error
+   └─ Example: Mean Squared Error, Cross-Entropy
+
+3. BACKWARD PROPAGATION (逆伝播)
+   ├─ Calculate gradient of loss with respect to each weight
+   ├─ Use chain rule from calculus
+   └─ Gradients flow backward through network
+
+4. UPDATE WEIGHTS (重み更新)
+   ├─ Adjust weights to reduce loss
+   ├─ w_new = w_old - (learning_rate × gradient)
+   └─ Gradient Descent optimization
+
+5. REPEAT
+   └─ Iterate through entire dataset multiple times (epochs)</div>
+        </definition-box>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Understanding Backpropagation</h3>
+
+                <h4>The Learning Process</h4>
+                <p><strong>Goal:</strong> Find optimal weights that minimize prediction error</p>
+
+                <p><strong>Key Concepts:</strong></p>
+                <ul>
+                    <li><strong>Loss Function:</strong> Measures how wrong predictions are
+                        <ul>
+                            <li>Classification: Cross-Entropy Loss</li>
+                            <li>Regression: Mean Squared Error (MSE)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Gradient:</strong> Direction and magnitude of steepest increase in loss</li>
+                    <li><strong>Gradient Descent:</strong> Move in opposite direction of gradient to minimize loss</li>
+                    <li><strong>Learning Rate:</strong> How big of a step to take (α)
+                        <ul>
+                            <li>Too large: May overshoot optimal weights</li>
+                            <li>Too small: Training is very slow</li>
+                            <li>Typical: 0.001 to 0.1</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Training Hyperparameters</h4>
+                <ul>
+                    <li><strong>Batch Size:</strong> Number of samples per gradient update
+                        <ul>
+                            <li>Small batch (32-64): More updates, noisier</li>
+                            <li>Large batch (256-512): Faster, more stable</li>
+                        </ul>
+                    </li>
+                    <li><strong>Epochs:</strong> Complete passes through training data
+                        <ul>
+                            <li>Too few: Underfitting</li>
+                            <li>Too many: Overfitting</li>
+                            <li>Typical: 10-100 epochs</li>
+                        </ul>
+                    </li>
+                    <li><strong>Optimizer:</strong> How to update weights
+                        <ul>
+                            <li>SGD (Stochastic Gradient Descent)</li>
+                            <li>Adam (Adaptive Moment Estimation) - popular!</li>
+                            <li>RMSprop</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>バックプロパゲーションの理解</h3>
+
+                <h4>学習プロセス</h4>
+                <p><strong>目標:</strong> 予測エラーを最小化する最適な重みを見つける</p>
+
+                <p><strong>主要概念:</strong></p>
+                <ul>
+                    <li><strong>損失関数:</strong> 予測がどれだけ間違っているかを測定
+                        <ul>
+                            <li>分類: クロスエントロピー損失</li>
+                            <li>回帰: 平均二乗誤差（MSE）</li>
+                        </ul>
+                    </li>
+                    <li><strong>勾配:</strong> 損失の最も急な増加の方向と大きさ</li>
+                    <li><strong>勾配降下法:</strong> 損失を最小化するために勾配の反対方向に移動</li>
+                    <li><strong>学習率:</strong> どれだけ大きなステップを踏むか（α）
+                        <ul>
+                            <li>大きすぎる: 最適な重みを通り越す可能性</li>
+                            <li>小さすぎる: 訓練が非常に遅い</li>
+                            <li>一般的: 0.001から0.1</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>訓練ハイパーパラメータ</h4>
+                <ul>
+                    <li><strong>バッチサイズ:</strong> 勾配更新ごとのサンプル数
+                        <ul>
+                            <li>小バッチ（32-64）: より多くの更新、よりノイズが多い</li>
+                            <li>大バッチ（256-512）: より速く、より安定</li>
+                        </ul>
+                    </li>
+                    <li><strong>エポック:</strong> 訓練データの完全なパス
+                        <ul>
+                            <li>少なすぎる: 未学習</li>
+                            <li>多すぎる: 過学習</li>
+                            <li>一般的: 10-100エポック</li>
+                        </ul>
+                    </li>
+                    <li><strong>オプティマイザ:</strong> 重みを更新する方法
+                        <ul>
+                            <li>SGD（確率的勾配降下法）</li>
+                            <li>Adam（適応的モーメント推定）- 人気！</li>
+                            <li>RMSprop</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>5. Convolutional Neural Networks (CNNs) / 畳み込みニューラルネットワーク</h2>
+
+        <div class="definition-box">
+            <h3>What is a CNN? / CNNとは？</h3>
+            <p><strong>Convolutional Neural Network:</strong> A specialized neural network architecture designed for processing grid-like data such as images, using convolutional layers that automatically learn spatial hierarchies of features.</p>
+            <p><strong>畳み込みニューラルネットワーク:</strong> 画像などのグリッド状データを処理するために設計された特殊なニューラルネットワークアーキテクチャで、特徴の空間的階層を自動的に学習する畳み込み層を使用します。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>CNN Architecture</h3>
+
+                <h4>Why CNNs for Images?</h4>
+                <p>Traditional neural networks treat pixels as independent features, ignoring spatial structure. CNNs preserve spatial relationships!</p>
+
+                <div class="code-box">CNN LAYERS
+
+INPUT IMAGE          CONVOLUTIONAL      POOLING         FULLY CONNECTED
+入力画像             畳み込み層          プーリング層     全結合層
+
+[Image]      →    [Feature Maps]  →  [Reduced]    →   [Dense]  →  [Output]
+28×28×3           24×24×32           12×12×32         128          10 classes
+(RGB)             (32 filters)       (downsample)     (neurons)    (probabilities)
+
+Key Operations:
+1. Convolution: Extract features (edges, textures)
+2. Pooling: Reduce dimensions, keep important features
+3. Flatten: Convert to 1D for classification
+4. Dense: Final classification layers</div>
+
+                <h4>Convolutional Layer</h4>
+                <ul>
+                    <li><strong>Filters (Kernels):</strong> Small matrices that slide over image
+                        <ul>
+                            <li>Example: 3×3 or 5×5 filter</li>
+                            <li>Each filter detects specific feature (edge, corner, texture)</li>
+                            <li>Creates feature map showing where feature appears</li>
+                        </ul>
+                    </li>
+                    <li><strong>How Convolution Works:</strong>
+                        <ul>
+                            <li>Slide filter across image (left→right, top→bottom)</li>
+                            <li>At each position, multiply filter × image patch</li>
+                            <li>Sum the products to get one output value</li>
+                            <li>Result: Feature map highlighting detected features</li>
+                        </ul>
+                    </li>
+                    <li><strong>Multiple Filters:</strong> Learn different features
+                        <ul>
+                            <li>Filter 1: Vertical edges</li>
+                            <li>Filter 2: Horizontal edges</li>
+                            <li>Filter 3: Diagonal patterns</li>
+                            <li>Creates multiple feature maps</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Pooling Layer</h4>
+                <ul>
+                    <li><strong>Purpose:</strong> Reduce dimensions while keeping important features</li>
+                    <li><strong>Max Pooling:</strong> Take maximum value in each region
+                        <ul>
+                            <li>Example: 2×2 pooling reduces size by half</li>
+                            <li>Keeps strongest activations</li>
+                        </ul>
+                    </li>
+                    <li><strong>Benefits:</strong>
+                        <ul>
+                            <li>Reduces computation</li>
+                            <li>Makes network translation-invariant (object can be anywhere)</li>
+                            <li>Prevents overfitting</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Typical CNN Architecture</h4>
+                <div class="code-box">Input Image
+    ↓
+[Conv → ReLU → Conv → ReLU → Pool]  ← Block 1
+    ↓
+[Conv → ReLU → Conv → ReLU → Pool]  ← Block 2
+    ↓
+[Conv → ReLU → Conv → ReLU → Pool]  ← Block 3
+    ↓
+Flatten
+    ↓
+Dense (Fully Connected) → ReLU
+    ↓
+Dense → Softmax
+    ↓
+Output (Class Probabilities)</div>
+            </div>
+            <div class="japanese">
+                <h3>CNNアーキテクチャ</h3>
+
+                <h4>なぜ画像にCNN？</h4>
+                <p>従来のニューラルネットワークはピクセルを独立した特徴として扱い、空間構造を無視します。CNNは空間関係を保持します！</p>
+
+                <div class="code-box">CNN層
+
+入力画像             畳み込み層          プーリング層     全結合層
+
+[画像]       →    [特徴マップ]    →  [縮小]       →   [密]     →  [出力]
+28×28×3           24×24×32           12×12×32         128          10クラス
+(RGB)             (32フィルタ)       (ダウンサンプル) (ニューロン) (確率)
+
+主要操作:
+1. 畳み込み: 特徴を抽出（エッジ、テクスチャ）
+2. プーリング: 次元を削減、重要な特徴を保持
+3. 平坦化: 分類のために1Dに変換
+4. 密: 最終分類層</div>
+
+                <h4>畳み込み層</h4>
+                <ul>
+                    <li><strong>フィルタ（カーネル）:</strong> 画像上をスライドする小さな行列
+                        <ul>
+                            <li>例: 3×3または5×5フィルタ</li>
+                            <li>各フィルタが特定の特徴を検出（エッジ、コーナー、テクスチャ）</li>
+                            <li>特徴が現れる場所を示す特徴マップを作成</li>
+                        </ul>
+                    </li>
+                    <li><strong>畳み込みの仕組み:</strong>
+                        <ul>
+                            <li>画像全体にフィルタをスライド（左→右、上→下）</li>
+                            <li>各位置で、フィルタ×画像パッチを掛ける</li>
+                            <li>積を合計して1つの出力値を得る</li>
+                            <li>結果: 検出された特徴を強調する特徴マップ</li>
+                        </ul>
+                    </li>
+                    <li><strong>複数のフィルタ:</strong> 異なる特徴を学習
+                        <ul>
+                            <li>フィルタ1: 垂直エッジ</li>
+                            <li>フィルタ2: 水平エッジ</li>
+                            <li>フィルタ3: 対角パターン</li>
+                            <li>複数の特徴マップを作成</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>プーリング層</h4>
+                <ul>
+                    <li><strong>目的:</strong> 重要な特徴を保持しながら次元を削減</li>
+                    <li><strong>最大プーリング:</strong> 各領域の最大値を取る
+                        <ul>
+                            <li>例: 2×2プーリングでサイズを半分に削減</li>
+                            <li>最も強い活性化を保持</li>
+                        </ul>
+                    </li>
+                    <li><strong>利点:</strong>
+                        <ul>
+                            <li>計算を削減</li>
+                            <li>ネットワークを平行移動不変にする（オブジェクトがどこにあっても良い）</li>
+                            <li>過学習を防ぐ</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>典型的なCNNアーキテクチャ</h4>
+                <div class="code-box">入力画像
+    ↓
+[畳込 → ReLU → 畳込 → ReLU → Pool]  ← ブロック1
+    ↓
+[畳込 → ReLU → 畳込 → ReLU → Pool]  ← ブロック2
+    ↓
+[畳込 → ReLU → 畳込 → ReLU → Pool]  ← ブロック3
+    ↓
+平坦化
+    ↓
+全結合 → ReLU
+    ↓
+全結合 → Softmax
+    ↓
+出力（クラス確率）</div>
+            </div>
+        </div>
+
+        <h2>6. Real-World Application / 実世界の応用</h2>
+
+        <div class="highlight-box">
+            <h3>Facebook: Facial Recognition (DeepFace)</h3>
+            <h4>Link: <a href="https://www.facebook.com" target="_blank">https://www.facebook.com</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Challenge:</strong> Automatically tag people in photos among billions of users.</p>
+
+                    <p><strong>CNN Architecture - DeepFace:</strong></p>
+                    <ul>
+                        <li><strong>Network Depth:</strong> 9-layer deep CNN</li>
+                        <li><strong>Input:</strong> 3D-aligned face images (152×152 pixels)</li>
+                        <li><strong>Layers:</strong>
+                            <ul>
+                                <li>Convolutional layers: Extract facial features (edges, textures, facial parts)</li>
+                                <li>Max pooling layers: Reduce dimensions</li>
+                                <li>Fully connected layers: Learn face representations</li>
+                                <li>Output: 4096-dimensional face embedding</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>Training Data:</strong></p>
+                    <ul>
+                        <li>4 million facial images</li>
+                        <li>4,000 identities</li>
+                        <li>Trained to distinguish between different people</li>
+                        <li>Uses Softmax for classification across identities</li>
+                    </ul>
+
+                    <p><strong>How It Works:</strong></p>
+                    <ol>
+                        <li><strong>Face Detection:</strong> Locate faces in photo</li>
+                        <li><strong>Alignment:</strong> Normalize face position and angle</li>
+                        <li><strong>Feature Extraction:</strong> CNN processes aligned face
+                            <ul>
+                                <li>Layer 1: Detects edges (eyebrows, nose contours)</li>
+                                <li>Layer 2-3: Detects facial parts (eyes, mouth)</li>
+                                <li>Layer 4-6: Combines features (eye-nose-mouth relationships)</li>
+                                <li>Layer 7-9: Creates unique face representation</li>
+                            </ul>
+                        </li>
+                        <li><strong>Comparison:</strong> Compare to known faces in database</li>
+                        <li><strong>Identification:</strong> Match to most similar person</li>
+                    </ol>
+
+                    <p><strong>Performance:</strong></p>
+                    <ul>
+                        <li>97.35% accuracy on Labeled Faces in the Wild (LFW) benchmark</li>
+                        <li>Approaches human-level performance (97.5%)</li>
+                        <li>Can recognize faces across different angles, lighting, expressions</li>
+                    </ul>
+
+                    <p><strong>Privacy Note:</strong> Facebook has disabled automatic tagging in many regions due to privacy concerns, but the technology remains highly advanced.</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>課題:</strong> 数十億のユーザーの中から写真の人物を自動的にタグ付けする。</p>
+
+                    <p><strong>CNNアーキテクチャ - DeepFace:</strong></p>
+                    <ul>
+                        <li><strong>ネットワークの深さ:</strong> 9層の深層CNN</li>
+                        <li><strong>入力:</strong> 3D整列された顔画像（152×152ピクセル）</li>
+                        <li><strong>層:</strong>
+                            <ul>
+                                <li>畳み込み層: 顔の特徴を抽出（エッジ、テクスチャ、顔パーツ）</li>
+                                <li>最大プーリング層: 次元を削減</li>
+                                <li>全結合層: 顔表現を学習</li>
+                                <li>出力: 4096次元の顔埋め込み</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>訓練データ:</strong></p>
+                    <ul>
+                        <li>400万の顔画像</li>
+                        <li>4,000のアイデンティティ</li>
+                        <li>異なる人々を区別するように訓練</li>
+                        <li>アイデンティティ全体の分類にSoftmaxを使用</li>
+                    </ul>
+
+                    <p><strong>仕組み:</strong></p>
+                    <ol>
+                        <li><strong>顔検出:</strong> 写真内の顔を見つける</li>
+                        <li><strong>整列:</strong> 顔の位置と角度を正規化</li>
+                        <li><strong>特徴抽出:</strong> CNNが整列された顔を処理
+                            <ul>
+                                <li>層1: エッジを検出（眉毛、鼻の輪郭）</li>
+                                <li>層2-3: 顔パーツを検出（目、口）</li>
+                                <li>層4-6: 特徴を組み合わせる（目-鼻-口の関係）</li>
+                                <li>層7-9: ユニークな顔表現を作成</li>
+                            </ul>
+                        </li>
+                        <li><strong>比較:</strong> データベース内の既知の顔と比較</li>
+                        <li><strong>識別:</strong> 最も類似した人物にマッチ</li>
+                    </ol>
+
+                    <p><strong>パフォーマンス:</strong></p>
+                    <ul>
+                        <li>Labeled Faces in the Wild（LFW）ベンチマークで97.35%の精度</li>
+                        <li>人間レベルのパフォーマンス（97.5%）に近づく</li>
+                        <li>異なる角度、照明、表情で顔を認識できる</li>
+                    </ul>
+
+                    <p><strong>プライバシーに関する注意:</strong> Facebookはプライバシーの懸念から多くの地域で自動タグ付けを無効にしていますが、技術は非常に高度なままです。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="study-tip">
+            <h3>Study Tips for Neural Networks</h3>
+            <ul>
+                <li>Draw a simple neural network with 2-3 layers by hand</li>
+                <li>Understand the purpose of each activation function</li>
+                <li>Know the difference between forward and backward propagation</li>
+                <li>Visualize how convolution filters work on images</li>
+                <li>Understand why CNNs are better than regular NNs for images</li>
+                <li>Know the trade-offs: more layers = more capacity but harder to train</li>
+                <li>Memorize typical CNN architecture pattern: Conv → ReLU → Pool → Repeat → Dense</li>
+            </ul>
+        </div>
+
+        <h2>📝 Test Questions / テスト問題</h2>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 1: Multiple Choice</h4>
+            <p><strong>What is the purpose of an activation function in a neural network?</strong></p>
+            <ol type="A">
+                <li>To store the network weights</li>
+                <li>To introduce non-linearity so the network can learn complex patterns</li>
+                <li>To calculate the loss function</li>
+                <li>To split data into training and test sets</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Activation functions introduce non-linearity, allowing networks to learn complex, non-linear patterns.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 2: Multiple Choice</h4>
+            <p><strong>Which activation function is most commonly used in hidden layers of modern neural networks?</strong></p>
+            <ol type="A">
+                <li>Sigmoid</li>
+                <li>ReLU (Rectified Linear Unit)</li>
+                <li>Softmax</li>
+                <li>Linear</li>
+            </ol>
+            <p><strong>Answer:</strong> B - ReLU is the default choice for hidden layers because it's fast and prevents vanishing gradient problems.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 3: Multiple Choice</h4>
+            <p><strong>What is the main advantage of CNNs over traditional neural networks for image processing?</strong></p>
+            <ol type="A">
+                <li>CNNs require less training data</li>
+                <li>CNNs preserve spatial relationships in images</li>
+                <li>CNNs train faster</li>
+                <li>CNNs use less memory</li>
+            </ol>
+            <p><strong>Answer:</strong> B - CNNs preserve spatial structure through convolution operations, unlike traditional NNs that treat pixels independently.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 4: Multiple Choice</h4>
+            <p><strong>In backpropagation, what does the learning rate control?</strong></p>
+            <ol type="A">
+                <li>The number of layers in the network</li>
+                <li>How much to update weights in each iteration</li>
+                <li>The batch size</li>
+                <li>The number of epochs</li>
+            </ol>
+            <p><strong>Answer:</strong> B - The learning rate determines the step size for weight updates during gradient descent.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 5: Multiple Choice</h4>
+            <p><strong>What does a pooling layer in a CNN do?</strong></p>
+            <ol type="A">
+                <li>Increases the dimensions of feature maps</li>
+                <li>Reduces dimensions while keeping important features</li>
+                <li>Adds non-linearity</li>
+                <li>Classifies the final output</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Pooling reduces spatial dimensions while preserving the most important features (e.g., max pooling keeps maximum values).</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 6: Short Answer</h4>
+            <p><strong>Explain the four main steps of training a neural network (forward propagation, loss calculation, backward propagation, weight update).</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <ol>
+                <li><strong>Forward Propagation:</strong> Input data flows through the network layer by layer. Each neuron computes weighted sum of inputs plus bias, then applies activation function. Final layer produces prediction.</li>
+                <li><strong>Loss Calculation:</strong> Compare the network's prediction to the actual label using a loss function (e.g., Cross-Entropy for classification, MSE for regression). This measures how wrong the prediction is.</li>
+                <li><strong>Backward Propagation:</strong> Calculate the gradient of the loss with respect to each weight using the chain rule. Gradients flow backward through the network from output to input, showing how much each weight contributed to the error.</li>
+                <li><strong>Weight Update:</strong> Adjust weights to reduce loss using gradient descent: w_new = w_old - (learning_rate × gradient). This moves weights in the direction that reduces error.</li>
+            </ol>
+            <p>This process repeats for many iterations until the network learns optimal weights.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 7: Short Answer</h4>
+            <p><strong>Compare ReLU, Sigmoid, and Softmax activation functions. When would you use each one?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>ReLU (Rectified Linear Unit):</strong></p>
+            <ul>
+                <li>Formula: f(x) = max(0, x)</li>
+                <li>Output: 0 or positive values</li>
+                <li>Use: Hidden layers (most common choice)</li>
+                <li>Advantages: Fast, prevents vanishing gradient</li>
+            </ul>
+            <p><strong>Sigmoid:</strong></p>
+            <ul>
+                <li>Formula: σ(x) = 1/(1 + e^(-x))</li>
+                <li>Output: 0 to 1 (probability-like)</li>
+                <li>Use: Output layer for binary classification</li>
+                <li>Advantages: Smooth, interpretable as probability</li>
+            </ul>
+            <p><strong>Softmax:</strong></p>
+            <ul>
+                <li>Formula: Converts vector to probability distribution</li>
+                <li>Output: Probabilities that sum to 1</li>
+                <li>Use: Output layer for multi-class classification</li>
+                <li>Advantages: Provides class probabilities</li>
+            </ul>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 8: Short Answer</h4>
+            <p><strong>Describe how a convolutional layer works in a CNN. Include the role of filters and feature maps.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p>A convolutional layer works by sliding small filters (kernels) across an input image to detect specific features.</p>
+            <p><strong>Process:</strong></p>
+            <ol>
+                <li><strong>Filters:</strong> Small matrices (e.g., 3×3) containing learnable weights. Each filter is designed to detect a specific feature like edges, corners, or textures.</li>
+                <li><strong>Sliding Operation:</strong> The filter slides across the image from left to right, top to bottom. At each position, it performs element-wise multiplication with the image patch underneath.</li>
+                <li><strong>Calculation:</strong> Sum all the products to produce a single output value that indicates how strongly that feature is present at that location.</li>
+                <li><strong>Feature Maps:</strong> The collection of all output values creates a feature map showing where the detected feature appears in the image.</li>
+                <li><strong>Multiple Filters:</strong> Using multiple filters (e.g., 32 or 64) creates multiple feature maps, each detecting different features.</li>
+            </ol>
+            <p>This allows CNNs to automatically learn hierarchical features: early layers detect simple edges, later layers combine them into complex patterns.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 9: Application Question</h4>
+            <p><strong>Facebook's DeepFace uses a 9-layer CNN for facial recognition. Explain:</strong></p>
+            <p><strong>a) What problem does DeepFace solve?</strong></p>
+            <p><strong>b) How do the different layers learn hierarchical features?</strong></p>
+            <p><strong>c) Why is a CNN better than a traditional neural network for this task?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>a) Problem:</strong> Automatically identify and tag people in photos from billions of users. The system needs to recognize the same person across different angles, lighting conditions, and facial expressions with high accuracy.</p>
+            <p><strong>b) Hierarchical Learning:</strong></p>
+            <ul>
+                <li><strong>Early Layers (1-3):</strong> Detect simple features like edges, lines, and basic contours (eyebrow curves, nose edges)</li>
+                <li><strong>Middle Layers (4-6):</strong> Combine simple features into facial parts (complete eyes, nose shape, mouth)</li>
+                <li><strong>Deep Layers (7-9):</strong> Combine facial parts into holistic face representations (spatial relationships between eyes, nose, mouth creating unique face signature)</li>
+            </ul>
+            <p>Each layer builds upon previous layers to create increasingly complex and person-specific representations.</p>
+            <p><strong>c) Why CNN is Better:</strong></p>
+            <ul>
+                <li><strong>Spatial Invariance:</strong> CNNs can recognize faces regardless of position in image</li>
+                <li><strong>Local Patterns:</strong> Convolution filters capture local spatial patterns (eyes, nose) before combining them</li>
+                <li><strong>Parameter Sharing:</strong> Same filter can detect eyes anywhere in image, reducing parameters</li>
+                <li><strong>Translation Invariance:</strong> Pooling makes recognition robust to small shifts</li>
+                <li>Traditional NNs would treat each pixel independently, losing crucial spatial structure of faces</li>
+            </ul>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 10: Essay Question</h4>
+            <p><strong>Explain neural networks from biological inspiration to modern CNNs. Include:</strong></p>
+            <ul>
+                <li>How biological neurons inspired artificial neurons</li>
+                <li>The structure of a multi-layer neural network</li>
+                <li>How networks learn through backpropagation</li>
+                <li>Why CNNs were developed and how they differ from standard neural networks</li>
+                <li>A real-world application demonstrating CNN capabilities</li>
+            </ul>
+            <p><strong>Sample Answer:</strong></p>
+
+            <p><strong>Biological Inspiration:</strong></p>
+            <p>Artificial neural networks are inspired by biological neurons in the brain. Biological neurons receive signals through dendrites, process them in the cell body, and send output through the axon to other neurons via synapses. Similarly, artificial neurons receive inputs, multiply them by weights (like synapse strength), sum them, add bias, and apply an activation function to produce output. This mimics how neurons fire when stimulation exceeds a threshold.</p>
+
+            <p><strong>Multi-Layer Structure:</strong></p>
+            <p>Neural networks consist of layers: an input layer receives data features, hidden layers perform computations and learn representations, and an output layer produces predictions. Each layer contains multiple neurons fully connected to the next layer. Deep networks (3+ hidden layers) can learn hierarchical features: simple patterns in early layers → combinations in middle layers → complex concepts in deep layers. This mirrors how human vision works: seeing edges → shapes → objects.</p>
+
+            <p><strong>Learning Through Backpropagation:</strong></p>
+            <p>Networks learn by adjusting weights to minimize prediction errors. The process has four steps: (1) Forward propagation flows data through the network to make predictions. (2) Loss calculation measures prediction error. (3) Backward propagation calculates how much each weight contributed to the error using calculus (chain rule). (4) Weight update adjusts weights in the direction that reduces error using gradient descent. Repeating this over many examples allows the network to learn optimal weights that minimize loss.</p>
+
+            <p><strong>Development of CNNs:</strong></p>
+            <p>Traditional neural networks treat input features independently, but images have spatial structure where nearby pixels are related. CNNs were developed to preserve spatial relationships through convolutional layers that slide filters across images to detect local patterns. Pooling layers reduce dimensions while keeping important features. This architecture is specifically designed for grid-like data and automatically learns spatial hierarchies of features without manual feature engineering.</p>
+
+            <p><strong>Real-World Application - Facebook DeepFace:</strong></p>
+            <p>Facebook's DeepFace CNN achieves 97.35% accuracy in facial recognition, approaching human-level performance. The 9-layer network processes 152×152 pixel face images through convolutional layers that progressively extract features: edges and textures → facial parts (eyes, nose) → complete face representations. Using 4 million training images of 4,000 people, it learns unique face signatures that enable automatic photo tagging. The CNN excels because convolution preserves spatial face structure, pooling provides position invariance, and hierarchical layers capture both local details and global face patterns. This demonstrates how CNNs can solve complex real-world vision tasks that were impossible for traditional algorithms.</p>
+
+            <p><strong>Conclusion:</strong> From biological inspiration to specialized architectures like CNNs, neural networks have evolved to tackle increasingly complex problems, with applications spanning computer vision, natural language processing, and beyond.</p>
+        </div>
+
+        <h2>🎯 Key Takeaways / 重要ポイント</h2>
+
+        <div class="highlight-box">
+            <h3>Remember These Core Concepts:</h3>
+            <ul>
+                <li><strong>Artificial Neuron:</strong> Inputs × Weights + Bias → Activation Function → Output</li>
+                <li><strong>Network Structure:</strong> Input Layer → Hidden Layers → Output Layer</li>
+                <li><strong>Activation Functions:</strong> ReLU (hidden), Sigmoid (binary output), Softmax (multi-class)</li>
+                <li><strong>Training:</strong> Forward Prop → Loss → Backward Prop → Update Weights</li>
+                <li><strong>CNNs:</strong> Convolution (feature extraction) + Pooling (dimension reduction)</li>
+                <li><strong>Hierarchical Learning:</strong> Simple features → Complex patterns</li>
+                <li><strong>Real-World:</strong> Facebook DeepFace (97.35% facial recognition accuracy)</li>
+                <li><strong>Deep Learning:</strong> More layers = more capacity but harder to train</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-11/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+            <a href="../week-13/lecture.html">Next Week →</a>
+        </div>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Week 12 Lecture Notes - Introduction to AI and Data Science</p>
+            <p>Chukyo University - 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 5: Search - Best-first and A*</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            overflow: hidden;
+            padding-top: 50px;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3em;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            color: #7c3aed;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide h4 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .english, .japanese {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            font-size: 1em;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 70px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #2563eb;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2em;
+            color: #7c3aed;
+            margin-bottom: 40px;
+        }
+
+        .title-slide .info {
+            font-size: 1.3em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+
+            .slide h1 {
+                font-size: 2.5em;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slide-container {
+                padding: 0;
+            }
+
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .slide h1 {
+                font-size: 2em;
+            }
+
+            .slide h2 {
+                font-size: 1.6em;
+            }
+
+            .bilingual {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5em;
+            }
+
+            .title-slide .subtitle {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        .slides-nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            padding: 10px 20px;
+        }
+
+        .slides-nav .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .slides-nav a {
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .slides-nav a:hover {
+            color: #2563eb;
+        }
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="lecture.html">Lecture Notes</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 14</div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Week 5</h1>
+            <p class="subtitle">Search: Best-first and A* Algorithm<br>探索：最良優先探索とA*アルゴリズム</p>
+            <p class="info"><strong>Course:</strong> Artificial Intelligence</p>
+            <p class="info"><strong>Topic:</strong> Informed Search and Heuristics</p>
+            <p class="info"><strong>Duration:</strong> 15-20 minutes / 15-20分</p>
+        </div>
+
+        <!-- Slide 2: Recap -->
+        <div class="slide">
+            <h2>Recap: Uninformed Search</h2>
+            <h2>復習：情報なし探索</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Last Week We Learned:</h3>
+                    <ul>
+                        <li><strong>BFS:</strong> Explores level-by-level, finds shortest path, high memory use</li>
+                        <li><strong>DFS:</strong> Explores depth-first, memory efficient, not optimal</li>
+                        <li>Both are "blind" - no knowledge about goal location</li>
+                    </ul>
+                    <h4>The Problem:</h4>
+                    <p>Uninformed search explores many irrelevant nodes</p>
+                </div>
+                <div class="japanese">
+                    <h3>先週学んだこと：</h3>
+                    <ul>
+                        <li><strong>BFS：</strong>レベルごとに探索、最短経路を見つける、高メモリ使用</li>
+                        <li><strong>DFS：</strong>深さ優先で探索、メモリ効率的、最適でない</li>
+                        <li>両方とも「盲目」 - 目標の場所についての知識がない</li>
+                    </ul>
+                    <h4>問題：</h4>
+                    <p>情報なし探索は多くの無関係なノードを探索します</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Informed Search Introduction -->
+        <div class="slide">
+            <h2>Informed Search: Using Knowledge</h2>
+            <h2>情報あり探索：知識を使用する</h2>
+            <div class="success-box">
+                <h3>The Key Idea / 主要なアイデア:</h3>
+                <p><strong>Use domain knowledge to guide the search toward the goal</strong></p>
+                <p><strong>ドメイン知識を使用して目標に向けて探索を導く</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Heuristic Function h(n):</h4>
+                    <p>An estimate of the cost from node n to the goal</p>
+                    <ul>
+                        <li><strong>Example:</strong> In map navigation, straight-line distance to destination</li>
+                        <li><strong>Property:</strong> Should be easy to compute</li>
+                        <li><strong>Goal:</strong> h(goal) = 0</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>ヒューリスティック関数h(n)：</h4>
+                    <p>ノードnから目標までのコストの推定</p>
+                    <ul>
+                        <li><strong>例：</strong>地図ナビゲーションでは、目的地までの直線距離</li>
+                        <li><strong>性質：</strong>計算が簡単であるべき</li>
+                        <li><strong>目標：</strong>h(目標) = 0</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Greedy Best-First Search -->
+        <div class="slide">
+            <h2>Greedy Best-First Search</h2>
+            <h2>貪欲最良優先探索</h2>
+            <div class="highlight-box">
+                <h3>Strategy / 戦略:</h3>
+                <p><strong>Always expand the node that appears closest to the goal (lowest h(n))</strong></p>
+                <p><strong>常に目標に最も近いと思われるノード（最小h(n)）を展開する</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>How It Works:</h4>
+                    <ul>
+                        <li>Uses a priority queue ordered by h(n)</li>
+                        <li>Always explores node with smallest estimated cost to goal</li>
+                        <li>Like "following your nose" toward the goal</li>
+                    </ul>
+                    <h4>Example: City Navigation</h4>
+                    <p>If going from Arad to Bucharest, always move to city closest (straight-line) to Bucharest</p>
+                </div>
+                <div class="japanese">
+                    <h4>仕組み：</h4>
+                    <ul>
+                        <li>h(n)で順序付けられた優先度キューを使用</li>
+                        <li>常に目標への推定コストが最小のノードを探索</li>
+                        <li>目標に向かって「鼻を追う」ようなもの</li>
+                    </ul>
+                    <h4>例：都市ナビゲーション</h4>
+                    <p>アラドからブカレストに行く場合、常にブカレストに（直線で）最も近い都市に移動</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Greedy Limitations -->
+        <div class="slide">
+            <h2>Limitations of Greedy Best-First</h2>
+            <h2>貪欲最良優先の限界</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Advantages / 利点</h3>
+                    <ul>
+                        <li><strong>Fast:</strong> Often finds solutions quickly</li>
+                        <li><strong>高速：</strong>しばしば解を素早く見つける</li>
+                        <li><strong>Intuitive:</strong> Makes sense - go toward goal</li>
+                        <li><strong>直感的：</strong>理にかなっている - 目標に向かう</li>
+                        <li><strong>Memory efficient:</strong> Similar to BFS</li>
+                        <li><strong>メモリ効率的：</strong>BFSに似ている</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Disadvantages / 欠点</h3>
+                    <ul>
+                        <li><strong>Not optimal:</strong> Doesn't consider path cost</li>
+                        <li><strong>最適でない：</strong>経路コストを考慮しない</li>
+                        <li><strong>Not complete:</strong> Can get stuck in loops</li>
+                        <li><strong>完全でない：</strong>ループにはまる可能性</li>
+                        <li><strong>Greedy:</strong> Short-sighted decisions</li>
+                        <li><strong>貪欲：</strong>近視眼的な決定</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h4>The Problem:</h4>
+                <p>Greedy search ignores the cost of the path taken so far!</p>
+                <p>貪欲探索はこれまでに取った経路のコストを無視します！</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: A* Introduction -->
+        <div class="slide">
+            <h2>A* Search: The Best of Both Worlds</h2>
+            <h2>A*探索：両方の良いところ</h2>
+            <div class="success-box">
+                <h3>The Breakthrough / ブレークスルー:</h3>
+                <p><strong>Combine actual cost so far + estimated cost to goal</strong></p>
+                <p><strong>これまでの実際のコスト + 目標までの推定コストを組み合わせる</strong></p>
+            </div>
+            <div class="highlight-box">
+                <h3>The A* Evaluation Function / A*評価関数:</h3>
+                <p><strong>f(n) = g(n) + h(n)</strong></p>
+                <ul>
+                    <li><strong>g(n)</strong> = cost from start to node n / 開始からノードnまでのコスト</li>
+                    <li><strong>h(n)</strong> = estimated cost from n to goal / nから目標までの推定コスト</li>
+                    <li><strong>f(n)</strong> = estimated total cost of path through n / nを通る経路の推定総コスト</li>
+                </ul>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Intuition:</strong> Choose nodes that minimize the total estimated cost</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>直感：</strong>推定総コストを最小化するノードを選択</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: A* Example -->
+        <div class="slide">
+            <h2>A* Example: Step by Step</h2>
+            <h2>A*例：ステップバイステップ</h2>
+            <div class="code-box">
+Goal: Find shortest path from S to G
+
+     S (h=7)
+    / \
+   A   B (h=6)
+  (h=6) |
+   |    C (h=4)
+   D    |
+  (h=3) G (h=0)
+
+Step 1: S - f(S) = 0 + 7 = 7
+Step 2: Expand S → A(g=1,h=6,f=7), B(g=1,h=6,f=7)
+Step 3: Expand A → D(g=4,h=3,f=7)
+Step 4: Expand B → C(g=2,h=4,f=6) [Lower f!]
+Step 5: Expand C → G(g=5,h=0,f=5) [Goal!]
+
+Path: S → B → C → G (Cost: 5)
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Key insight:</strong> A* found the optimal path by balancing cost and heuristic</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>重要な洞察：</strong>A*はコストとヒューリスティックのバランスを取ることで最適な経路を見つけました</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Admissible Heuristics -->
+        <div class="slide">
+            <h2>Admissible Heuristics</h2>
+            <h2>許容可能なヒューリスティック</h2>
+            <div class="highlight-box">
+                <h3>Critical Condition for Optimality</h3>
+                <h3>最適性のための重要な条件</h3>
+                <p><strong>A heuristic h(n) is admissible if it NEVER overestimates the cost to reach the goal</strong></p>
+                <p><strong>ヒューリスティックh(n)は、目標に到達するコストを決して過大評価しない場合、許容可能です</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Formal Definition:</h4>
+                    <p>h(n) ≤ h*(n) for all n</p>
+                    <p>Where h*(n) is the true cost from n to goal</p>
+                    <h4>Examples:</h4>
+                    <ul>
+                        <li><strong>Admissible:</strong> Straight-line distance (always ≤ actual road distance)</li>
+                        <li><strong>Not admissible:</strong> 2 × straight-line distance (overestimates)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>形式的定義：</h4>
+                    <p>すべてのnに対してh(n) ≤ h*(n)</p>
+                    <p>ここでh*(n)はnから目標までの真のコスト</p>
+                    <h4>例：</h4>
+                    <ul>
+                        <li><strong>許容可能：</strong>直線距離（常に実際の道路距離以下）</li>
+                        <li><strong>許容不可：</strong>2 × 直線距離（過大評価）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: A* Properties -->
+        <div class="slide">
+            <h2>A* Properties and Guarantees</h2>
+            <h2>A*の性質と保証</h2>
+            <div class="success-box">
+                <h3>Theorem / 定理:</h3>
+                <p><strong>If h(n) is admissible, A* is optimal and complete</strong></p>
+                <p><strong>h(n)が許容可能であれば、A*は最適かつ完全です</strong></p>
+            </div>
+            <div class="two-column">
+                <div>
+                    <h3>Advantages / 利点</h3>
+                    <ul>
+                        <li><strong>Optimal:</strong> Finds shortest path</li>
+                        <li><strong>最適：</strong>最短経路を見つける</li>
+                        <li><strong>Complete:</strong> Will find solution if exists</li>
+                        <li><strong>完全：</strong>存在すれば解を見つける</li>
+                        <li><strong>Optimally efficient:</strong> No other optimal algorithm expands fewer nodes</li>
+                        <li><strong>最適に効率的：</strong>他の最適アルゴリズムはより少ないノードを展開しない</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Limitations / 制限</h3>
+                    <ul>
+                        <li><strong>Memory:</strong> Can still use lots of memory</li>
+                        <li><strong>メモリ：</strong>まだ多くのメモリを使用する可能性</li>
+                        <li><strong>Heuristic quality:</strong> Performance depends on h(n)</li>
+                        <li><strong>ヒューリスティックの質：</strong>パフォーマンスはh(n)に依存</li>
+                        <li><strong>Computation:</strong> Better h(n) may be expensive to compute</li>
+                        <li><strong>計算：</strong>より良いh(n)は計算に高価かもしれない</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Heuristic Design -->
+        <div class="slide">
+            <h2>Designing Good Heuristics</h2>
+            <h2>良いヒューリスティックの設計</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Characteristics of Good Heuristics:</h3>
+                    <ul>
+                        <li><strong>Admissible:</strong> Never overestimate (for optimality)</li>
+                        <li><strong>Informative:</strong> Close to true cost (for efficiency)</li>
+                        <li><strong>Fast to compute:</strong> Don't waste time calculating h(n)</li>
+                    </ul>
+                    <h4>Classic Examples:</h4>
+                    <ul>
+                        <li><strong>8-puzzle:</strong> Number of misplaced tiles OR Manhattan distance</li>
+                        <li><strong>Navigation:</strong> Straight-line (Euclidean) distance</li>
+                        <li><strong>Maze:</strong> Manhattan distance to exit</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>良いヒューリスティックの特性：</h3>
+                    <ul>
+                        <li><strong>許容可能：</strong>決して過大評価しない（最適性のため）</li>
+                        <li><strong>情報的：</strong>真のコストに近い（効率のため）</li>
+                        <li><strong>計算が速い：</strong>h(n)の計算に時間を無駄にしない</li>
+                    </ul>
+                    <h4>古典的な例：</h4>
+                    <ul>
+                        <li><strong>8パズル：</strong>間違った位置のタイル数またはマンハッタン距離</li>
+                        <li><strong>ナビゲーション：</strong>直線（ユークリッド）距離</li>
+                        <li><strong>迷路：</strong>出口までのマンハッタン距離</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Manhattan vs Euclidean Distance -->
+        <div class="slide">
+            <h2>Distance Heuristics</h2>
+            <h2>距離ヒューリスティック</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Manhattan Distance</h3>
+                    <h3>マンハッタン距離</h3>
+                    <p><strong>Formula:</strong> |x1-x2| + |y1-y2|</p>
+                    <p><strong>式：</strong> |x1-x2| + |y1-y2|</p>
+                    <ul>
+                        <li>Sum of horizontal and vertical distances</li>
+                        <li>水平と垂直距離の合計</li>
+                        <li>Like moving on a city grid</li>
+                        <li>都市グリッド上を移動するような</li>
+                        <li>Good for grid-based problems</li>
+                        <li>グリッドベースの問題に適している</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Euclidean Distance</h3>
+                    <h3>ユークリッド距離</h3>
+                    <p><strong>Formula:</strong> √[(x1-x2)² + (y1-y2)²]</p>
+                    <p><strong>式：</strong> √[(x1-x2)² + (y1-y2)²]</p>
+                    <ul>
+                        <li>Straight-line distance</li>
+                        <li>直線距離</li>
+                        <li>"As the crow flies"</li>
+                        <li>「カラスが飛ぶように」</li>
+                        <li>Good for navigation problems</li>
+                        <li>ナビゲーション問題に適している</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Both are admissible!</strong> Neither overestimates actual distance</p>
+                <p><strong>両方とも許容可能です！</strong>どちらも実際の距離を過大評価しません</p>
+            </div>
+        </div>
+
+        <!-- Slide 12: Comparison Table -->
+        <div class="slide">
+            <h2>Search Algorithms Comparison</h2>
+            <h2>探索アルゴリズムの比較</h2>
+            <div class="code-box">
+Algorithm       Complete?  Optimal?  Time        Space       Notes
+─────────────────────────────────────────────────────────────────
+BFS             Yes        Yes*      O(b^d)      O(b^d)      * if costs equal
+DFS             No**       No        O(b^m)      O(bm)       ** can loop
+Greedy BFS      No         No        O(b^m)      O(b^m)      Fast but risky
+A*              Yes        Yes***    O(b^d)      O(b^d)      *** if h admissible
+
+b = branching factor
+d = depth of shallowest solution
+m = maximum depth
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Insight:</h4>
+                    <p>A* gives us the best of both worlds: optimal like BFS, but faster through intelligent guidance</p>
+                </div>
+                <div class="japanese">
+                    <h4>重要な洞察：</h4>
+                    <p>A*は両方の良いところを与えてくれます：BFSのように最適で、知的なガイダンスにより高速</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Real-World Applications -->
+        <div class="slide">
+            <h2>A* in the Real World</h2>
+            <h2>実世界のA*</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Where A* is Used:</h3>
+                    <ul>
+                        <li><strong>GPS Navigation:</strong> Finding fastest route (Google Maps, Waze)</li>
+                        <li><strong>Video Games:</strong> NPC pathfinding, character movement</li>
+                        <li><strong>Robotics:</strong> Path planning for autonomous robots</li>
+                        <li><strong>Network Routing:</strong> Finding optimal data paths</li>
+                        <li><strong>Puzzle Solving:</strong> Sudoku, Rubik's cube, sliding puzzles</li>
+                        <li><strong>Resource Allocation:</strong> Scheduling and optimization</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>A*が使用される場所：</h3>
+                    <ul>
+                        <li><strong>GPSナビゲーション：</strong>最速ルートを見つける（Google マップ、Waze）</li>
+                        <li><strong>ビデオゲーム：</strong>NPCの経路探索、キャラクター移動</li>
+                        <li><strong>ロボティクス：</strong>自律ロボットの経路計画</li>
+                        <li><strong>ネットワークルーティング：</strong>最適なデータパスを見つける</li>
+                        <li><strong>パズル解決：</strong>数独、ルービックキューブ、スライディングパズル</li>
+                        <li><strong>リソース割り当て：</strong>スケジューリングと最適化</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Summary -->
+        <div class="slide">
+            <h2>Summary and Next Week</h2>
+            <h2>まとめと来週</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Takeaways:</h3>
+                    <ul>
+                        <li><strong>Informed search</strong> uses heuristics to guide exploration</li>
+                        <li><strong>Greedy Best-First:</strong> Fast but not optimal</li>
+                        <li><strong>A*:</strong> Optimal and complete with admissible heuristic</li>
+                        <li><strong>f(n) = g(n) + h(n):</strong> Balance actual cost + estimate</li>
+                        <li><strong>Heuristic design:</strong> Must be admissible and informative</li>
+                    </ul>
+                    <h3>Next Week: Game Theory</h3>
+                    <p>Learn about <strong>adversarial search</strong>, <strong>Minimax algorithm</strong>, and <strong>Alpha-Beta pruning</strong></p>
+                    <p>How AI plays games against opponents!</p>
+                </div>
+                <div class="japanese">
+                    <h3>重要なポイント：</h3>
+                    <ul>
+                        <li><strong>情報あり探索</strong>はヒューリスティックを使用して探索を導く</li>
+                        <li><strong>貪欲最良優先：</strong>高速だが最適でない</li>
+                        <li><strong>A*：</strong>許容可能なヒューリスティックで最適かつ完全</li>
+                        <li><strong>f(n) = g(n) + h(n)：</strong>実際のコスト + 推定のバランス</li>
+                        <li><strong>ヒューリスティック設計：</strong>許容可能で情報的でなければならない</li>
+                    </ul>
+                    <h3>来週：ゲーム理論</h3>
+                    <p><strong>敵対的探索</strong>、<strong>ミニマックスアルゴリズム</strong>、<strong>アルファベータ枝刈り</strong>について学ぶ</p>
+                    <p>AIが対戦相手に対してゲームをプレイする方法！</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

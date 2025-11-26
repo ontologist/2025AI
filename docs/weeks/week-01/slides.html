@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 1: History of Artificial Intelligence 1</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3em;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            color: #7c3aed;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide h4 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .english, .japanese {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 70px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #2563eb;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2em;
+            color: #7c3aed;
+            margin-bottom: 40px;
+        }
+
+        .title-slide .info {
+            font-size: 1.3em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+
+            .slide h1 {
+                font-size: 2.5em;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slide-container {
+                padding: 0;
+            }
+
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .slide h1 {
+                font-size: 2em;
+            }
+
+            .slide h2 {
+                font-size: 1.6em;
+            }
+
+            .bilingual {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5em;
+            }
+
+            .title-slide .subtitle {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        .slides-nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            padding: 10px 20px;
+        }
+
+        .slides-nav .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .slides-nav a {
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .slides-nav a:hover {
+            color: #2563eb;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="lecture.html">Lecture Notes</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 14</div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Week 1</h1>
+            <p class="subtitle">History of Artificial Intelligence 1<br>人工知能の歴史1</p>
+            <p class="info"><strong>Course:</strong> Artificial Intelligence</p>
+            <p class="info"><strong>Topic:</strong> Early Developments and Foundations</p>
+            <p class="info"><strong>Duration:</strong> 15-20 minutes / 15-20分</p>
+        </div>
+
+        <!-- Slide 2: Introduction -->
+        <div class="slide">
+            <h2>Introduction</h2>
+            <h2>はじめに</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Today's Learning Goals:</h3>
+                    <ul>
+                        <li>Understand the origins of AI as a field</li>
+                        <li>Learn about Alan Turing's contributions</li>
+                        <li>Discover the significance of the Dartmouth Conference</li>
+                        <li>Explore early AI developments (1950s-1960s)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>本日の学習目標：</h3>
+                    <ul>
+                        <li>AI分野の起源を理解する</li>
+                        <li>アラン・チューリングの貢献について学ぶ</li>
+                        <li>ダートマス会議の重要性を発見する</li>
+                        <li>初期のAI発展（1950年代-1960年代）を探る</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: What is AI? -->
+        <div class="slide">
+            <h2>What is Artificial Intelligence?</h2>
+            <h2>人工知能とは？</h2>
+            <div class="highlight-box">
+                <h3>Definition / 定義:</h3>
+                <p><strong>Artificial Intelligence (AI)</strong> = The science and engineering of making intelligent machines</p>
+                <p><strong>人工知能（AI）</strong> = 知的な機械を作る科学と工学</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Characteristics:</h4>
+                    <ul>
+                        <li>Learning from experience</li>
+                        <li>Adapting to new situations</li>
+                        <li>Understanding and reasoning</li>
+                        <li>Solving complex problems</li>
+                        <li>Perceiving and interacting with the world</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>主な特徴：</h4>
+                    <ul>
+                        <li>経験から学習する</li>
+                        <li>新しい状況に適応する</li>
+                        <li>理解し推論する</li>
+                        <li>複雑な問題を解決する</li>
+                        <li>世界を知覚し相互作用する</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Before AI - Ancient Dreams -->
+        <div class="slide">
+            <h2>Ancient Dreams of Intelligent Machines</h2>
+            <h2>知的機械の古代の夢</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Historical Context:</h3>
+                    <p>The idea of artificial beings with intelligence has ancient roots:</p>
+                    <ul>
+                        <li><strong>Greek Mythology:</strong> Talos, the bronze automaton</li>
+                        <li><strong>Medieval Europe:</strong> Mechanical automatons and clocks</li>
+                        <li><strong>18th Century:</strong> The Mechanical Turk (chess-playing "machine")</li>
+                        <li><strong>19th Century:</strong> Charles Babbage's Analytical Engine</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>歴史的背景：</h3>
+                    <p>知性を持つ人工的な存在の概念は古代からあります：</p>
+                    <ul>
+                        <li><strong>ギリシャ神話：</strong>タロス、青銅の自動人形</li>
+                        <li><strong>中世ヨーロッパ：</strong>機械式自動人形と時計</li>
+                        <li><strong>18世紀：</strong>メカニカル・タークチェス「機械」</li>
+                        <li><strong>19世紀：</strong>チャールズ・バベッジの解析機関</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Alan Turing -->
+        <div class="slide">
+            <h2>Alan Turing: The Father of Computer Science</h2>
+            <h2>アラン・チューリング：コンピュータ科学の父</h2>
+            <div class="two-column">
+                <div>
+                    <h3>About Turing</h3>
+                    <h3>チューリングについて</h3>
+                    <ul>
+                        <li><strong>Born:</strong> 1912 in London / ロンドン</li>
+                        <li><strong>Education:</strong> Cambridge University / ケンブリッジ大学</li>
+                        <li><strong>WWII Role:</strong> Codebreaker at Bletchley Park / ブレッチリー・パークの暗号解読者</li>
+                        <li><strong>Legacy:</strong> Foundations of computing and AI / コンピューティングとAIの基礎</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Key Contributions</h3>
+                    <h3>主な貢献</h3>
+                    <ul>
+                        <li><strong>1936:</strong> Turing Machine concept / チューリングマシンの概念</li>
+                        <li><strong>1940s:</strong> Enigma code breaking / エニグマ暗号解読</li>
+                        <li><strong>1950:</strong> "Computing Machinery and Intelligence" paper / 論文</li>
+                        <li><strong>1950:</strong> The Turing Test / チューリングテスト</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: The Turing Test -->
+        <div class="slide">
+            <h2>The Turing Test (1950)</h2>
+            <h2>チューリングテスト（1950年）</h2>
+            <div class="highlight-box">
+                <h3>The Imitation Game / 模倣ゲーム</h3>
+                <p><strong>Question:</strong> "Can machines think?"</p>
+                <p><strong>質問：</strong>「機械は考えることができるか？」</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>How It Works:</h4>
+                    <ol>
+                        <li>A human judge converses with both a human and a machine (without seeing them)</li>
+                        <li>Both try to appear human through text responses</li>
+                        <li>If the judge cannot reliably distinguish the machine from the human, the machine passes the test</li>
+                    </ol>
+                    <p><strong>Significance:</strong> Shifted focus from "Can machines think?" to "Can machines behave intelligently?"</p>
+                </div>
+                <div class="japanese">
+                    <h4>仕組み：</h4>
+                    <ol>
+                        <li>人間の審査員が人間と機械の両方と会話する（見ずに）</li>
+                        <li>両方がテキスト応答で人間らしく見えるように試みる</li>
+                        <li>審査員が機械と人間を確実に区別できなければ、機械はテストに合格</li>
+                    </ol>
+                    <p><strong>重要性：</strong>「機械は考えられるか？」から「機械は知的に振る舞えるか？」に焦点を移した</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: The Dartmouth Conference (1956) -->
+        <div class="slide">
+            <h2>The Dartmouth Conference (1956)</h2>
+            <h2>ダートマス会議（1956年）</h2>
+            <div class="highlight-box">
+                <h3>The Birth of AI as a Field</h3>
+                <h3>分野としてのAIの誕生</h3>
+                <p><strong>Location:</strong> Dartmouth College, New Hampshire, USA</p>
+                <p><strong>場所：</strong>ダートマス大学、ニューハンプシャー州、米国</p>
+                <p><strong>Duration:</strong> Summer 1956 (6-8 weeks)</p>
+                <p><strong>期間：</strong>1956年夏（6-8週間）</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Organizers:</h4>
+                    <ul>
+                        <li><strong>John McCarthy</strong> (coined term "Artificial Intelligence")</li>
+                        <li><strong>Marvin Minsky</strong> (MIT)</li>
+                        <li><strong>Claude Shannon</strong> (information theory)</li>
+                        <li><strong>Nathaniel Rochester</strong> (IBM)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>主要主催者：</h4>
+                    <ul>
+                        <li><strong>ジョン・マッカーシー</strong>（「人工知能」という用語を作った）</li>
+                        <li><strong>マービン・ミンスキー</strong>（MIT）</li>
+                        <li><strong>クロード・シャノン</strong>（情報理論）</li>
+                        <li><strong>ナサニエル・ロチェスター</strong>（IBM）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Dartmouth Conference Goals -->
+        <div class="slide">
+            <h2>Dartmouth Conference: The Proposal</h2>
+            <h2>ダートマス会議：提案</h2>
+            <div class="highlight-box">
+                <h3>The Founding Hypothesis / 創設仮説:</h3>
+                <p><em>"Every aspect of learning or any other feature of intelligence can in principle be so precisely described that a machine can be made to simulate it."</em></p>
+                <p><em>「学習のあらゆる側面、または知能の他のあらゆる特徴は、原理的に非常に正確に記述できるので、機械がそれをシミュレートできるようにすることができる。」</em></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Topics to be Studied:</h4>
+                    <ul>
+                        <li>Automatic computers</li>
+                        <li>Programming languages for AI</li>
+                        <li>Neural networks</li>
+                        <li>Theory of computation</li>
+                        <li>Self-improvement</li>
+                        <li>Abstractions and randomness</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>研究すべきトピック：</h4>
+                    <ul>
+                        <li>自動コンピュータ</li>
+                        <li>AI用プログラミング言語</li>
+                        <li>ニューラルネットワーク</li>
+                        <li>計算理論</li>
+                        <li>自己改善</li>
+                        <li>抽象化とランダム性</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Early Optimism -->
+        <div class="slide">
+            <h2>Early Optimism (1956-1965)</h2>
+            <h2>初期の楽観主義（1956-1965年）</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>The Enthusiastic Predictions:</h3>
+                    <p>Researchers believed AI would be solved within a generation!</p>
+                    <ul>
+                        <li><strong>Herbert Simon (1957):</strong> "Within 20 years, machines will be capable of doing any work a man can do"</li>
+                        <li><strong>Marvin Minsky (1967):</strong> "Within a generation, the problem of creating 'artificial intelligence' will substantially be solved"</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>熱狂的な予測：</h3>
+                    <p>研究者たちはAIが一世代以内に解決されると信じていました！</p>
+                    <ul>
+                        <li><strong>ハーバート・サイモン（1957年）：</strong>「20年以内に、機械は人間ができるあらゆる仕事をできるようになる」</li>
+                        <li><strong>マービン・ミンスキー（1967年）：</strong>「一世代以内に、『人工知能』を作る問題は実質的に解決される」</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Reality:</strong> These predictions proved overly optimistic, but sparked tremendous research activity!</p>
+                <p><strong>現実：</strong>これらの予測は過度に楽観的であることが証明されましたが、驚異的な研究活動を引き起こしました！</p>
+            </div>
+        </div>
+
+        <!-- Slide 10: Early AI Programs -->
+        <div class="slide">
+            <h2>Early AI Programs (1950s-1960s)</h2>
+            <h2>初期のAIプログラム（1950年代-1960年代）</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Logic Theorist (1956)</h3>
+                    <h3>論理理論家（1956年）</h3>
+                    <p><strong>Creators:</strong> Allen Newell & Herbert Simon</p>
+                    <p><strong>Achievement:</strong> Proved mathematical theorems from Principia Mathematica</p>
+                    <p><strong>成果：</strong>プリンキピア・マテマティカの数学定理を証明</p>
+                </div>
+                <div>
+                    <h3>General Problem Solver (1957)</h3>
+                    <h3>汎用問題解決器（1957年）</h3>
+                    <p><strong>Creators:</strong> Newell, Simon & Shaw</p>
+                    <p><strong>Goal:</strong> Solve any problem that could be expressed as a formal system</p>
+                    <p><strong>目標：</strong>形式システムとして表現できるあらゆる問題を解決</p>
+                </div>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Other Notable Programs:</h4>
+                    <ul>
+                        <li><strong>ELIZA (1966):</strong> Early natural language processing - simulated a psychotherapist</li>
+                        <li><strong>STUDENT (1964):</strong> Solved algebra word problems</li>
+                        <li><strong>Blocks World:</strong> Programs that could manipulate virtual blocks</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>その他の注目すべきプログラム：</h4>
+                    <ul>
+                        <li><strong>ELIZA（1966年）：</strong>初期の自然言語処理 - 心理療法士をシミュレート</li>
+                        <li><strong>STUDENT（1964年）：</strong>代数文章題を解決</li>
+                        <li><strong>ブロックワールド：</strong>仮想ブロックを操作できるプログラム</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: LISP Programming Language -->
+        <div class="slide">
+            <h2>LISP: The Language of AI</h2>
+            <h2>LISP：AIの言語</h2>
+            <div class="highlight-box">
+                <h3>Created by John McCarthy (1958)</h3>
+                <h3>ジョン・マッカーシーによって作成（1958年）</h3>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Why LISP was Revolutionary:</h4>
+                    <ul>
+                        <li><strong>Symbolic processing:</strong> Perfect for manipulating symbols and logic</li>
+                        <li><strong>Flexibility:</strong> Programs could modify themselves</li>
+                        <li><strong>Interactive:</strong> Read-Eval-Print Loop (REPL)</li>
+                        <li><strong>Dynamic:</strong> No need to declare types in advance</li>
+                    </ul>
+                    <p><strong>Legacy:</strong> LISP dominated AI research for decades and influenced modern languages (Python, JavaScript)</p>
+                </div>
+                <div class="japanese">
+                    <h4>LISPが革新的だった理由：</h4>
+                    <ul>
+                        <li><strong>シンボル処理：</strong>シンボルとロジックを操作するのに最適</li>
+                        <li><strong>柔軟性：</strong>プログラムが自身を修正できる</li>
+                        <li><strong>対話的：</strong>読み取り-評価-出力ループ（REPL）</li>
+                        <li><strong>動的：</strong>事前に型を宣言する必要がない</li>
+                    </ul>
+                    <p><strong>遺産：</strong>LISPは数十年にわたってAI研究を支配し、現代の言語（Python、JavaScript）に影響を与えた</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Perceptrons and Neural Networks -->
+        <div class="slide">
+            <h2>Early Neural Networks</h2>
+            <h2>初期のニューラルネットワーク</h2>
+            <div class="two-column">
+                <div>
+                    <h3>McCulloch-Pitts Neuron (1943)</h3>
+                    <h3>マカロック・ピッツニューロン（1943年）</h3>
+                    <ul>
+                        <li>First mathematical model of a neuron</li>
+                        <li>最初のニューロンの数学モデル</li>
+                        <li>Could perform logical operations</li>
+                        <li>論理演算を実行できる</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Perceptron (1958)</h3>
+                    <h3>パーセプトロン（1958年）</h3>
+                    <ul>
+                        <li>Created by Frank Rosenblatt</li>
+                        <li>フランク・ローゼンブラットによって作成</li>
+                        <li>Could learn from examples</li>
+                        <li>例から学習できる</li>
+                        <li>Pattern recognition</li>
+                        <li>パターン認識</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <h4>The Promise and Limitation / 約束と制限:</h4>
+                <p><strong>Promise:</strong> Inspired by biological neurons, these systems could learn!</p>
+                <p><strong>約束：</strong>生物学的ニューロンに触発され、これらのシステムは学習できました！</p>
+                <p><strong>Limitation:</strong> Could only solve linearly separable problems (discovered in 1969)</p>
+                <p><strong>制限：</strong>線形分離可能な問題のみ解決できる（1969年に発見）</p>
+            </div>
+        </div>
+
+        <!-- Slide 13: Key Takeaways -->
+        <div class="slide">
+            <h2>Key Takeaways from Week 1</h2>
+            <h2>第1週の重要なポイント</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What We Learned:</h3>
+                    <ul>
+                        <li><strong>Ancient roots:</strong> Dreams of intelligent machines have existed for millennia</li>
+                        <li><strong>Alan Turing:</strong> Established theoretical foundations with the Turing Test</li>
+                        <li><strong>Dartmouth 1956:</strong> AI officially born as an academic discipline</li>
+                        <li><strong>Early optimism:</strong> Researchers believed AI was just around the corner</li>
+                        <li><strong>First successes:</strong> Early programs showed promise in logic and problem-solving</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>学んだこと：</h3>
+                    <ul>
+                        <li><strong>古代の起源：</strong>知的機械の夢は何千年も存在してきた</li>
+                        <li><strong>アラン・チューリング：</strong>チューリングテストで理論的基礎を確立</li>
+                        <li><strong>ダートマス1956年：</strong>AIが学問分野として正式に誕生</li>
+                        <li><strong>初期の楽観主義：</strong>研究者たちはAIがもうすぐそこにあると信じていた</li>
+                        <li><strong>最初の成功：</strong>初期のプログラムは論理と問題解決において期待を示した</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Preview Next Week -->
+        <div class="slide">
+            <h2>Next Week Preview</h2>
+            <h2>来週のプレビュー</h2>
+            <div class="highlight-box">
+                <h3>Week 2: History of AI 2</h3>
+                <h3>第2週：AI歴史2</h3>
+                <p><strong>Topics:</strong> AI Winters and Expert Systems Era</p>
+                <p><strong>トピック：</strong>AI冬とエキスパートシステム時代</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>What's Coming:</h4>
+                    <ul>
+                        <li>Why did the early optimism fade?</li>
+                        <li>The first "AI Winter" (1970s)</li>
+                        <li>The rise of expert systems (1980s)</li>
+                        <li>The second AI Winter (late 1980s-1990s)</li>
+                        <li>Lessons learned from boom-and-bust cycles</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>次回予告：</h4>
+                    <ul>
+                        <li>なぜ初期の楽観主義は消えたのか？</li>
+                        <li>最初の「AI冬」（1970年代）</li>
+                        <li>エキスパートシステムの台頭（1980年代）</li>
+                        <li>第二のAI冬（1980年代後半-1990年代）</li>
+                        <li>好況と不況のサイクルから学んだ教訓</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

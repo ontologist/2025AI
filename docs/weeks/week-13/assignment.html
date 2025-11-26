@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 13 Assignment: Reinforcement Learning</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2563eb;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 15px;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #7c3aed;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 5px solid #2563eb;
+            padding-left: 15px;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #2563eb;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .english, .japanese {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .info-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .nav-links {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .nav-links a {
+            color: #2563eb;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #cbd5e1;
+        }
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+        }
+        .scenario-box {
+            background: #f0fdf4;
+            border: 2px solid #22c55e;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        @media screen and (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2em; }
+            .bilingual { grid-template-columns: 1fr; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+
+        <h1>Week 13 Assignment</h1>
+        <h1>第13週課題</h1>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Assignment Title:</h3>
+                <p><strong>Exploration vs Exploitation: The Bandit Problem</strong></p>
+            </div>
+            <div class="japanese">
+                <h3>課題タイトル:</h3>
+                <p><strong>探索 vs 活用: バンディット問題</strong></p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Due Date:</strong> Before next class (Week 14)</p>
+                    <p><strong>Estimated Time:</strong> 45-55 minutes</p>
+                    <p><strong>Grade Weight:</strong> Part of 40% Individual Reports</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>締切:</strong> 次回授業前（第14週）</p>
+                    <p><strong>予想時間:</strong> 45-55分</p>
+                    <p><strong>成績配分:</strong> 個別レポート40%の一部</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Learning Objectives / 学習目標</h2>
+        <div class="bilingual">
+            <div class="english">
+                <ul>
+                    <li>Understand the exploration-exploitation tradeoff</li>
+                    <li>Analyze the n-armed bandit problem</li>
+                    <li>Compare different bandit strategies</li>
+                    <li>Apply RL concepts to real-world scenarios</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <ul>
+                    <li>探索-活用のトレードオフを理解する</li>
+                    <li>N本腕バンディット問題を分析する</li>
+                    <li>異なるバンディット戦略を比較する</li>
+                    <li>RL概念を実世界のシナリオに適用する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Part 1: Exploration-Exploitation Scenarios (30 points)</h2>
+        <h2>パート1: 探索-活用シナリオ（30点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.1 (15 points)</h3>
+                <p>For each of the following real-world scenarios, identify the exploration-exploitation tradeoff and explain which strategy you would use:</p>
+
+                <p><strong>Scenario A: Restaurant Selection</strong></p>
+                <p>You just moved to a new city with hundreds of restaurants. You have limited time and budget for dining out each month.</p>
+                <ul>
+                    <li>What is being explored?</li>
+                    <li>What is being exploited?</li>
+                    <li>What are the costs of too much exploration?</li>
+                    <li>What are the costs of too much exploitation?</li>
+                    <li>What strategy would you personally use? Why?</li>
+                </ul>
+
+                <p><strong>Scenario B: Job Searching</strong></p>
+                <p>You're looking for a career path. You could keep trying different jobs/fields (explore) or commit deeply to one path (exploit).</p>
+                <ul>
+                    <li>What is being explored?</li>
+                    <li>What is being exploited?</li>
+                    <li>How does age/career stage affect this tradeoff?</li>
+                    <li>What factors should influence your decision?</li>
+                </ul>
+
+                <p><em>Write 150-200 words total analyzing both scenarios.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.1（15点）</h3>
+                <p>以下の各実世界シナリオについて、探索-活用のトレードオフを特定し、どの戦略を使用するかを説明してください:</p>
+
+                <p><strong>シナリオA: レストラン選択</strong></p>
+                <p>あなたは数百のレストランがある新しい都市に引っ越したばかりです。毎月の外食の時間と予算が限られています。</p>
+                <ul>
+                    <li>何が探索されていますか？</li>
+                    <li>何が活用されていますか？</li>
+                    <li>探索が多すぎるコストは何ですか？</li>
+                    <li>活用が多すぎるコストは何ですか？</li>
+                    <li>あなたは個人的にどのような戦略を使用しますか？なぜですか？</li>
+                </ul>
+
+                <p><strong>シナリオB: 仕事探し</strong></p>
+                <p>あなたはキャリアパスを探しています。さまざまな仕事/分野を試し続ける（探索）か、1つのパスに深くコミットする（活用）ことができます。</p>
+                <ul>
+                    <li>何が探索されていますか？</li>
+                    <li>何が活用されていますか？</li>
+                    <li>年齢/キャリア段階はこのトレードオフにどのように影響しますか？</li>
+                    <li>決定に影響を与えるべき要因は何ですか？</li>
+                </ul>
+
+                <p><em>両方のシナリオを分析して合計150-200語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.2 (15 points)</h3>
+                <p>Create your own exploration-exploitation scenario from one of these domains:</p>
+                <ul>
+                    <li>Education (choosing classes, study methods)</li>
+                    <li>Health/Fitness (workout routines, diets)</li>
+                    <li>Entertainment (movies, music, books)</li>
+                    <li>Social (friendships, networking)</li>
+                </ul>
+
+                <p>For your scenario, describe:</p>
+                <ol>
+                    <li>The specific situation (50 words)</li>
+                    <li>What exploration means in this context</li>
+                    <li>What exploitation means in this context</li>
+                    <li>The tradeoffs involved</li>
+                    <li>An optimal strategy for balancing explore/exploit</li>
+                    <li>How you would know if you're exploring too much or too little</li>
+                </ol>
+                <p><em>Write 200-250 words with clear, creative thinking.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.2（15点）</h3>
+                <p>以下の領域の1つから独自の探索-活用シナリオを作成してください:</p>
+                <ul>
+                    <li>教育（クラスの選択、学習方法）</li>
+                    <li>健康/フィットネス（ワークアウトルーティン、ダイエット）</li>
+                    <li>エンターテインメント（映画、音楽、本）</li>
+                    <li>社交（友情、ネットワーキング）</li>
+                </ul>
+
+                <p>シナリオについて、以下を説明してください:</p>
+                <ol>
+                    <li>特定の状況（50語）</li>
+                    <li>このコンテキストで探索が意味すること</li>
+                    <li>このコンテキストで活用が意味すること</li>
+                    <li>関連するトレードオフ</li>
+                    <li>探索/活用のバランスを取るための最適な戦略</li>
+                    <li>探索が多すぎるか少なすぎるかをどのように知るか</li>
+                </ol>
+                <p><em>明確で創造的な思考で200-250語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 2: Bandit Problem Analysis (40 points)</h2>
+        <h2>パート2: バンディット問題分析（40点）</h2>
+
+        <div class="scenario-box">
+            <div class="bilingual">
+                <div class="english">
+                    <h3>The 3-Armed Bandit Problem</h3>
+                    <p>You have 3 slot machines (bandits) with unknown payout probabilities:</p>
+                    <ul>
+                        <li><strong>Machine A:</strong> Unknown average reward (actually 0.3)</li>
+                        <li><strong>Machine B:</strong> Unknown average reward (actually 0.6)</li>
+                        <li><strong>Machine C:</strong> Unknown average reward (actually 0.5)</li>
+                    </ul>
+                    <p>You have <strong>100 plays total</strong>. Your goal is to maximize total reward.</p>
+                    <p><em>Note: You don't know the actual probabilities - you must learn them!</em></p>
+                </div>
+                <div class="japanese">
+                    <h3>3本腕バンディット問題</h3>
+                    <p>未知の支払い確率を持つ3台のスロットマシン（バンディット）があります:</p>
+                    <ul>
+                        <li><strong>マシンA:</strong> 未知の平均報酬（実際は0.3）</li>
+                        <li><strong>マシンB:</strong> 未知の平均報酬（実際は0.6）</li>
+                        <li><strong>マシンC:</strong> 未知の平均報酬（実際は0.5）</li>
+                    </ul>
+                    <p><strong>合計100回のプレイ</strong>があります。総報酬を最大化することがあなたの目標です。</p>
+                    <p><em>注: 実際の確率はわかりません - それらを学習する必要があります！</em></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.1 (15 points)</h3>
+                <p>Compare three strategies for this problem:</p>
+
+                <p><strong>Strategy 1: Pure Greedy</strong></p>
+                <ul>
+                    <li>Play each machine once (3 plays)</li>
+                    <li>Always play the machine with highest observed reward (97 plays)</li>
+                </ul>
+
+                <p><strong>Strategy 2: Pure Random</strong></p>
+                <ul>
+                    <li>Randomly choose a machine each time (100 plays)</li>
+                </ul>
+
+                <p><strong>Strategy 3: ε-Greedy (ε = 0.1)</strong></p>
+                <ul>
+                    <li>90% of time: play best machine</li>
+                    <li>10% of time: randomly explore</li>
+                </ul>
+
+                <p>For each strategy, analyze:</p>
+                <ol>
+                    <li>What are the advantages?</li>
+                    <li>What are the disadvantages?</li>
+                    <li>Approximately how much total reward would you expect? (Rough estimate)</li>
+                    <li>Which strategy would perform best? Why?</li>
+                </ol>
+                <p><em>Write 200-250 words comparing all three strategies.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問2.1（15点）</h3>
+                <p>この問題に対する3つの戦略を比較してください:</p>
+
+                <p><strong>戦略1: 純粋貪欲法</strong></p>
+                <ul>
+                    <li>各マシンを1回プレイ（3回のプレイ）</li>
+                    <li>常に観察された報酬が最も高いマシンをプレイ（97回のプレイ）</li>
+                </ul>
+
+                <p><strong>戦略2: 純粋ランダム</strong></p>
+                <ul>
+                    <li>毎回ランダムにマシンを選択（100回のプレイ）</li>
+                </ul>
+
+                <p><strong>戦略3: ε-貪欲法（ε = 0.1）</strong></p>
+                <ul>
+                    <li>90%の時間: 最良のマシンをプレイ</li>
+                    <li>10%の時間: ランダムに探索</li>
+                </ul>
+
+                <p>各戦略について分析してください:</p>
+                <ol>
+                    <li>利点は何ですか？</li>
+                    <li>欠点は何ですか？</li>
+                    <li>どのくらいの総報酬を期待しますか？（大まかな見積もり）</li>
+                    <li>どの戦略が最もうまく機能しますか？なぜですか？</li>
+                </ol>
+                <p><em>3つすべての戦略を比較して200-250語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.2 (25 points)</h3>
+                <p>Design your own ε-greedy strategy:</p>
+
+                <ol>
+                    <li><strong>Initial Exploration Phase (5 points):</strong>
+                        <ul>
+                            <li>How many times would you play each machine initially to gather information?</li>
+                            <li>Why is this initial phase important?</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>Choose ε Value (10 points):</strong>
+                        <ul>
+                            <li>What value of ε would you choose (0.05, 0.1, 0.2, other)?</li>
+                            <li>Justify your choice based on:
+                                <ul>
+                                    <li>Total number of plays (100)</li>
+                                    <li>Number of machines (3)</li>
+                                    <li>Goal (maximize reward)</li>
+                                </ul>
+                            </li>
+                            <li>Would you use the same ε for all 100 plays, or change it over time?</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>Expected Performance (10 points):</strong>
+                        <ul>
+                            <li>Simulate your strategy mentally: After 10 plays, what might you know?</li>
+                            <li>After 50 plays, what would likely happen?</li>
+                            <li>Estimate your total expected reward over 100 plays</li>
+                            <li>How does this compare to always playing Machine B (the best one)?</li>
+                            <li>What is the cost of learning in this scenario?</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><em>Write 250-300 words with clear reasoning and calculations.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問2.2（25点）</h3>
+                <p>独自のε-貪欲戦略を設計してください:</p>
+
+                <ol>
+                    <li><strong>初期探索フェーズ（5点）:</strong>
+                        <ul>
+                            <li>情報を収集するために最初に各マシンを何回プレイしますか？</li>
+                            <li>なぜこの初期フェーズが重要ですか？</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>ε値を選択（10点）:</strong>
+                        <ul>
+                            <li>どのεの値を選択しますか（0.05、0.1、0.2、その他）？</li>
+                            <li>以下に基づいて選択を正当化してください:
+                                <ul>
+                                    <li>プレイの総数（100）</li>
+                                    <li>マシンの数（3）</li>
+                                    <li>目標（報酬を最大化）</li>
+                                </ul>
+                            </li>
+                            <li>100回すべてのプレイで同じεを使用しますか、それとも時間の経過とともに変更しますか？</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>予想されるパフォーマンス（10点）:</strong>
+                        <ul>
+                            <li>あなたの戦略を頭の中でシミュレート: 10回のプレイ後、何がわかるかもしれませんか？</li>
+                            <li>50回のプレイ後、何が起こる可能性が高いですか？</li>
+                            <li>100回のプレイでの総予想報酬を見積もる</li>
+                            <li>これは常にマシンB（最良のもの）をプレイすることと比較してどうですか？</li>
+                            <li>このシナリオでの学習のコストは何ですか？</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><em>明確な推論と計算で250-300語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 3: Real-World RL Application (30 points)</h2>
+        <h2>パート3: 実世界のRL応用（30点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 3.1 (30 points)</h3>
+                <p>Choose ONE real-world application where reinforcement learning (or specifically bandit algorithms) is used:</p>
+                <ul>
+                    <li>A/B testing for websites</li>
+                    <li>Online advertising (which ad to show)</li>
+                    <li>Clinical trials (which treatment to test)</li>
+                    <li>News/content recommendation</li>
+                    <li>Pricing strategies</li>
+                </ul>
+
+                <p>Analyze your chosen application:</p>
+                <ol>
+                    <li><strong>Problem Description (50 words):</strong> What is the company/organization trying to optimize?</li>
+
+                    <li><strong>Bandit Formulation (100 words):</strong>
+                        <ul>
+                            <li>What are the "arms" (options to choose from)?</li>
+                            <li>What is the reward?</li>
+                            <li>What does exploration mean here?</li>
+                            <li>What does exploitation mean here?</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>Tradeoff Analysis (100 words):</strong>
+                        <ul>
+                            <li>What are the costs of too much exploration?</li>
+                            <li>What are the costs of too much exploitation?</li>
+                            <li>How would you balance them?</li>
+                            <li>What factors make this tradeoff challenging?</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>Strategy Recommendation (100 words):</strong>
+                        <ul>
+                            <li>Which bandit algorithm would you recommend (greedy, ε-greedy, UCB, other)?</li>
+                            <li>Why is this algorithm appropriate?</li>
+                            <li>How would you measure success?</li>
+                            <li>What ethical considerations should be addressed?</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><em>Total: 350 words with specific, well-reasoned analysis.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問3.1（30点）</h3>
+                <p>強化学習（または特にバンディットアルゴリズム）が使用されている1つの実世界の応用を選択してください:</p>
+                <ul>
+                    <li>ウェブサイトのA/Bテスト</li>
+                    <li>オンライン広告（どの広告を表示するか）</li>
+                    <li>臨床試験（どの治療法をテストするか）</li>
+                    <li>ニュース/コンテンツ推薦</li>
+                    <li>価格戦略</li>
+                </ul>
+
+                <p>選択した応用を分析してください:</p>
+                <ol>
+                    <li><strong>問題の説明（50語）:</strong> 会社/組織は何を最適化しようとしていますか？</li>
+
+                    <li><strong>バンディット定式化（100語）:</strong>
+                        <ul>
+                            <li>「腕」（選択するオプション）は何ですか？</li>
+                            <li>報酬は何ですか？</li>
+                            <li>ここで探索は何を意味しますか？</li>
+                            <li>ここで活用は何を意味しますか？</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>トレードオフ分析（100語）:</strong>
+                        <ul>
+                            <li>探索が多すぎるコストは何ですか？</li>
+                            <li>活用が多すぎるコストは何ですか？</li>
+                            <li>それらをどのようにバランスしますか？</li>
+                            <li>このトレードオフを難しくする要因は何ですか？</li>
+                        </ul>
+                    </li>
+
+                    <li><strong>戦略推奨（100語）:</strong>
+                        <ul>
+                            <li>どのバンディットアルゴリズムを推奨しますか（貪欲法、ε-貪欲法、UCB、その他）？</li>
+                            <li>なぜこのアルゴリズムが適切ですか？</li>
+                            <li>成功をどのように測定しますか？</li>
+                            <li>どのような倫理的考慮事項に対処すべきですか？</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><em>合計: 具体的でよく推論された分析で350語。</em></p>
+            </div>
+        </div>
+
+        <h2>Submission Instructions / 提出方法</h2>
+        <div class="bilingual">
+            <div class="english">
+                <h3>Format:</h3>
+                <ul>
+                    <li>Submit as a PDF or Word document</li>
+                    <li>Include your name and student ID at the top</li>
+                    <li>Label each part clearly</li>
+                    <li>Show calculations/reasoning for bandit problem</li>
+                    <li>Use clear structure and headings</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>形式:</h3>
+                <ul>
+                    <li>PDFまたはWordドキュメントとして提出</li>
+                    <li>上部に氏名と学生IDを記載</li>
+                    <li>各パートを明確にラベル付けする</li>
+                    <li>バンディット問題の計算/推論を示す</li>
+                    <li>明確な構造と見出しを使用する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Grading Rubric / 採点基準</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component / 項目</th>
+                    <th>Points / 配点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Part 1: Exploration-exploitation scenario analysis<br>パート1: 探索-活用シナリオ分析</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>Part 2: Bandit problem strategy comparison and design<br>パート2: バンディット問題戦略比較と設計</td>
+                    <td>40</td>
+                </tr>
+                <tr>
+                    <td>Part 3: Real-world RL application analysis<br>パート3: 実世界のRL応用分析</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td><strong>Total / 合計</strong></td>
+                    <td><strong>100</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box">
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Tips for Success:</h3>
+                    <ul>
+                        <li>Think about exploration-exploitation in your daily decisions</li>
+                        <li>For bandit problem, trace through the strategy step-by-step</li>
+                        <li>Consider both short-term and long-term rewards</li>
+                        <li>Use specific numbers in your estimates and calculations</li>
+                        <li>Connect concepts to practical business/policy decisions</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>成功のためのヒント:</h3>
+                    <ul>
+                        <li>日常の決定における探索-活用について考える</li>
+                        <li>バンディット問題については、戦略をステップバイステップでトレースする</li>
+                        <li>短期的および長期的報酬の両方を考慮する</li>
+                        <li>見積もりと計算で具体的な数値を使用する</li>
+                        <li>概念を実際のビジネス/政策決定に結び付ける</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-links" style="margin-top: 30px;">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+    </div>
+</body>
+</html>

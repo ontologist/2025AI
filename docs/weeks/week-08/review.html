@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weeks 1-7 Review</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3em;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            color: #7c3aed;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide h4 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .english, .japanese {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 70px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #2563eb;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2em;
+            color: #7c3aed;
+            margin-bottom: 40px;
+        }
+
+        .title-slide .info {
+            font-size: 1.3em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        @media screen and (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+
+            .slide h1 {
+                font-size: 2.5em;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slide-container {
+                padding: 0;
+            }
+
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .slide h1 {
+                font-size: 2em;
+            }
+
+            .slide h2 {
+                font-size: 1.6em;
+            }
+
+            .bilingual {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5em;
+            }
+
+            .title-slide .subtitle {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        .slides-nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            padding: 10px 20px;
+        }
+
+        .slides-nav .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .slides-nav a {
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .slides-nav a:hover {
+            color: #2563eb;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Week 8 Slides</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 10</div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Review of Weeks 1-7</h1>
+            <p class="subtitle">Comprehensive Review<br>総合復習</p>
+            <p class="info"><strong>Course:</strong> Introduction to AI and Data Science</p>
+            <p class="info"><strong>Coverage:</strong> Python Basics through Supervised Learning</p>
+        </div>
+
+        <!-- Slide 2: Course Journey Overview -->
+        <div class="slide">
+            <h2>Our Journey So Far / これまでの旅</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What We've Covered:</h3>
+                    <ul>
+                        <li><strong>Week 1:</strong> Python basics & programming fundamentals</li>
+                        <li><strong>Week 2:</strong> Data structures (lists, dictionaries, sets)</li>
+                        <li><strong>Week 3:</strong> Web scraping with BeautifulSoup</li>
+                        <li><strong>Week 4:</strong> Data analysis with Pandas</li>
+                        <li><strong>Week 5:</strong> Data visualization</li>
+                        <li><strong>Week 6:</strong> Introduction to ML</li>
+                        <li><strong>Week 7:</strong> Supervised learning basics</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>これまで学んだこと:</h3>
+                    <ul>
+                        <li><strong>第1週:</strong> Python基礎とプログラミング基礎</li>
+                        <li><strong>第2週:</strong> データ構造（リスト、辞書、セット）</li>
+                        <li><strong>第3週:</strong> BeautifulSoupでのWebスクレイピング</li>
+                        <li><strong>第4週:</strong> Pandasでのデータ分析</li>
+                        <li><strong>第5週:</strong> データ可視化</li>
+                        <li><strong>第6週:</strong> ML入門</li>
+                        <li><strong>第7週:</strong> 教師あり学習基礎</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Python Fundamentals Review -->
+        <div class="slide">
+            <h2>Weeks 1-2: Python Fundamentals</h2>
+            <h2>第1-2週: Python基礎</h2>
+            <h3>Key Concepts / 主要概念:</h3>
+            <div class="two-column">
+                <div>
+                    <h4>Basic Syntax / 基本構文</h4>
+                    <div class="code-box">Variables 変数
+x = 10
+name = "Python"
+
+Conditionals 条件文
+if x > 5:
+    print("Large")
+
+Loops ループ
+for i in range(10):
+    print(i)</div>
+                </div>
+                <div>
+                    <h4>Data Structures / データ構造</h4>
+                    <div class="code-box">Lists リスト
+my_list = [1, 2, 3]
+
+Dictionaries 辞書
+data = {"name": "John"}
+
+Sets セット
+unique = {1, 2, 3}</div>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Key Skill:</strong> Understanding Python syntax is the foundation for all data science work</p>
+                <p><strong>重要スキル:</strong> Python構文の理解はすべてのデータサイエンス作業の基礎</p>
+            </div>
+        </div>
+
+        <!-- Slide 4: Web Scraping Review -->
+        <div class="slide">
+            <h2>Week 3: Web Scraping</h2>
+            <h2>第3週: Webスクレイピング</h2>
+            <h3>BeautifulSoup Essentials</h3>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>What We Learned:</h4>
+                    <ul>
+                        <li>HTML structure and DOM</li>
+                        <li>CSS selectors</li>
+                        <li>Extracting text and attributes</li>
+                        <li>Navigating HTML trees</li>
+                        <li>Handling pagination</li>
+                    </ul>
+                    <h4>Real Application:</h4>
+                    <p>Scraping mynavi.jp for company data</p>
+                </div>
+                <div class="japanese">
+                    <h4>学んだこと:</h4>
+                    <ul>
+                        <li>HTML構造とDOM</li>
+                        <li>CSSセレクタ</li>
+                        <li>テキストと属性の抽出</li>
+                        <li>HTMLツリーのナビゲーション</li>
+                        <li>ページネーションの処理</li>
+                    </ul>
+                    <h4>実際の応用:</h4>
+                    <p>企業データのためのmynavi.jpスクレイピング</p>
+                </div>
+            </div>
+            <div class="code-box">from bs4 import BeautifulSoup
+soup = BeautifulSoup(html, 'html.parser')
+companies = soup.find_all('div', class_='company')</div>
+        </div>
+
+        <!-- Slide 5: Data Analysis with Pandas -->
+        <div class="slide">
+            <h2>Week 4: Data Analysis with Pandas</h2>
+            <h2>第4週: Pandasでのデータ分析</h2>
+            <h3>Pandas Essentials / Pandas基礎:</h3>
+            <div class="two-column">
+                <div>
+                    <h4>DataFrames</h4>
+                    <div class="code-box">import pandas as pd
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Read CSV
+df = pd.read_csv('file.csv')
+
+# View data
+df.head()
+df.info()
+df.describe()</div>
+                </div>
+                <div>
+                    <h4>Data Operations</h4>
+                    <div class="code-box"># Filter データフィルタ
+df[df['age'] > 25]
+
+# Group グループ化
+df.groupby('category').mean()
+
+# Sort ソート
+df.sort_values('name')</div>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p><strong>Key Skill:</strong> Pandas is essential for data cleaning and preparation</p>
+                <p><strong>重要スキル:</strong> Pandasはデータクリーニングと準備に不可欠</p>
+            </div>
+        </div>
+
+        <!-- Slide 6: Data Visualization -->
+        <div class="slide">
+            <h2>Week 5: Data Visualization</h2>
+            <h2>第5週: データ可視化</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Visualization Libraries:</h3>
+                    <ul>
+                        <li><strong>Matplotlib:</strong> Basic plotting library</li>
+                        <li><strong>Seaborn:</strong> Statistical visualizations</li>
+                        <li><strong>Plotly:</strong> Interactive charts</li>
+                    </ul>
+                    <h4>Common Plot Types:</h4>
+                    <ul>
+                        <li>Line plots (trends)</li>
+                        <li>Bar charts (comparisons)</li>
+                        <li>Scatter plots (relationships)</li>
+                        <li>Histograms (distributions)</li>
+                        <li>Heatmaps (correlations)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>可視化ライブラリ:</h3>
+                    <ul>
+                        <li><strong>Matplotlib:</strong> 基本的なプロットライブラリ</li>
+                        <li><strong>Seaborn:</strong> 統計的可視化</li>
+                        <li><strong>Plotly:</strong> インタラクティブチャート</li>
+                    </ul>
+                    <h4>一般的なプロットタイプ:</h4>
+                    <ul>
+                        <li>折れ線グラフ（トレンド）</li>
+                        <li>棒グラフ（比較）</li>
+                        <li>散布図（関係性）</li>
+                        <li>ヒストグラム（分布）</li>
+                        <li>ヒートマップ（相関）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Introduction to Machine Learning -->
+        <div class="slide">
+            <h2>Week 6: Introduction to Machine Learning</h2>
+            <h2>第6週: 機械学習入門</h2>
+            <div class="highlight-box">
+                <h3>Core ML Concepts / MLの中核概念:</h3>
+                <div class="code-box">Machine Learning = Learning from Data
+機械学習 = データからの学習
+
+Traditional Programming: Rules + Data → Answer
+従来のプログラミング: ルール + データ → 答え
+
+Machine Learning: Data + Answer → Rules (learned)
+機械学習: データ + 答え → ルール（学習）</div>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Three Types of ML:</h3>
+                    <ul>
+                        <li><strong>Supervised:</strong> Learn from labeled examples</li>
+                        <li><strong>Unsupervised:</strong> Find patterns without labels</li>
+                        <li><strong>Reinforcement:</strong> Learn through trial and error</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>MLの3つのタイプ:</h3>
+                    <ul>
+                        <li><strong>教師あり:</strong> ラベル付き例から学習</li>
+                        <li><strong>教師なし:</strong> ラベルなしでパターンを発見</li>
+                        <li><strong>強化学習:</strong> 試行錯誤を通じて学習</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: Supervised Learning Basics -->
+        <div class="slide">
+            <h2>Week 7: Supervised Learning Basics</h2>
+            <h2>第7週: 教師あり学習基礎</h2>
+            <h3>The ML Workflow / MLワークフロー:</h3>
+            <div class="code-box">1. Collect Data → 2. Prepare Data → 3. Train Model → 4. Evaluate → 5. Predict
+   データ収集      データ準備        モデル訓練      評価         予測</div>
+            <div class="two-column">
+                <div>
+                    <h4>Classification / 分類</h4>
+                    <ul>
+                        <li>Predicting categories</li>
+                        <li>カテゴリの予測</li>
+                        <li>Example: Spam vs Not Spam</li>
+                        <li>例: スパム vs 非スパム</li>
+                        <li>Output: Discrete labels</li>
+                        <li>出力: 離散ラベル</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Regression / 回帰</h4>
+                    <ul>
+                        <li>Predicting continuous values</li>
+                        <li>連続値の予測</li>
+                        <li>Example: House prices</li>
+                        <li>例: 住宅価格</li>
+                        <li>Output: Numeric values</li>
+                        <li>出力: 数値</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Key Skills Acquired -->
+        <div class="slide">
+            <h2>Key Skills You've Acquired</h2>
+            <h2>習得した主要スキル</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Technical Skills:</h3>
+                    <ul>
+                        <li>Python programming fundamentals</li>
+                        <li>Web scraping and data collection</li>
+                        <li>Data manipulation with Pandas</li>
+                        <li>Data visualization techniques</li>
+                        <li>Basic ML concepts and workflows</li>
+                    </ul>
+                    <h3>Practical Applications:</h3>
+                    <ul>
+                        <li>Collect data from websites</li>
+                        <li>Clean and prepare datasets</li>
+                        <li>Analyze data patterns</li>
+                        <li>Create informative visualizations</li>
+                        <li>Build simple ML models</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>技術スキル:</h3>
+                    <ul>
+                        <li>Pythonプログラミング基礎</li>
+                        <li>Webスクレイピングとデータ収集</li>
+                        <li>Pandasでのデータ操作</li>
+                        <li>データ可視化技術</li>
+                        <li>基本的なML概念とワークフロー</li>
+                    </ul>
+                    <h3>実践的応用:</h3>
+                    <ul>
+                        <li>ウェブサイトからデータを収集</li>
+                        <li>データセットをクリーニングし準備</li>
+                        <li>データパターンを分析</li>
+                        <li>情報的な可視化を作成</li>
+                        <li>シンプルなMLモデルを構築</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Looking Forward -->
+        <div class="slide">
+            <h2>Looking Forward: Weeks 8-14</h2>
+            <h2>今後の展望: 第8-14週</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What's Coming Next:</h3>
+                    <ul>
+                        <li><strong>Week 8:</strong> Clustering & AI/ML Overview</li>
+                        <li><strong>Week 9:</strong> AI Types and ML Paradigms</li>
+                        <li><strong>Week 10:</strong> Supervised Learning Deep Dive</li>
+                        <li><strong>Week 11:</strong> Classification Algorithms</li>
+                        <li><strong>Week 12:</strong> Neural Networks & Gradient Descent</li>
+                        <li><strong>Week 13:</strong> Reinforcement Learning</li>
+                        <li><strong>Week 14:</strong> Comprehensive Review & Exam</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>次に来ること:</h3>
+                    <ul>
+                        <li><strong>第8週:</strong> クラスタリング・AI/ML概観</li>
+                        <li><strong>第9週:</strong> AIの種類とMLパラダイム</li>
+                        <li><strong>第10週:</strong> 教師あり学習詳細</li>
+                        <li><strong>第11週:</strong> 分類アルゴリズム</li>
+                        <li><strong>第12週:</strong> ニューラルネットワークと勾配降下法</li>
+                        <li><strong>第13週:</strong> 強化学習</li>
+                        <li><strong>第14週:</strong> 総合復習と試験</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="highlight-box">
+                <p style="text-align: center; font-size: 1.3em;"><strong>You've built a solid foundation!</strong></p>
+                <p style="text-align: center; font-size: 1.3em;"><strong>しっかりした基礎を築きました！</strong></p>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

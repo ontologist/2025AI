@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 9: Overview of AI and ML</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3em;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            color: #7c3aed;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide h4 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin: 20px 0;
+        }
+
+        .english, .japanese {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 70px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #2563eb;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2em;
+            color: #7c3aed;
+            margin-bottom: 40px;
+        }
+
+        .title-slide .info {
+            font-size: 1.3em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        @media screen and (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+
+            .slide h1 {
+                font-size: 2.5em;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slide-container {
+                padding: 0;
+            }
+
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .slide h1 {
+                font-size: 2em;
+            }
+
+            .slide h2 {
+                font-size: 1.6em;
+            }
+
+            .bilingual {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5em;
+            }
+
+            .title-slide .subtitle {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+        .slides-nav {
+            background-color: rgba(255, 255, 255, 0.95);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1001;
+            padding: 10px 20px;
+        }
+
+        .slides-nav .container {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+        }
+
+        .slides-nav a {
+            color: #1f2937;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            font-size: 0.95em;
+        }
+
+        .slides-nav a:hover {
+            color: #2563eb;
+        }
+
+        body {
+            padding-top: 50px;
+        }
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <nav class="slides-nav">
+        <div class="container">
+            <a href="../../index.html">← Course Home</a>
+            <a href="lecture.html">Lecture Notes</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+    </nav>
+
+    <div class="slide-number" id="slideNumber">Slide 1 / 15</div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Week 9</h1>
+            <p class="subtitle">Overview of AI and ML<br>人工知能と機械学習の導入</p>
+            <p class="info"><strong>Course:</strong> Introduction to AI and Data Science</p>
+            <p class="info"><strong>Topics:</strong> Types of AI, ML Paradigms, Real Applications</p>
+        </div>
+
+        <!-- Slide 2: Today's Objectives -->
+        <div class="slide">
+            <h2>Today's Objectives / 本日の目標</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What You'll Learn:</h3>
+                    <ul>
+                        <li>Understand different types of AI systems</li>
+                        <li>Explore the evolution from AI to Deep Learning</li>
+                        <li>Master the three ML paradigms</li>
+                        <li>See real-world AI/ML applications in policy and governance</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>学ぶこと:</h3>
+                    <ul>
+                        <li>異なるタイプのAIシステムを理解する</li>
+                        <li>AIから深層学習への進化を探る</li>
+                        <li>3つのMLパラダイムを習得する</li>
+                        <li>政策とガバナンスにおける実世界のAI/ML応用を見る</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: What is AI? -->
+        <div class="slide">
+            <h2>What is Artificial Intelligence?</h2>
+            <h2>人工知能とは何か？</h2>
+            <div class="highlight-box">
+                <h3>Definition / 定義:</h3>
+                <p><strong>AI = Computer systems that can perform tasks requiring human intelligence</strong></p>
+                <p><strong>AI = 人間の知能を必要とするタスクを実行できるコンピュータシステム</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Tasks AI Can Perform:</h3>
+                    <ul>
+                        <li>Visual perception (seeing)</li>
+                        <li>Speech recognition (hearing)</li>
+                        <li>Decision-making</li>
+                        <li>Language translation</li>
+                        <li>Pattern recognition</li>
+                        <li>Problem solving</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>AIが実行できるタスク:</h3>
+                    <ul>
+                        <li>視覚認識（見ること）</li>
+                        <li>音声認識（聞くこと）</li>
+                        <li>意思決定</li>
+                        <li>言語翻訳</li>
+                        <li>パターン認識</li>
+                        <li>問題解決</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Types of AI -->
+        <div class="slide">
+            <h2>Three Types of AI by Capability</h2>
+            <h2>能力による3つのAIタイプ</h2>
+            <div class="two-column">
+                <div>
+                    <h3>1. Narrow AI (ANI)</h3>
+                    <h4>弱いAI</h4>
+                    <ul>
+                        <li>Designed for specific task</li>
+                        <li>特定のタスク用に設計</li>
+                        <li>Current state of technology</li>
+                        <li>現在の技術状態</li>
+                        <li><strong>Examples:</strong> Siri, AlphaGo, self-driving cars</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>2. General AI (AGI)</h3>
+                    <h4>強いAI</h4>
+                    <ul>
+                        <li>Human-level intelligence</li>
+                        <li>人間レベルの知能</li>
+                        <li>Can learn any task</li>
+                        <li>あらゆるタスクを学習可能</li>
+                        <li><strong>Status:</strong> Theoretical, not yet achieved</li>
+                    </ul>
+                </div>
+            </div>
+            <h3>3. Super AI (ASI) / 超AI</h3>
+            <ul>
+                <li>Surpasses human intelligence in all aspects</li>
+                <li>すべての面で人間の知能を超える</li>
+                <li><strong>Status:</strong> Speculative future concept</li>
+            </ul>
+        </div>
+
+        <!-- Slide 5: AI Hierarchy -->
+        <div class="slide">
+            <h2>The AI/ML/DL Hierarchy</h2>
+            <h2>AI/ML/DL階層</h2>
+            <div class="highlight-box">
+                <div class="code-box" style="font-size: 1.1em;">┌─────────────────────────────────────────┐
+│  Artificial Intelligence (AI)          │
+│  人工知能 - Broadest concept            │
+│  ┌───────────────────────────────────┐  │
+│  │  Machine Learning (ML)            │  │
+│  │  機械学習 - Learning from data     │  │
+│  │  ┌─────────────────────────────┐  │  │
+│  │  │  Deep Learning (DL)         │  │  │
+│  │  │  深層学習 - Neural networks  │  │  │
+│  │  └─────────────────────────────┘  │  │
+│  └───────────────────────────────────┘  │
+└─────────────────────────────────────────┘</div>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <ul>
+                        <li><strong>AI:</strong> All techniques to mimic human intelligence</li>
+                        <li><strong>ML:</strong> Subset of AI that learns from data</li>
+                        <li><strong>DL:</strong> Subset of ML using neural networks</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <ul>
+                        <li><strong>AI:</strong> 人間の知能を模倣するすべての技術</li>
+                        <li><strong>ML:</strong> データから学習するAIのサブセット</li>
+                        <li><strong>DL:</strong> ニューラルネットワークを使用するMLのサブセット</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: ML Paradigm 1 - Supervised Learning -->
+        <div class="slide">
+            <h2>ML Paradigm 1: Supervised Learning</h2>
+            <h2>MLパラダイム1: 教師あり学習</h2>
+            <div class="highlight-box">
+                <h3>Concept / 概念:</h3>
+                <p><strong>Learning from labeled examples (input + correct output)</strong></p>
+                <p><strong>ラベル付き例（入力 + 正しい出力）から学習</strong></p>
+            </div>
+            <div class="two-column">
+                <div>
+                    <h3>Classification / 分類</h3>
+                    <p>Predicting discrete categories</p>
+                    <p>離散カテゴリの予測</p>
+                    <ul>
+                        <li>Email: Spam vs Not Spam</li>
+                        <li>Medical: Disease vs Healthy</li>
+                        <li>Image: Cat vs Dog</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Regression / 回帰</h3>
+                    <p>Predicting continuous values</p>
+                    <p>連続値の予測</p>
+                    <ul>
+                        <li>House price prediction</li>
+                        <li>Stock price forecasting</li>
+                        <li>Temperature prediction</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Real-World Example - Gmail Spam Filter -->
+        <div class="slide">
+            <h2>Real-World: Gmail Spam Filter</h2>
+            <h2>実世界の例: Gmailスパムフィルター</h2>
+            <div class="highlight-box">
+                <p><strong>Link:</strong> <a href="https://www.gmail.com" target="_blank">https://www.gmail.com</a></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>How Gmail Uses Supervised Learning:</h3>
+                    <ul>
+                        <li><strong>Training Data:</strong> Billions of emails labeled as spam/not spam</li>
+                        <li><strong>Features:</strong> Sender, subject line, content, links, attachments</li>
+                        <li><strong>Algorithm:</strong> Neural networks + text analysis</li>
+                        <li><strong>Learning:</strong> Continuously improves from user feedback</li>
+                        <li><strong>Accuracy:</strong> Blocks 99.9% of spam effectively</li>
+                    </ul>
+                    <p><strong>Result:</strong> Protects 1.8 billion Gmail users worldwide</p>
+                </div>
+                <div class="japanese">
+                    <h3>Gmailが教師あり学習を使う方法:</h3>
+                    <ul>
+                        <li><strong>訓練データ:</strong> スパム/非スパムとラベル付けされた数十億のメール</li>
+                        <li><strong>特徴:</strong> 送信者、件名、内容、リンク、添付ファイル</li>
+                        <li><strong>アルゴリズム:</strong> ニューラルネットワーク + テキスト分析</li>
+                        <li><strong>学習:</strong> ユーザーフィードバックから継続的に改善</li>
+                        <li><strong>精度:</strong> スパムの99.9%を効果的にブロック</li>
+                    </ul>
+                    <p><strong>結果:</strong> 世界中の18億人のGmailユーザーを保護</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: ML Paradigm 2 - Unsupervised Learning -->
+        <div class="slide">
+            <h2>ML Paradigm 2: Unsupervised Learning</h2>
+            <h2>MLパラダイム2: 教師なし学習</h2>
+            <div class="highlight-box">
+                <h3>Concept / 概念:</h3>
+                <p><strong>Finding patterns in data without labels</strong></p>
+                <p><strong>ラベルなしでデータのパターンを発見</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Common Tasks:</h3>
+                    <ul>
+                        <li><strong>Clustering:</strong> Grouping similar items (K-means)</li>
+                        <li><strong>Dimensionality Reduction:</strong> Simplifying complex data (PCA)</li>
+                        <li><strong>Anomaly Detection:</strong> Finding unusual patterns</li>
+                        <li><strong>Association:</strong> Discovering relationships</li>
+                    </ul>
+                    <h3>Real Applications:</h3>
+                    <ul>
+                        <li>Customer segmentation (marketing)</li>
+                        <li>Recommendation systems</li>
+                        <li>Fraud detection</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>一般的なタスク:</h3>
+                    <ul>
+                        <li><strong>クラスタリング:</strong> 類似アイテムのグループ化（K-means）</li>
+                        <li><strong>次元削減:</strong> 複雑なデータの簡素化（PCA）</li>
+                        <li><strong>異常検知:</strong> 異常パターンの発見</li>
+                        <li><strong>関連性:</strong> 関係性の発見</li>
+                    </ul>
+                    <h3>実際の応用:</h3>
+                    <ul>
+                        <li>顧客セグメンテーション（マーケティング）</li>
+                        <li>推薦システム</li>
+                        <li>不正検出</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Real-World Example - Amazon Recommendations -->
+        <div class="slide">
+            <h2>Real-World: Amazon Recommendations</h2>
+            <h2>実世界の例: Amazon推薦</h2>
+            <div class="highlight-box">
+                <p><strong>Link:</strong> <a href="https://www.amazon.com" target="_blank">https://www.amazon.com</a></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>How Amazon Uses Unsupervised Learning:</h3>
+                    <ul>
+                        <li><strong>Collaborative Filtering:</strong> "Customers who bought X also bought Y"</li>
+                        <li><strong>Clustering:</strong> Groups similar products and users</li>
+                        <li><strong>Pattern Discovery:</strong> Finds hidden buying patterns</li>
+                        <li><strong>Personalization:</strong> Creates unique experience per user</li>
+                    </ul>
+                    <p><strong>Impact:</strong> 35% of Amazon revenue comes from recommendations</p>
+                </div>
+                <div class="japanese">
+                    <h3>Amazonが教師なし学習を使う方法:</h3>
+                    <ul>
+                        <li><strong>協調フィルタリング:</strong> 「Xを購入した顧客はYも購入」</li>
+                        <li><strong>クラスタリング:</strong> 類似製品とユーザーをグループ化</li>
+                        <li><strong>パターン発見:</strong> 隠れた購買パターンを発見</li>
+                        <li><strong>パーソナライゼーション:</strong> ユーザーごとにユニークな体験を作成</li>
+                    </ul>
+                    <p><strong>影響:</strong> Amazonの収益の35%が推薦から生まれる</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: ML Paradigm 3 - Reinforcement Learning -->
+        <div class="slide">
+            <h2>ML Paradigm 3: Reinforcement Learning</h2>
+            <h2>MLパラダイム3: 強化学習</h2>
+            <div class="highlight-box">
+                <h3>Concept / 概念:</h3>
+                <p><strong>Learning through trial and error with rewards and penalties</strong></p>
+                <p><strong>報酬と罰を伴う試行錯誤による学習</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Components:</h3>
+                    <ul>
+                        <li><strong>Agent:</strong> The learner/decision maker</li>
+                        <li><strong>Environment:</strong> What the agent interacts with</li>
+                        <li><strong>Actions:</strong> What the agent can do</li>
+                        <li><strong>Rewards:</strong> Feedback for actions (good/bad)</li>
+                        <li><strong>Policy:</strong> Strategy the agent learns</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>主要コンポーネント:</h3>
+                    <ul>
+                        <li><strong>エージェント:</strong> 学習者/意思決定者</li>
+                        <li><strong>環境:</strong> エージェントが相互作用するもの</li>
+                        <li><strong>行動:</strong> エージェントができること</li>
+                        <li><strong>報酬:</strong> 行動へのフィードバック（良い/悪い）</li>
+                        <li><strong>ポリシー:</strong> エージェントが学習する戦略</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Real-World Example - AlphaGo -->
+        <div class="slide">
+            <h2>Real-World: DeepMind's AlphaGo</h2>
+            <h2>実世界の例: DeepMindのAlphaGo</h2>
+            <div class="highlight-box">
+                <p><strong>Link:</strong> <a href="https://deepmind.google/technologies/alphago/" target="_blank">https://deepmind.google/technologies/alphago/</a></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Historic Achievement:</h3>
+                    <ul>
+                        <li><strong>2016:</strong> AlphaGo defeats world champion Lee Sedol 4-1</li>
+                        <li><strong>Game:</strong> Go (more complex than chess)</li>
+                        <li><strong>Training:</strong> Played millions of games against itself</li>
+                        <li><strong>Learning:</strong> RL + Deep Neural Networks</li>
+                        <li><strong>Innovation:</strong> Discovered new strategies never seen before</li>
+                    </ul>
+                    <p><strong>Significance:</strong> Showed AI can master complex strategic thinking</p>
+                </div>
+                <div class="japanese">
+                    <h3>歴史的な成果:</h3>
+                    <ul>
+                        <li><strong>2016年:</strong> AlphaGoが世界チャンピオンの李世ドルを4-1で破る</li>
+                        <li><strong>ゲーム:</strong> 囲碁（チェスより複雑）</li>
+                        <li><strong>訓練:</strong> 自分自身と数百万回対局</li>
+                        <li><strong>学習:</strong> 強化学習 + 深層ニューラルネットワーク</li>
+                        <li><strong>革新:</strong> これまで見られなかった新しい戦略を発見</li>
+                    </ul>
+                    <p><strong>重要性:</strong> AIが複雑な戦略的思考を習得できることを示した</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: AI in Policy and Governance -->
+        <div class="slide">
+            <h2>AI Applications in Policy & Governance</h2>
+            <h2>政策とガバナンスにおけるAI応用</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Government & Public Sector Uses:</h3>
+                    <ul>
+                        <li><strong>Predictive Policing:</strong> Crime hotspot prediction (Los Angeles, Chicago)</li>
+                        <li><strong>Traffic Management:</strong> Singapore's intelligent traffic system</li>
+                        <li><strong>Social Services:</strong> Fraud detection in welfare programs</li>
+                        <li><strong>Healthcare:</strong> Disease outbreak prediction (COVID-19 tracking)</li>
+                        <li><strong>Education:</strong> Identifying at-risk students</li>
+                        <li><strong>Environment:</strong> Climate change modeling and prediction</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>政府・公共セクターの使用:</h3>
+                    <ul>
+                        <li><strong>予測的警察活動:</strong> 犯罪多発地帯予測（ロサンゼルス、シカゴ）</li>
+                        <li><strong>交通管理:</strong> シンガポールのインテリジェント交通システム</li>
+                        <li><strong>社会サービス:</strong> 福祉プログラムの不正検出</li>
+                        <li><strong>ヘルスケア:</strong> 疾病アウトブレイク予測（COVID-19追跡）</li>
+                        <li><strong>教育:</strong> リスクのある学生の特定</li>
+                        <li><strong>環境:</strong> 気候変動モデリングと予測</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Real-World Example - Tesla Autopilot -->
+        <div class="slide">
+            <h2>Real-World: Tesla Autopilot</h2>
+            <h2>実世界の例: Teslaオートパイロット</h2>
+            <div class="highlight-box">
+                <p><strong>Link:</strong> <a href="https://www.tesla.com/autopilot" target="_blank">https://www.tesla.com/autopilot</a></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Multiple ML Paradigms Combined:</h3>
+                    <ul>
+                        <li><strong>Supervised Learning:</strong> Object detection (cars, pedestrians, signs)</li>
+                        <li><strong>Unsupervised Learning:</strong> Scene understanding, anomaly detection</li>
+                        <li><strong>Reinforcement Learning:</strong> Decision-making in real-time</li>
+                    </ul>
+                    <h3>Technology Stack:</h3>
+                    <ul>
+                        <li>Computer vision with neural networks</li>
+                        <li>Sensor fusion (cameras, radar, ultrasonic)</li>
+                        <li>Deep learning for path planning</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>複数のMLパラダイムの組み合わせ:</h3>
+                    <ul>
+                        <li><strong>教師あり学習:</strong> 物体検出（車、歩行者、標識）</li>
+                        <li><strong>教師なし学習:</strong> シーン理解、異常検知</li>
+                        <li><strong>強化学習:</strong> リアルタイムでの意思決定</li>
+                    </ul>
+                    <h3>技術スタック:</h3>
+                    <ul>
+                        <li>ニューラルネットワークによるコンピュータビジョン</li>
+                        <li>センサー融合（カメラ、レーダー、超音波）</li>
+                        <li>経路計画のための深層学習</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Ethical Considerations -->
+        <div class="slide">
+            <h2>Ethical Considerations in AI/ML</h2>
+            <h2>AI/MLにおける倫理的考慮事項</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Challenges for Policy Makers:</h3>
+                    <ul>
+                        <li><strong>Bias & Fairness:</strong> AI can amplify societal biases in data</li>
+                        <li><strong>Privacy:</strong> Balancing data needs with individual rights</li>
+                        <li><strong>Transparency:</strong> "Black box" decisions in critical areas</li>
+                        <li><strong>Accountability:</strong> Who is responsible when AI fails?</li>
+                        <li><strong>Employment:</strong> Job displacement concerns</li>
+                        <li><strong>Security:</strong> AI-powered cyber threats</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>政策立案者への主要課題:</h3>
+                    <ul>
+                        <li><strong>バイアスと公平性:</strong> AIはデータの社会的バイアスを増幅する可能性</li>
+                        <li><strong>プライバシー:</strong> データニーズと個人の権利のバランス</li>
+                        <li><strong>透明性:</strong> 重要分野における「ブラックボックス」意思決定</li>
+                        <li><strong>説明責任:</strong> AIが失敗したとき誰が責任を負うか？</li>
+                        <li><strong>雇用:</strong> 仕事の置き換えに関する懸念</li>
+                        <li><strong>セキュリティ:</strong> AI駆動型サイバー脅威</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Summary -->
+        <div class="slide">
+            <h2>Summary / まとめ</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Key Takeaways:</h3>
+                    <ul>
+                        <li>AI encompasses all intelligent systems; ML is learning from data</li>
+                        <li>Three types of AI: Narrow (current), General (future), Super (speculative)</li>
+                        <li>Three ML paradigms: Supervised, Unsupervised, Reinforcement</li>
+                        <li>Real applications: Gmail (supervised), Amazon (unsupervised), AlphaGo (RL)</li>
+                        <li>AI is transforming policy, governance, and public services</li>
+                        <li>Ethical considerations are crucial for responsible AI deployment</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>重要ポイント:</h3>
+                    <ul>
+                        <li>AIはすべてのインテリジェントシステムを包含；MLはデータからの学習</li>
+                        <li>3つのAIタイプ: 弱いAI（現在）、強いAI（将来）、超AI（推測的）</li>
+                        <li>3つのMLパラダイム: 教師あり、教師なし、強化学習</li>
+                        <li>実際の応用: Gmail（教師あり）、Amazon（教師なし）、AlphaGo（強化学習）</li>
+                        <li>AIは政策、ガバナンス、公共サービスを変革している</li>
+                        <li>責任あるAI展開には倫理的考慮が重要</li>
+                    </ul>
+                </div>
+            </div>
+            <h3 style="text-align: center; margin-top: 40px;">Next Week / 来週:</h3>
+            <p style="text-align: center; font-size: 1.3em;">Supervised Learning Basics - Deep Dive into Classification & Regression</p>
+            <p style="text-align: center; font-size: 1.3em;">教師あり学習の入門 - 分類と回帰の詳細</p>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

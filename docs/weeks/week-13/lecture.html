@@ -1,0 +1,1306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 13 Lecture Notes: Reinforcement Learning</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2563eb;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #7c3aed;
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2563eb;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2563eb;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .english {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .test-question {
+            background: #fce7f3;
+            border: 3px solid #ec4899;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .test-question h4::before {
+            content: "⚠️ ";
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .navigation a:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .key-terms {
+            background: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .study-tip {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Week 13 Lecture Notes</h1>
+        <p class="subtitle">Reinforcement Learning<br>強化学習</p>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-12/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+
+        <h2>📚 Overview / 概要</h2>
+        <div class="bilingual">
+            <div class="english">
+                <p>This week explores Reinforcement Learning (RL), a unique machine learning paradigm where agents learn to make decisions by interacting with an environment and receiving rewards. Unlike supervised learning (which uses labeled data) or unsupervised learning (which finds patterns), RL learns through trial, error, and feedback.</p>
+                <p><strong>Learning Objectives:</strong></p>
+                <ul>
+                    <li>Understand the RL framework: agents, environments, actions, and rewards</li>
+                    <li>Learn the exploration vs. exploitation tradeoff</li>
+                    <li>Master Q-learning algorithm</li>
+                    <li>Explore real-world applications like game playing and robotics</li>
+                    <li>Understand the differences between RL and other ML paradigms</li>
+                    <li>Recognize the power and limitations of RL</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <p>今週は、エージェントが環境と相互作用し報酬を受け取ることで意思決定を学習するユニークな機械学習パラダイムである強化学習（RL）を探ります。教師あり学習（ラベル付きデータを使用）や教師なし学習（パターンを見つける）とは異なり、RLは試行、エラー、フィードバックを通じて学習します。</p>
+                <p><strong>学習目標:</strong></p>
+                <ul>
+                    <li>RLフレームワークを理解する: エージェント、環境、アクション、報酬</li>
+                    <li>探索と活用のトレードオフを学ぶ</li>
+                    <li>Q学習アルゴリズムを習得する</li>
+                    <li>ゲームプレイやロボット工学などの実世界の応用を探る</li>
+                    <li>RLと他のMLパラダイムの違いを理解する</li>
+                    <li>RLの力と限界を認識する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>1. What is Reinforcement Learning? / 強化学習とは？</h2>
+
+        <div class="definition-box">
+            <h3>Key Definition / 主要定義</h3>
+            <p><strong>Reinforcement Learning:</strong> A machine learning paradigm where an agent learns to make sequential decisions by taking actions in an environment to maximize cumulative reward through trial and error.</p>
+            <p><strong>強化学習:</strong> エージェントが試行錯誤を通じて累積報酬を最大化するために環境でアクションを取ることで、一連の意思決定を学習する機械学習パラダイム。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>The RL Framework</h3>
+
+                <h4>Core Components</h4>
+                <div class="code-box">REINFORCEMENT LEARNING CYCLE
+
+        ┌─────────────────────────────┐
+        │        ENVIRONMENT          │
+        │         環境                │
+        └─────────────────────────────┘
+                ↑           |
+            Reward R_t      | State S_t
+            報酬            | 状態
+                |           ↓
+        ┌─────────────────────────────┐
+        │          AGENT              │
+        │        エージェント          │
+        └─────────────────────────────┘
+                    |
+                Action A_t
+                アクション
+                    ↓
+
+The Cycle:
+1. Agent observes current State (S_t)
+2. Agent chooses Action (A_t)
+3. Environment transitions to new State (S_t+1)
+4. Environment provides Reward (R_t)
+5. Agent learns from experience
+6. Repeat</div>
+
+                <h4>Detailed Components:</h4>
+                <ul>
+                    <li><strong>Agent (エージェント):</strong> The learner/decision maker
+                        <ul>
+                            <li>Example: Chess player, robot, self-driving car</li>
+                            <li>Goal: Learn optimal policy to maximize rewards</li>
+                        </ul>
+                    </li>
+                    <li><strong>Environment (環境):</strong> The world the agent interacts with
+                        <ul>
+                            <li>Example: Chess board, physical world, video game</li>
+                            <li>Provides states and rewards</li>
+                        </ul>
+                    </li>
+                    <li><strong>State (状態 - S):</strong> Current situation/configuration
+                        <ul>
+                            <li>Example: Board position in chess, robot's location</li>
+                            <li>Contains all information needed for decision</li>
+                        </ul>
+                    </li>
+                    <li><strong>Action (アクション - A):</strong> Choices available to agent
+                        <ul>
+                            <li>Example: Move piece, turn left/right, accelerate</li>
+                            <li>Action space can be discrete or continuous</li>
+                        </ul>
+                    </li>
+                    <li><strong>Reward (報酬 - R):</strong> Immediate feedback signal
+                        <ul>
+                            <li>Positive: Good action (e.g., +1 for winning chess)</li>
+                            <li>Negative: Bad action (e.g., -1 for losing, -0.01 for each step)</li>
+                            <li>Zero: Neutral actions</li>
+                        </ul>
+                    </li>
+                    <li><strong>Policy (方策 - π):</strong> Strategy for choosing actions
+                        <ul>
+                            <li>Maps states to actions</li>
+                            <li>What the agent learns!</li>
+                            <li>Can be deterministic or probabilistic</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Simple Example: Robot Navigation</h4>
+                <p><strong>Scenario:</strong> Robot must navigate to goal</p>
+                <ul>
+                    <li><strong>Agent:</strong> Robot</li>
+                    <li><strong>Environment:</strong> Room with obstacles</li>
+                    <li><strong>State:</strong> Robot's position (x, y)</li>
+                    <li><strong>Actions:</strong> Move Up, Down, Left, Right</li>
+                    <li><strong>Rewards:</strong>
+                        <ul>
+                            <li>+100: Reaching goal</li>
+                            <li>-10: Hitting obstacle</li>
+                            <li>-1: Each step (encourages efficiency)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Goal:</strong> Learn policy that reaches goal quickly while avoiding obstacles</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>RLフレームワーク</h3>
+
+                <h4>コアコンポーネント</h4>
+                <div class="code-box">強化学習サイクル
+
+        ┌─────────────────────────────┐
+        │        ENVIRONMENT          │
+        │         環境                │
+        └─────────────────────────────┘
+                ↑           |
+            Reward R_t      | State S_t
+            報酬            | 状態
+                |           ↓
+        ┌─────────────────────────────┐
+        │          AGENT              │
+        │        エージェント          │
+        └─────────────────────────────┘
+                    |
+                Action A_t
+                アクション
+                    ↓
+
+サイクル:
+1. エージェントが現在の状態を観察（S_t）
+2. エージェントがアクションを選択（A_t）
+3. 環境が新しい状態に遷移（S_t+1）
+4. 環境が報酬を提供（R_t）
+5. エージェントが経験から学習
+6. 繰り返し</div>
+
+                <h4>詳細なコンポーネント:</h4>
+                <ul>
+                    <li><strong>エージェント (Agent):</strong> 学習者/意思決定者
+                        <ul>
+                            <li>例: チェスプレーヤー、ロボット、自動運転車</li>
+                            <li>目標: 報酬を最大化する最適な方策を学習</li>
+                        </ul>
+                    </li>
+                    <li><strong>環境 (Environment):</strong> エージェントが相互作用する世界
+                        <ul>
+                            <li>例: チェス盤、物理世界、ビデオゲーム</li>
+                            <li>状態と報酬を提供</li>
+                        </ul>
+                    </li>
+                    <li><strong>状態 (State - S):</strong> 現在の状況/構成
+                        <ul>
+                            <li>例: チェスの盤面位置、ロボットの位置</li>
+                            <li>意思決定に必要なすべての情報を含む</li>
+                        </ul>
+                    </li>
+                    <li><strong>アクション (Action - A):</strong> エージェントが利用できる選択肢
+                        <ul>
+                            <li>例: 駒を動かす、左/右に曲がる、加速する</li>
+                            <li>アクション空間は離散または連続</li>
+                        </ul>
+                    </li>
+                    <li><strong>報酬 (Reward - R):</strong> 即時フィードバック信号
+                        <ul>
+                            <li>正: 良いアクション（例: チェスに勝つと+1）</li>
+                            <li>負: 悪いアクション（例: 負けると-1、各ステップ-0.01）</li>
+                            <li>ゼロ: 中立的なアクション</li>
+                        </ul>
+                    </li>
+                    <li><strong>方策 (Policy - π):</strong> アクションを選択する戦略
+                        <ul>
+                            <li>状態をアクションにマッピング</li>
+                            <li>エージェントが学習するもの！</li>
+                            <li>決定的または確率的</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>シンプルな例: ロボットナビゲーション</h4>
+                <p><strong>シナリオ:</strong> ロボットが目標に移動する必要がある</p>
+                <ul>
+                    <li><strong>エージェント:</strong> ロボット</li>
+                    <li><strong>環境:</strong> 障害物のある部屋</li>
+                    <li><strong>状態:</strong> ロボットの位置（x、y）</li>
+                    <li><strong>アクション:</strong> 上、下、左、右に移動</li>
+                    <li><strong>報酬:</strong>
+                        <ul>
+                            <li>+100: 目標到達</li>
+                            <li>-10: 障害物に衝突</li>
+                            <li>-1: 各ステップ（効率を促進）</li>
+                        </ul>
+                    </li>
+                    <li><strong>目標:</strong> 障害物を避けながら素早く目標に到達する方策を学習</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>2. Exploration vs. Exploitation / 探索と活用</h2>
+
+        <div class="definition-box">
+            <h3>The Fundamental Tradeoff</h3>
+            <p><strong>Exploration:</strong> Trying new actions to discover potentially better strategies</p>
+            <p><strong>探索:</strong> 潜在的により良い戦略を発見するために新しいアクションを試す</p>
+            <hr>
+            <p><strong>Exploitation:</strong> Using known good actions to maximize immediate reward</p>
+            <p><strong>活用:</strong> 即時報酬を最大化するために既知の良いアクションを使用する</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Understanding the Dilemma</h3>
+
+                <h4>The Restaurant Analogy</h4>
+                <p>You're visiting a new city with many restaurants:</p>
+                <ul>
+                    <li><strong>Exploitation:</strong> Always go to the one good restaurant you found
+                        <ul>
+                            <li>Guaranteed decent meal</li>
+                            <li>But might miss amazing restaurants</li>
+                        </ul>
+                    </li>
+                    <li><strong>Exploration:</strong> Try new restaurants every time
+                        <ul>
+                            <li>Might discover great places</li>
+                            <li>But might waste time on bad restaurants</li>
+                        </ul>
+                    </li>
+                    <li><strong>Balanced Approach:</strong> Mostly go to known good places, occasionally try new ones
+                        <ul>
+                            <li>Best long-term strategy!</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Epsilon-Greedy Strategy (ε-greedy)</h4>
+                <p>A simple but effective approach to balance exploration and exploitation:</p>
+
+                <div class="code-box">EPSILON-GREEDY ALGORITHM
+
+With probability ε (epsilon):
+├─ EXPLORE: Choose random action
+└─ Try something new
+
+With probability (1 - ε):
+├─ EXPLOIT: Choose best known action
+└─ Use what you know works
+
+Typical ε values:
+├─ Start: ε = 1.0 (100% exploration initially)
+├─ Decay: Gradually decrease ε over time
+└─ End: ε = 0.1 (10% exploration, 90% exploitation)
+
+Example with ε = 0.1:
+├─ 10% of the time: Random action (explore)
+└─ 90% of the time: Best action (exploit)</div>
+
+                <h4>Why This Matters</h4>
+                <ul>
+                    <li><strong>Too Much Exploration:</strong>
+                        <ul>
+                            <li>Wastes time trying bad actions</li>
+                            <li>Learning is slow</li>
+                            <li>Never settles on good strategy</li>
+                        </ul>
+                    </li>
+                    <li><strong>Too Much Exploitation:</strong>
+                        <ul>
+                            <li>Gets stuck in local optimum</li>
+                            <li>Misses better strategies</li>
+                            <li>Never discovers full potential</li>
+                        </ul>
+                    </li>
+                    <li><strong>Balanced Approach:</strong>
+                        <ul>
+                            <li>Explores early to find good strategies</li>
+                            <li>Exploits later to maximize rewards</li>
+                            <li>Achieves best long-term performance</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>ジレンマの理解</h3>
+
+                <h4>レストランの例え</h4>
+                <p>多くのレストランがある新しい都市を訪れています:</p>
+                <ul>
+                    <li><strong>活用:</strong> 見つけた1つの良いレストランに常に行く
+                        <ul>
+                            <li>まともな食事が保証される</li>
+                            <li>しかし、素晴らしいレストランを見逃すかもしれない</li>
+                        </ul>
+                    </li>
+                    <li><strong>探索:</strong> 毎回新しいレストランを試す
+                        <ul>
+                            <li>素晴らしい場所を発見するかもしれない</li>
+                            <li>しかし、悪いレストランで時間を無駄にするかもしれない</li>
+                        </ul>
+                    </li>
+                    <li><strong>バランスの取れたアプローチ:</strong> 主に既知の良い場所に行き、時々新しい場所を試す
+                        <ul>
+                            <li>最良の長期戦略！</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>イプシロン-グリーディ戦略（ε-greedy）</h4>
+                <p>探索と活用のバランスをとるシンプルで効果的なアプローチ:</p>
+
+                <div class="code-box">イプシロン-グリーディアルゴリズム
+
+確率ε（イプシロン）で:
+├─ 探索: ランダムアクションを選択
+└─ 新しいことを試す
+
+確率（1 - ε）で:
+├─ 活用: 最良の既知アクションを選択
+└─ うまくいくことがわかっていることを使用
+
+一般的なε値:
+├─ 開始: ε = 1.0（最初は100%探索）
+├─ 減衰: 時間とともにεを徐々に減少
+└─ 終了: ε = 0.1（10%探索、90%活用）
+
+ε = 0.1の例:
+├─ 10%の時間: ランダムアクション（探索）
+└─ 90%の時間: 最良のアクション（活用）</div>
+
+                <h4>なぜこれが重要か</h4>
+                <ul>
+                    <li><strong>探索が多すぎる:</strong>
+                        <ul>
+                            <li>悪いアクションを試すのに時間を無駄にする</li>
+                            <li>学習が遅い</li>
+                            <li>良い戦略に落ち着かない</li>
+                        </ul>
+                    </li>
+                    <li><strong>活用が多すぎる:</strong>
+                        <ul>
+                            <li>局所最適に陥る</li>
+                            <li>より良い戦略を見逃す</li>
+                            <li>完全な可能性を発見しない</li>
+                        </ul>
+                    </li>
+                    <li><strong>バランスの取れたアプローチ:</strong>
+                        <ul>
+                            <li>良い戦略を見つけるために早期に探索</li>
+                            <li>報酬を最大化するために後で活用</li>
+                            <li>最良の長期パフォーマンスを達成</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>3. Q-Learning Algorithm / Q学習アルゴリズム</h2>
+
+        <div class="definition-box">
+            <h3>What is Q-Learning? / Q学習とは？</h3>
+            <p><strong>Q-Learning:</strong> A model-free reinforcement learning algorithm that learns the quality (Q-value) of actions in each state, allowing the agent to choose optimal actions without needing a model of the environment.</p>
+            <p><strong>Q学習:</strong> 各状態でのアクションの質（Q値）を学習するモデルフリー強化学習アルゴリズムで、環境のモデルを必要とせずにエージェントが最適なアクションを選択できるようにします。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Understanding Q-Values</h3>
+
+                <h4>What is a Q-Value?</h4>
+                <p><strong>Q(s, a)</strong> = Expected cumulative reward of taking action 'a' in state 's' and following optimal policy thereafter</p>
+
+                <p><strong>Q-Table:</strong> A lookup table storing Q-values for all state-action pairs</p>
+
+                <div class="code-box">Q-TABLE EXAMPLE (Robot Navigation)
+
+         Actions →
+States ↓    Up    Down   Left   Right
+(1,1)      2.5    -1.0   -1.0    3.2
+(1,2)      5.1     2.5    0.0    1.5
+(1,3)      8.3     5.1    2.5    0.0
+(2,1)     -1.0     3.2    2.5    4.0
+...
+
+Higher Q-value = Better action
+Agent chooses action with max Q-value (exploitation)</div>
+
+                <h4>Q-Learning Algorithm</h4>
+                <div class="code-box">Q-LEARNING PROCESS
+
+Initialize: Set all Q(s,a) = 0
+
+For each episode:
+  1. Start in initial state s
+
+  2. While not terminal state:
+
+     a) Choose action using ε-greedy:
+        - With prob ε: random action (explore)
+        - With prob 1-ε: argmax Q(s,a) (exploit)
+
+     b) Take action a, observe:
+        - New state s'
+        - Reward r
+
+     c) Update Q-value:
+        Q(s,a) ← Q(s,a) + α[r + γ·max Q(s',a') - Q(s,a)]
+
+        Where:
+        α (alpha) = Learning rate (0-1)
+        γ (gamma) = Discount factor (0-1)
+        max Q(s',a') = Best Q-value in next state
+
+     d) s ← s' (move to next state)
+
+  3. Repeat until convergence</div>
+
+                <h4>Key Parameters:</h4>
+                <ul>
+                    <li><strong>Learning Rate (α - alpha):</strong> 0 < α ≤ 1
+                        <ul>
+                            <li>How much to update Q-values</li>
+                            <li>High α (0.9): Fast learning, but unstable</li>
+                            <li>Low α (0.1): Slow learning, but stable</li>
+                            <li>Typical: 0.1 - 0.5</li>
+                        </ul>
+                    </li>
+                    <li><strong>Discount Factor (γ - gamma):</strong> 0 ≤ γ < 1
+                        <ul>
+                            <li>How much to value future rewards</li>
+                            <li>γ = 0: Only care about immediate reward (myopic)</li>
+                            <li>γ = 0.9: Value long-term rewards highly (far-sighted)</li>
+                            <li>γ = 1: All future rewards equally important</li>
+                            <li>Typical: 0.9 - 0.99</li>
+                        </ul>
+                    </li>
+                    <li><strong>Exploration Rate (ε - epsilon):</strong> 0 ≤ ε ≤ 1
+                        <ul>
+                            <li>Probability of random exploration</li>
+                            <li>Start high (1.0), decay over time (to 0.1)</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Update Equation Explained:</h4>
+                <div class="code-box">Q(s,a) ← Q(s,a) + α[r + γ·max Q(s',a') - Q(s,a)]
+         ↑        ↑      ↑  ↑   ↑       ↑          ↑
+      Current   Old   Learn| |   |    Target      |
+      State     Value  Rate| |   |    Value    Old Value
+                Reward ─────┘ |   |
+                Discount ──────┘   |
+                Best next Q-value ─┘
+
+Target Value = r + γ·max Q(s',a')
+├─ Immediate reward (r)
+└─ Discounted value of best next action
+
+TD Error = Target - Current
+└─ How much to adjust Q-value</div>
+            </div>
+            <div class="japanese">
+                <h3>Q値の理解</h3>
+
+                <h4>Q値とは何か？</h4>
+                <p><strong>Q(s, a)</strong> = 状態'sでアクション'a'を取り、その後最適な方策に従った場合の期待累積報酬</p>
+
+                <p><strong>Qテーブル:</strong> すべての状態-アクションペアのQ値を保存するルックアップテーブル</p>
+
+                <div class="code-box">Qテーブルの例（ロボットナビゲーション）
+
+         アクション →
+状態 ↓     上     下     左     右
+(1,1)      2.5    -1.0   -1.0    3.2
+(1,2)      5.1     2.5    0.0    1.5
+(1,3)      8.3     5.1    2.5    0.0
+(2,1)     -1.0     3.2    2.5    4.0
+...
+
+Q値が高い = より良いアクション
+エージェントは最大Q値のアクションを選択（活用）</div>
+
+                <h4>Q学習アルゴリズム</h4>
+                <div class="code-box">Q学習プロセス
+
+初期化: すべてのQ(s,a) = 0に設定
+
+各エピソードに対して:
+  1. 初期状態sから開始
+
+  2. 終端状態でない限り:
+
+     a) ε-greedyを使用してアクションを選択:
+        - 確率ε: ランダムアクション（探索）
+        - 確率1-ε: argmax Q(s,a)（活用）
+
+     b) アクションaを取り、観察:
+        - 新しい状態s'
+        - 報酬r
+
+     c) Q値を更新:
+        Q(s,a) ← Q(s,a) + α[r + γ·max Q(s',a') - Q(s,a)]
+
+        ここで:
+        α (アルファ) = 学習率（0-1）
+        γ (ガンマ) = 割引率（0-1）
+        max Q(s',a') = 次状態での最良のQ値
+
+     d) s ← s'（次の状態に移動）
+
+  3. 収束するまで繰り返す</div>
+
+                <h4>主要パラメータ:</h4>
+                <ul>
+                    <li><strong>学習率（α - アルファ）:</strong> 0 < α ≤ 1
+                        <ul>
+                            <li>Q値をどれだけ更新するか</li>
+                            <li>高α（0.9）: 速い学習、しかし不安定</li>
+                            <li>低α（0.1）: 遅い学習、しかし安定</li>
+                            <li>一般的: 0.1 - 0.5</li>
+                        </ul>
+                    </li>
+                    <li><strong>割引率（γ - ガンマ）:</strong> 0 ≤ γ < 1
+                        <ul>
+                            <li>将来の報酬をどれだけ評価するか</li>
+                            <li>γ = 0: 即時報酬のみを気にする（近視眼的）</li>
+                            <li>γ = 0.9: 長期報酬を高く評価（遠視）</li>
+                            <li>γ = 1: すべての将来報酬が同等に重要</li>
+                            <li>一般的: 0.9 - 0.99</li>
+                        </ul>
+                    </li>
+                    <li><strong>探索率（ε - イプシロン）:</strong> 0 ≤ ε ≤ 1
+                        <ul>
+                            <li>ランダム探索の確率</li>
+                            <li>高くスタート（1.0）、時間とともに減衰（0.1まで）</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>更新式の説明:</h4>
+                <div class="code-box">Q(s,a) ← Q(s,a) + α[r + γ·max Q(s',a') - Q(s,a)]
+         ↑        ↑      ↑  ↑   ↑       ↑          ↑
+      現在     古い   学習| |   |    目標        |
+      状態     値     率  | |   |    値       古い値
+                報酬 ──────┘ |   |
+                割引 ─────────┘   |
+                最良の次Q値 ────────┘
+
+目標値 = r + γ·max Q(s',a')
+├─ 即時報酬（r）
+└─ 割引された最良の次のアクションの値
+
+TD誤差 = 目標 - 現在
+└─ Q値をどれだけ調整するか</div>
+            </div>
+        </div>
+
+        <h2>4. Deep Q-Networks (DQN) / 深層Qネットワーク</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Scaling Q-Learning with Neural Networks</h3>
+
+                <h4>The Problem with Q-Tables</h4>
+                <p>Q-tables work well for small problems, but fail for complex environments:</p>
+                <ul>
+                    <li><strong>Chess:</strong> ~10^47 possible states - can't store in table!</li>
+                    <li><strong>Atari Games:</strong> Millions of possible screen configurations</li>
+                    <li><strong>Continuous States:</strong> Infinite states (e.g., robot arm angles)</li>
+                </ul>
+
+                <h4>Solution: Deep Q-Network (DQN)</h4>
+                <p>Instead of storing Q-values in a table, use a neural network to <strong>approximate</strong> Q-values!</p>
+
+                <div class="code-box">DQN ARCHITECTURE
+
+Input: State (e.g., game screen pixels)
+  ↓
+[Convolutional Layers]  ← Process visual input
+  ↓
+[Dense Layers]          ← Learn representations
+  ↓
+Output: Q-values for each action
+  [Q(s, a₁), Q(s, a₂), Q(s, a₃), ...]
+
+Example - Atari Breakout:
+Input: 84×84×4 grayscale frames (recent history)
+Output: [Q(s, left), Q(s, right), Q(s, fire)]
+Action: Choose argmax (highest Q-value)</div>
+
+                <h4>DQN Innovations</h4>
+                <ul>
+                    <li><strong>Experience Replay:</strong>
+                        <ul>
+                            <li>Store past experiences (s, a, r, s') in memory buffer</li>
+                            <li>Sample random batches for training</li>
+                            <li>Breaks correlation between consecutive samples</li>
+                            <li>More efficient learning</li>
+                        </ul>
+                    </li>
+                    <li><strong>Target Network:</strong>
+                        <ul>
+                            <li>Use separate network for calculating target Q-values</li>
+                            <li>Update target network periodically (not every step)</li>
+                            <li>Stabilizes training</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>DQN Success: Atari Games</h4>
+                <p>DeepMind's DQN (2015) learned to play 49 Atari games from raw pixels:</p>
+                <ul>
+                    <li>No game-specific features or rules</li>
+                    <li>Same architecture for all games</li>
+                    <li>Achieved human-level or superhuman performance on many games</li>
+                    <li>Major breakthrough demonstrating RL can learn complex behaviors from high-dimensional inputs</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>ニューラルネットワークによるQ学習のスケーリング</h3>
+
+                <h4>Qテーブルの問題</h4>
+                <p>Qテーブルは小さな問題にはうまく機能しますが、複雑な環境では失敗します:</p>
+                <ul>
+                    <li><strong>チェス:</strong> ~10^47の可能な状態 - テーブルに保存できない！</li>
+                    <li><strong>Atariゲーム:</strong> 数百万の可能な画面構成</li>
+                    <li><strong>連続状態:</strong> 無限の状態（例: ロボットアームの角度）</li>
+                </ul>
+
+                <h4>解決策: 深層Qネットワーク（DQN）</h4>
+                <p>Qテーブルに値を保存する代わりに、ニューラルネットワークを使用してQ値を<strong>近似</strong>します！</p>
+
+                <div class="code-box">DQNアーキテクチャ
+
+入力: 状態（例: ゲーム画面ピクセル）
+  ↓
+[畳み込み層]          ← 視覚入力を処理
+  ↓
+[全結合層]            ← 表現を学習
+  ↓
+出力: 各アクションのQ値
+  [Q(s, a₁), Q(s, a₂), Q(s, a₃), ...]
+
+例 - Atariブレイクアウト:
+入力: 84×84×4グレースケールフレーム（最近の履歴）
+出力: [Q(s, 左), Q(s, 右), Q(s, 発射)]
+アクション: argmaxを選択（最高Q値）</div>
+
+                <h4>DQNの革新</h4>
+                <ul>
+                    <li><strong>経験リプレイ:</strong>
+                        <ul>
+                            <li>過去の経験（s、a、r、s'）をメモリバッファに保存</li>
+                            <li>訓練のためにランダムバッチをサンプル</li>
+                            <li>連続サンプル間の相関を壊す</li>
+                            <li>より効率的な学習</li>
+                        </ul>
+                    </li>
+                    <li><strong>ターゲットネットワーク:</strong>
+                        <ul>
+                            <li>目標Q値の計算に別のネットワークを使用</li>
+                            <li>ターゲットネットワークを定期的に更新（毎ステップではない）</li>
+                            <li>訓練を安定化</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>DQNの成功: Atariゲーム</h4>
+                <p>DeepMindのDQN（2015年）は生のピクセルから49のAtariゲームをプレイすることを学習しました:</p>
+                <ul>
+                    <li>ゲーム固有の特徴やルールなし</li>
+                    <li>すべてのゲームで同じアーキテクチャ</li>
+                    <li>多くのゲームで人間レベルまたは超人的パフォーマンスを達成</li>
+                    <li>RLが高次元入力から複雑な行動を学習できることを示す主要なブレークスルー</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>5. Real-World Applications / 実世界の応用</h2>
+
+        <div class="highlight-box">
+            <h3>DeepMind AlphaGo: Mastering Go</h3>
+            <h4>Link: <a href="https://deepmind.google/technologies/alphago/" target="_blank">https://deepmind.google/technologies/alphago/</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Challenge:</strong> Master the ancient game of Go, considered much harder than chess due to its enormous complexity.</p>
+
+                    <p><strong>Why Go is Hard:</strong></p>
+                    <ul>
+                        <li><strong>State Space:</strong> 10^170 possible board positions (more than atoms in universe!)</li>
+                        <li><strong>Branching Factor:</strong> ~250 legal moves per turn (vs ~35 in chess)</li>
+                        <li><strong>Intuition Required:</strong> Evaluation requires deep pattern recognition, not just calculation</li>
+                        <li><strong>Long-term Planning:</strong> Games last 200+ moves with subtle strategies</li>
+                    </ul>
+
+                    <p><strong>AlphaGo's RL Approach:</strong></p>
+                    <ul>
+                        <li><strong>Policy Network:</strong> Neural network that suggests good moves
+                            <ul>
+                                <li>Trained on expert human games (supervised learning)</li>
+                                <li>Further improved through self-play (reinforcement learning)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Value Network:</strong> Evaluates board positions
+                            <ul>
+                                <li>Predicts winner from current position</li>
+                                <li>Trained through self-play</li>
+                            </ul>
+                        </li>
+                        <li><strong>Monte Carlo Tree Search (MCTS):</strong> Planning algorithm
+                            <ul>
+                                <li>Simulates thousands of possible game sequences</li>
+                                <li>Guided by policy and value networks</li>
+                                <li>Balances exploration and exploitation</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>Training Process:</strong></p>
+                    <ol>
+                        <li><strong>Supervised Learning:</strong> Learn from 30 million expert moves</li>
+                        <li><strong>Self-Play Reinforcement Learning:</strong>
+                            <ul>
+                                <li>Play millions of games against itself</li>
+                                <li>Reward: +1 for winning, -1 for losing</li>
+                                <li>Gradually improve through trial and error</li>
+                            </ul>
+                        </li>
+                        <li><strong>Policy Improvement:</strong> Each generation plays previous versions
+                            <ul>
+                                <li>Only keep versions that win consistently</li>
+                                <li>Ensures continuous improvement</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <p><strong>Historic Achievement:</strong></p>
+                    <ul>
+                        <li><strong>March 2016:</strong> AlphaGo defeated Lee Sedol 4-1
+                            <ul>
+                                <li>Lee Sedol: World champion, 9-dan professional</li>
+                                <li>First time AI beat world champion at Go</li>
+                                <li>Move 37 in Game 2: Completely novel, beautiful move</li>
+                            </ul>
+                        </li>
+                        <li><strong>Impact:</strong>
+                            <ul>
+                                <li>Proved RL can master highly complex strategic domains</li>
+                                <li>Discovered new strategies unknown to humans</li>
+                                <li>Changed how professionals play Go</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>AlphaGo Zero (2017):</strong></p>
+                    <ul>
+                        <li>Learned purely from self-play (no human games!)</li>
+                        <li>Started with only the rules of Go</li>
+                        <li>Defeated original AlphaGo 100-0</li>
+                        <li>Trained in only 3 days</li>
+                        <li>Demonstrates power of pure reinforcement learning</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <p><strong>課題:</strong> 膨大な複雑さのためチェスよりもはるかに困難と考えられる古代のゲーム、囲碁をマスターする。</p>
+
+                    <p><strong>なぜ囲碁は難しいのか:</strong></p>
+                    <ul>
+                        <li><strong>状態空間:</strong> 10^170の可能な盤面位置（宇宙の原子より多い！）</li>
+                        <li><strong>分岐因子:</strong> ターンごとに約250の合法手（チェスは約35）</li>
+                        <li><strong>直感が必要:</strong> 評価には単なる計算ではなく深いパターン認識が必要</li>
+                        <li><strong>長期計画:</strong> ゲームは微妙な戦略で200以上の手が続く</li>
+                    </ul>
+
+                    <p><strong>AlphaGoのRLアプローチ:</strong></p>
+                    <ul>
+                        <li><strong>方策ネットワーク:</strong> 良い手を提案するニューラルネットワーク
+                            <ul>
+                                <li>エキスパート人間ゲームで訓練（教師あり学習）</li>
+                                <li>自己対戦を通じてさらに改善（強化学習）</li>
+                            </ul>
+                        </li>
+                        <li><strong>価値ネットワーク:</strong> 盤面位置を評価
+                            <ul>
+                                <li>現在位置から勝者を予測</li>
+                                <li>自己対戦を通じて訓練</li>
+                            </ul>
+                        </li>
+                        <li><strong>モンテカルロ木探索（MCTS）:</strong> 計画アルゴリズム
+                            <ul>
+                                <li>数千の可能なゲームシーケンスをシミュレート</li>
+                                <li>方策ネットワークと価値ネットワークに導かれる</li>
+                                <li>探索と活用のバランス</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>訓練プロセス:</strong></p>
+                    <ol>
+                        <li><strong>教師あり学習:</strong> 3000万のエキスパート手から学習</li>
+                        <li><strong>自己対戦強化学習:</strong>
+                            <ul>
+                                <li>自分自身と数百万ゲームをプレイ</li>
+                                <li>報酬: 勝ちで+1、負けで-1</li>
+                                <li>試行錯誤を通じて徐々に改善</li>
+                            </ul>
+                        </li>
+                        <li><strong>方策改善:</strong> 各世代が以前のバージョンと対戦
+                            <ul>
+                                <li>一貫して勝つバージョンのみを保持</li>
+                                <li>継続的改善を確保</li>
+                            </ul>
+                        </li>
+                    </ol>
+
+                    <p><strong>歴史的成果:</strong></p>
+                    <ul>
+                        <li><strong>2016年3月:</strong> AlphaGoがイ・セドルを4-1で破る
+                            <ul>
+                                <li>イ・セドル: 世界チャンピオン、9段プロ</li>
+                                <li>AIが囲碁で世界チャンピオンに勝った初めて</li>
+                                <li>第2局の37手目: 完全に新しい、美しい手</li>
+                            </ul>
+                        </li>
+                        <li><strong>影響:</strong>
+                            <ul>
+                                <li>RLが非常に複雑な戦略的領域をマスターできることを証明</li>
+                                <li>人間に知られていない新しい戦略を発見</li>
+                                <li>プロが囲碁をプレイする方法を変えた</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>AlphaGo Zero（2017年）:</strong></p>
+                    <ul>
+                        <li>純粋に自己対戦から学習（人間のゲームなし！）</li>
+                        <li>囲碁のルールだけで開始</li>
+                        <li>オリジナルのAlphaGoを100-0で破る</li>
+                        <li>わずか3日で訓練</li>
+                        <li>純粋な強化学習の力を実証</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="study-tip">
+            <h3>Study Tips for Reinforcement Learning</h3>
+            <ul>
+                <li>Draw the RL cycle diagram (Agent ↔ Environment) from memory</li>
+                <li>Understand the exploration-exploitation tradeoff with examples</li>
+                <li>Practice the Q-learning update equation step-by-step</li>
+                <li>Know the difference between Q-learning (tables) and DQN (neural networks)</li>
+                <li>Understand why AlphaGo needed both supervised and reinforcement learning</li>
+                <li>Be able to explain when RL is better than supervised learning</li>
+                <li>Memorize key parameters: α (learning rate), γ (discount), ε (exploration)</li>
+            </ul>
+        </div>
+
+        <h2>📝 Test Questions / テスト問題</h2>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 1: Multiple Choice</h4>
+            <p><strong>What is the main difference between reinforcement learning and supervised learning?</strong></p>
+            <ol type="A">
+                <li>RL uses more data than supervised learning</li>
+                <li>RL learns from rewards through trial and error, supervised learning uses labeled examples</li>
+                <li>RL is faster to train</li>
+                <li>RL can only work with images</li>
+            </ol>
+            <p><strong>Answer:</strong> B - RL learns by interacting with an environment and receiving rewards, while supervised learning requires labeled training data.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 2: Multiple Choice</h4>
+            <p><strong>In the exploration-exploitation tradeoff, what does "exploitation" mean?</strong></p>
+            <ol type="A">
+                <li>Trying new random actions to discover better strategies</li>
+                <li>Using known good actions to maximize immediate reward</li>
+                <li>Punishing bad actions</li>
+                <li>Sharing knowledge with other agents</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Exploitation means using what you already know works well to maximize rewards.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 3: Multiple Choice</h4>
+            <p><strong>In Q-learning, what does the discount factor γ (gamma) control?</strong></p>
+            <ol type="A">
+                <li>How fast the agent learns</li>
+                <li>How much the agent values future rewards vs immediate rewards</li>
+                <li>How often the agent explores</li>
+                <li>The number of training episodes</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Gamma determines how much future rewards are valued. High gamma = value long-term rewards, low gamma = focus on immediate rewards.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 4: Multiple Choice</h4>
+            <p><strong>Why did DeepMind develop Deep Q-Networks (DQN) instead of using traditional Q-tables?</strong></p>
+            <ol type="A">
+                <li>Q-tables are too slow</li>
+                <li>Q-tables can't handle large or continuous state spaces</li>
+                <li>Q-tables require too much training data</li>
+                <li>Q-tables don't work for games</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Q-tables become impractical for complex environments with millions of states or continuous state spaces.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 5: Multiple Choice</h4>
+            <p><strong>What was revolutionary about AlphaGo Zero compared to the original AlphaGo?</strong></p>
+            <ol type="A">
+                <li>It learned purely from self-play without any human game data</li>
+                <li>It used a larger neural network</li>
+                <li>It trained for a longer time</li>
+                <li>It could play multiple games</li>
+            </ol>
+            <p><strong>Answer:</strong> A - AlphaGo Zero started only with the rules of Go and learned entirely through self-play, proving pure RL can surpass human knowledge.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 6: Short Answer</h4>
+            <p><strong>Explain the complete reinforcement learning cycle including all components: agent, environment, state, action, and reward.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p>The RL cycle works as follows:</p>
+            <ol>
+                <li><strong>Agent observes State:</strong> The agent receives information about the current situation from the environment (e.g., robot's position, game board configuration)</li>
+                <li><strong>Agent chooses Action:</strong> Based on its current policy, the agent selects an action to take (e.g., move left, make a chess move)</li>
+                <li><strong>Environment transitions:</strong> The environment changes to a new state based on the action taken</li>
+                <li><strong>Agent receives Reward:</strong> The environment provides feedback - positive reward for good actions, negative for bad, or zero for neutral</li>
+                <li><strong>Agent learns:</strong> The agent updates its policy based on the experience (state, action, reward, new state)</li>
+                <li><strong>Repeat:</strong> The cycle continues until a terminal state (goal reached or episode ends)</li>
+            </ol>
+            <p>Over many iterations, the agent learns which actions lead to high cumulative rewards and develops an optimal policy.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 7: Short Answer</h4>
+            <p><strong>Describe the ε-greedy strategy for balancing exploration and exploitation. Include typical epsilon values and how they change over time.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p>ε-greedy is a strategy that balances trying new things (exploration) with using known good actions (exploitation):</p>
+            <p><strong>How it works:</strong></p>
+            <ul>
+                <li>With probability ε (epsilon): Choose a random action (explore)</li>
+                <li>With probability (1-ε): Choose the action with highest Q-value (exploit)</li>
+            </ul>
+            <p><strong>Epsilon decay schedule:</strong></p>
+            <ul>
+                <li><strong>Start:</strong> ε = 1.0 (100% exploration) - agent knows nothing, so must explore</li>
+                <li><strong>During training:</strong> Gradually decrease ε (e.g., multiply by 0.995 each episode)</li>
+                <li><strong>End:</strong> ε = 0.1 (10% exploration, 90% exploitation) - agent mostly uses what it learned but still explores occasionally</li>
+            </ul>
+            <p><strong>Why this works:</strong> Early exploration discovers good strategies. Later exploitation maximizes rewards using learned knowledge while occasional exploration prevents getting stuck in local optima.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 8: Short Answer</h4>
+            <p><strong>Explain the Q-learning update equation. What does each component represent?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>Q-learning Update Equation:</strong></p>
+            <p>Q(s,a) ← Q(s,a) + α[r + γ·max Q(s',a') - Q(s,a)]</p>
+            <p><strong>Components:</strong></p>
+            <ul>
+                <li><strong>Q(s,a):</strong> Current Q-value for taking action 'a' in state 's' (what we're updating)</li>
+                <li><strong>α (alpha):</strong> Learning rate (0-1) - how much to adjust Q-value (typically 0.1-0.5)</li>
+                <li><strong>r:</strong> Immediate reward received after taking action</li>
+                <li><strong>γ (gamma):</strong> Discount factor (0-1) - how much to value future rewards (typically 0.9-0.99)</li>
+                <li><strong>max Q(s',a'):</strong> Best Q-value possible in the new state s'</li>
+                <li><strong>[r + γ·max Q(s',a')]:</strong> Target value - what Q(s,a) should be</li>
+                <li><strong>[r + γ·max Q(s',a') - Q(s,a)]:</strong> TD Error - difference between target and current</li>
+            </ul>
+            <p><strong>Intuition:</strong> Update current Q-value by moving it toward the target value (immediate reward + discounted best future value), with step size controlled by learning rate.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 9: Application Question</h4>
+            <p><strong>AlphaGo used reinforcement learning to master Go. Explain:</strong></p>
+            <p><strong>a) Why Go is much harder than chess for AI</strong></p>
+            <p><strong>b) How AlphaGo combined supervised and reinforcement learning</strong></p>
+            <p><strong>c) What AlphaGo Zero demonstrated about pure reinforcement learning</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>a) Why Go is Harder:</strong></p>
+            <ul>
+                <li><strong>State Space:</strong> 10^170 positions vs chess's 10^47 - impossibly large for brute force</li>
+                <li><strong>Branching Factor:</strong> ~250 legal moves per turn vs ~35 in chess - can't search all possibilities</li>
+                <li><strong>Evaluation Difficulty:</strong> Requires pattern recognition and intuition, not just material counting</li>
+                <li><strong>Long-term Strategy:</strong> Subtle moves pay off 100+ moves later</li>
+            </ul>
+            <p><strong>b) AlphaGo's Hybrid Approach:</strong></p>
+            <ol>
+                <li><strong>Supervised Learning Phase:</strong> Train policy network on 30 million expert human moves to learn good move patterns</li>
+                <li><strong>Reinforcement Learning Phase:</strong> Improve through millions of self-play games, receiving +1 reward for winning, -1 for losing</li>
+                <li><strong>Combined:</strong> Use supervised learning for initial strategy, then RL to discover better strategies beyond human knowledge</li>
+            </ol>
+            <p><strong>c) AlphaGo Zero's Achievement:</strong></p>
+            <ul>
+                <li>Learned purely from self-play starting only with Go rules - no human games!</li>
+                <li>Defeated original AlphaGo 100-0 in just 3 days of training</li>
+                <li>Proved pure RL can discover superhuman strategies without human knowledge</li>
+                <li>Demonstrated RL's potential to exceed human expertise in complex domains</li>
+            </ul>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 10: Essay Question</h4>
+            <p><strong>Compare the three main machine learning paradigms: supervised learning, unsupervised learning, and reinforcement learning. For each:</strong></p>
+            <ul>
+                <li>Explain how it learns</li>
+                <li>What kind of data/feedback it requires</li>
+                <li>Give a real-world example</li>
+                <li>Describe one advantage and one limitation</li>
+                <li>Explain when you would choose this paradigm</li>
+            </ul>
+            <p><strong>Sample Answer:</strong></p>
+
+            <p><strong>Supervised Learning:</strong></p>
+            <p><strong>How it learns:</strong> Learns from labeled examples, finding patterns that map inputs to correct outputs</p>
+            <p><strong>Data required:</strong> Labeled training data - each example has input features and correct output label</p>
+            <p><strong>Example:</strong> Email spam detection - emails labeled as spam/not spam, model learns to classify new emails</p>
+            <p><strong>Advantage:</strong> High accuracy when sufficient labeled data available; clear evaluation metrics</p>
+            <p><strong>Limitation:</strong> Requires expensive, time-consuming manual labeling; can't discover novel solutions beyond training data</p>
+            <p><strong>When to use:</strong> When you have labeled data and a clear prediction task with known correct answers</p>
+
+            <p><strong>Unsupervised Learning:</strong></p>
+            <p><strong>How it learns:</strong> Discovers hidden patterns and structures in data without labels</p>
+            <p><strong>Data required:</strong> Unlabeled data - just raw inputs, no correct outputs</p>
+            <p><strong>Example:</strong> Customer segmentation - group customers by behavior without predefined categories</p>
+            <p><strong>Advantage:</strong> No labeling required; can discover unexpected patterns humans might miss</p>
+            <p><strong>Limitation:</strong> Evaluation is subjective; results may be difficult to interpret or validate</p>
+            <p><strong>When to use:</strong> When exploring data to find natural groupings or when labels are unavailable</p>
+
+            <p><strong>Reinforcement Learning:</strong></p>
+            <p><strong>How it learns:</strong> Learns through trial and error by interacting with environment and receiving rewards</p>
+            <p><strong>Data required:</strong> No explicit dataset - generates own experience through environmental interaction; needs reward signal</p>
+            <p><strong>Example:</strong> AlphaGo mastering Go through self-play, receiving +1 for wins, -1 for losses</p>
+            <p><strong>Advantage:</strong> Can discover superhuman strategies; learns sequential decision-making; doesn't need labeled data</p>
+            <p><strong>Limitation:</strong> Requires many interactions (sample inefficient); reward design is critical and difficult; training is unstable</p>
+            <p><strong>When to use:</strong> For sequential decision problems where you can simulate or interact with environment (games, robotics, resource management)</p>
+
+            <p><strong>Comparison Summary:</strong></p>
+            <p>Supervised learning is best when you have clear examples of correct behavior. Unsupervised learning excels at finding structure when you don't know what you're looking for. Reinforcement learning shines in interactive environments where optimal strategies emerge from trial and error. The choice depends on your data availability, problem structure, and whether you have labeled examples, need pattern discovery, or must learn sequential decision-making.</p>
+        </div>
+
+        <h2>🎯 Key Takeaways / 重要ポイント</h2>
+
+        <div class="highlight-box">
+            <h3>Remember These Core Concepts:</h3>
+            <ul>
+                <li><strong>RL Components:</strong> Agent, Environment, State, Action, Reward, Policy</li>
+                <li><strong>RL Cycle:</strong> Observe → Act → Reward → Learn → Repeat</li>
+                <li><strong>Exploration-Exploitation:</strong> Balance trying new things vs. using what works (ε-greedy)</li>
+                <li><strong>Q-Learning:</strong> Learn Q(s,a) values, choose action with max Q-value</li>
+                <li><strong>Key Parameters:</strong> α (learning rate), γ (discount factor), ε (exploration rate)</li>
+                <li><strong>DQN:</strong> Use neural networks for complex state spaces (Atari games)</li>
+                <li><strong>AlphaGo:</strong> Supervised + RL defeated world champion</li>
+                <li><strong>AlphaGo Zero:</strong> Pure self-play RL surpassed human knowledge</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-12/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+            <a href="../week-14/lecture.html">Next Week: Exam Study Guide →</a>
+        </div>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Week 13 Lecture Notes - Introduction to AI and Data Science</p>
+            <p>Chukyo University - 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

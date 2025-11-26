@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 10 Lecture Notes: Supervised Learning Basics</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2563eb;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #7c3aed;
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2563eb;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2563eb;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .english {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .test-question {
+            background: #fce7f3;
+            border: 3px solid #ec4899;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .test-question h4::before {
+            content: "⚠️ ";
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .navigation a:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .key-terms {
+            background: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .study-tip {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Week 10 Lecture Notes</h1>
+        <p class="subtitle">Supervised Learning Basics<br>教師あり学習の基礎</p>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-09/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+
+        <h2>📚 Overview / 概要</h2>
+        <div class="bilingual">
+            <div class="english">
+                <p>This week dives deep into supervised learning, the most widely used machine learning paradigm. We'll explore regression and classification, understand the training process, and learn about model evaluation metrics. You'll gain hands-on understanding of how to build and assess predictive models.</p>
+                <p><strong>Learning Objectives:</strong></p>
+                <ul>
+                    <li>Master the supervised learning workflow</li>
+                    <li>Understand linear and logistic regression</li>
+                    <li>Learn how to split data for training and testing</li>
+                    <li>Evaluate model performance using appropriate metrics</li>
+                    <li>Recognize overfitting and underfitting</li>
+                    <li>Apply supervised learning to real-world problems</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <p>今週は、最も広く使用されている機械学習パラダイムである教師あり学習を深く掘り下げます。回帰と分類を探り、訓練プロセスを理解し、モデル評価指標について学びます。予測モデルの構築と評価について実践的な理解を得ます。</p>
+                <p><strong>学習目標:</strong></p>
+                <ul>
+                    <li>教師あり学習のワークフローを習得する</li>
+                    <li>線形回帰とロジスティック回帰を理解する</li>
+                    <li>訓練とテストのためのデータ分割方法を学ぶ</li>
+                    <li>適切な指標を使用してモデルのパフォーマンスを評価する</li>
+                    <li>過学習と未学習を認識する</li>
+                    <li>実世界の問題に教師あり学習を適用する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>1. The Supervised Learning Workflow</h2>
+        <h2>教師あり学習のワークフロー</h2>
+
+        <div class="definition-box">
+            <h3>The Complete Process / 完全なプロセス</h3>
+            <div class="code-box">SUPERVISED LEARNING WORKFLOW
+教師あり学習ワークフロー
+
+Step 1: COLLECT DATA (データ収集)
+├─ Gather labeled examples (X, Y pairs)
+└─ Ensure quality and relevance
+
+Step 2: PREPARE DATA (データ準備)
+├─ Clean data (handle missing values, outliers)
+├─ Feature engineering (create useful features)
+├─ Normalize/scale features
+└─ Split into train/test sets
+
+Step 3: CHOOSE MODEL (モデル選択)
+├─ Regression or Classification?
+├─ Linear or Non-linear?
+└─ Simple or Complex?
+
+Step 4: TRAIN MODEL (モデル訓練)
+├─ Feed training data to algorithm
+├─ Algorithm learns patterns
+└─ Adjust parameters to minimize error
+
+Step 5: EVALUATE MODEL (モデル評価)
+├─ Test on unseen data
+├─ Calculate metrics (accuracy, error, etc.)
+└─ Compare to baseline
+
+Step 6: TUNE & IMPROVE (調整と改善)
+├─ Adjust hyperparameters
+├─ Try different algorithms
+└─ Add/remove features
+
+Step 7: DEPLOY (デプロイ)
+└─ Use model in production</div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Data Splitting Strategy</h3>
+                <p>A critical aspect of supervised learning is properly splitting your data to ensure reliable evaluation.</p>
+
+                <h4>Training Set (訓練セット)</h4>
+                <p><strong>Purpose:</strong> Used to train the model - the algorithm learns patterns from this data.</p>
+                <p><strong>Typical Size:</strong> 70-80% of total data</p>
+                <p><strong>Note:</strong> Model sees these examples during training</p>
+
+                <h4>Test Set (テストセット)</h4>
+                <p><strong>Purpose:</strong> Used to evaluate final model performance - measures how well the model generalizes.</p>
+                <p><strong>Typical Size:</strong> 20-30% of total data</p>
+                <p><strong>Note:</strong> Model never sees these examples during training</p>
+
+                <h4>Validation Set (Optional) (検証セット)</h4>
+                <p><strong>Purpose:</strong> Used for hyperparameter tuning and model selection.</p>
+                <p><strong>Typical Split:</strong> 60% train, 20% validation, 20% test</p>
+                <p><strong>Note:</strong> Helps prevent overfitting to test set</p>
+
+                <h4>Why Split Data?</h4>
+                <ul>
+                    <li><strong>Prevent Overfitting:</strong> Testing on training data would be "cheating"</li>
+                    <li><strong>Measure Generalization:</strong> See how model performs on new data</li>
+                    <li><strong>Honest Evaluation:</strong> Get realistic performance estimates</li>
+                    <li><strong>Model Selection:</strong> Compare different models fairly</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>データ分割戦略</h3>
+                <p>教師あり学習の重要な側面は、信頼できる評価を確実にするためにデータを適切に分割することです。</p>
+
+                <h4>訓練セット (Training Set)</h4>
+                <p><strong>目的:</strong> モデルを訓練するために使用 - アルゴリズムはこのデータからパターンを学習します。</p>
+                <p><strong>一般的なサイズ:</strong> 総データの70-80%</p>
+                <p><strong>注:</strong> モデルは訓練中にこれらの例を見ます</p>
+
+                <h4>テストセット (Test Set)</h4>
+                <p><strong>目的:</strong> 最終的なモデルパフォーマンスを評価するために使用 - モデルがどれだけ一般化するかを測定します。</p>
+                <p><strong>一般的なサイズ:</strong> 総データの20-30%</p>
+                <p><strong>注:</strong> モデルは訓練中にこれらの例を見ません</p>
+
+                <h4>検証セット（オプション）(Validation Set)</h4>
+                <p><strong>目的:</strong> ハイパーパラメータ調整とモデル選択に使用。</p>
+                <p><strong>一般的な分割:</strong> 60%訓練、20%検証、20%テスト</p>
+                <p><strong>注:</strong> テストセットへの過学習を防ぐのに役立ちます</p>
+
+                <h4>なぜデータを分割するのか？</h4>
+                <ul>
+                    <li><strong>過学習を防ぐ:</strong> 訓練データでテストするのは「カンニング」になります</li>
+                    <li><strong>一般化を測定:</strong> 新しいデータでモデルがどのように機能するかを確認</li>
+                    <li><strong>正直な評価:</strong> 現実的なパフォーマンス推定を取得</li>
+                    <li><strong>モデル選択:</strong> 異なるモデルを公平に比較</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>2. Linear Regression / 線形回帰</h2>
+
+        <div class="definition-box">
+            <h3>What is Linear Regression? / 線形回帰とは？</h3>
+            <p><strong>Linear Regression:</strong> A supervised learning algorithm for predicting continuous numerical values by finding the best-fitting straight line through the data points.</p>
+            <p><strong>線形回帰:</strong> データポイントを通る最適な直線を見つけることにより、連続的な数値を予測する教師あり学習アルゴリズム。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>How Linear Regression Works</h3>
+
+                <h4>The Mathematical Model</h4>
+                <div class="code-box">Simple Linear Regression (1 feature):
+y = mx + b
+
+Where:
+y = predicted value (output)
+x = input feature
+m = slope (weight)
+b = y-intercept (bias)
+
+Multiple Linear Regression (multiple features):
+y = w₁x₁ + w₂x₂ + w₃x₃ + ... + b
+
+Where:
+y = predicted value
+x₁, x₂, x₃ = different features
+w₁, w₂, w₃ = weights for each feature
+b = bias term</div>
+
+                <h4>The Goal: Minimize Error</h4>
+                <p>Linear regression finds the line that minimizes the difference between predicted and actual values.</p>
+
+                <div class="code-box">Mean Squared Error (MSE):
+MSE = (1/n) × Σ(predicted - actual)²
+
+Lower MSE = Better fit</div>
+
+                <h4>Real-World Example: House Price Prediction</h4>
+                <p><strong>Problem:</strong> Predict house price based on size</p>
+                <ul>
+                    <li><strong>Input (x):</strong> House size in square feet</li>
+                    <li><strong>Output (y):</strong> Price in dollars</li>
+                    <li><strong>Training:</strong> Learn from 1000 houses with known prices</li>
+                    <li><strong>Model:</strong> Price = 200 × Size + 50,000</li>
+                    <li><strong>Prediction:</strong> 1,500 sq ft house = $350,000</li>
+                </ul>
+
+                <h4>Advantages:</h4>
+                <ul>
+                    <li>Simple and interpretable</li>
+                    <li>Fast to train</li>
+                    <li>Works well with linear relationships</li>
+                    <li>Provides confidence intervals</li>
+                </ul>
+
+                <h4>Limitations:</h4>
+                <ul>
+                    <li>Assumes linear relationship</li>
+                    <li>Sensitive to outliers</li>
+                    <li>Cannot capture complex patterns</li>
+                    <li>Features must be independent</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>線形回帰の仕組み</h3>
+
+                <h4>数学的モデル</h4>
+                <div class="code-box">単純線形回帰（1つの特徴量）:
+y = mx + b
+
+ここで:
+y = 予測値（出力）
+x = 入力特徴量
+m = 傾き（重み）
+b = y切片（バイアス）
+
+重回帰（複数の特徴量）:
+y = w₁x₁ + w₂x₂ + w₃x₃ + ... + b
+
+ここで:
+y = 予測値
+x₁, x₂, x₃ = 異なる特徴量
+w₁, w₂, w₃ = 各特徴量の重み
+b = バイアス項</div>
+
+                <h4>目標: エラーを最小化</h4>
+                <p>線形回帰は、予測値と実際の値の差を最小化する直線を見つけます。</p>
+
+                <div class="code-box">平均二乗誤差（MSE）:
+MSE = (1/n) × Σ(予測値 - 実際の値)²
+
+MSEが低い = より良いフィット</div>
+
+                <h4>実世界の例: 住宅価格予測</h4>
+                <p><strong>問題:</strong> サイズに基づいて住宅価格を予測</p>
+                <ul>
+                    <li><strong>入力（x）:</strong> 住宅サイズ（平方フィート）</li>
+                    <li><strong>出力（y）:</strong> 価格（ドル）</li>
+                    <li><strong>訓練:</strong> 既知の価格を持つ1000軒の住宅から学習</li>
+                    <li><strong>モデル:</strong> 価格 = 200 × サイズ + 50,000</li>
+                    <li><strong>予測:</strong> 1,500平方フィートの住宅 = $350,000</li>
+                </ul>
+
+                <h4>利点:</h4>
+                <ul>
+                    <li>シンプルで解釈可能</li>
+                    <li>訓練が速い</li>
+                    <li>線形関係でうまく機能</li>
+                    <li>信頼区間を提供</li>
+                </ul>
+
+                <h4>制限:</h4>
+                <ul>
+                    <li>線形関係を仮定</li>
+                    <li>外れ値に敏感</li>
+                    <li>複雑なパターンを捉えられない</li>
+                    <li>特徴量は独立している必要がある</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>3. Logistic Regression / ロジスティック回帰</h2>
+
+        <div class="definition-box">
+            <h3>What is Logistic Regression? / ロジスティック回帰とは？</h3>
+            <p><strong>Logistic Regression:</strong> A supervised learning algorithm for binary classification that predicts the probability of an instance belonging to a particular class.</p>
+            <p><strong>ロジスティック回帰:</strong> インスタンスが特定のクラスに属する確率を予測する二値分類のための教師あり学習アルゴリズム。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Understanding Logistic Regression</h3>
+
+                <h4>Key Difference from Linear Regression</h4>
+                <ul>
+                    <li><strong>Linear Regression:</strong> Predicts continuous values (any number)</li>
+                    <li><strong>Logistic Regression:</strong> Predicts probabilities (0 to 1) for classification</li>
+                </ul>
+
+                <h4>The Sigmoid Function</h4>
+                <p>Logistic regression uses the sigmoid function to convert any value into a probability between 0 and 1.</p>
+
+                <div class="code-box">Sigmoid Function:
+σ(x) = 1 / (1 + e^(-x))
+
+Output: Always between 0 and 1
+Perfect for probability!
+
+Decision Rule:
+If σ(x) ≥ 0.5 → Predict Class 1
+If σ(x) < 0.5 → Predict Class 0</div>
+
+                <h4>Binary Classification Example: Email Spam Detection</h4>
+                <p><strong>Problem:</strong> Classify emails as spam or not spam</p>
+                <ul>
+                    <li><strong>Features:</strong>
+                        <ul>
+                            <li>Number of exclamation marks</li>
+                            <li>Presence of "free" or "winner"</li>
+                            <li>Sender domain</li>
+                            <li>Email length</li>
+                        </ul>
+                    </li>
+                    <li><strong>Output:</strong> Probability of being spam (0 to 1)</li>
+                    <li><strong>Decision:</strong> If probability > 0.5 → Spam, else Not Spam</li>
+                </ul>
+
+                <h4>Multiclass Classification</h4>
+                <p>Logistic regression can be extended to multiple classes:</p>
+                <ul>
+                    <li><strong>One-vs-Rest:</strong> Train one classifier per class</li>
+                    <li><strong>Softmax Regression:</strong> Direct multiclass extension</li>
+                    <li><strong>Example:</strong> Classifying images as cat, dog, or bird</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>ロジスティック回帰の理解</h3>
+
+                <h4>線形回帰との主な違い</h4>
+                <ul>
+                    <li><strong>線形回帰:</strong> 連続値を予測（任意の数）</li>
+                    <li><strong>ロジスティック回帰:</strong> 分類のための確率を予測（0から1）</li>
+                </ul>
+
+                <h4>シグモイド関数</h4>
+                <p>ロジスティック回帰は、シグモイド関数を使用して任意の値を0から1の間の確率に変換します。</p>
+
+                <div class="code-box">シグモイド関数:
+σ(x) = 1 / (1 + e^(-x))
+
+出力: 常に0と1の間
+確率に最適！
+
+決定ルール:
+σ(x) ≥ 0.5 → クラス1を予測
+σ(x) < 0.5 → クラス0を予測</div>
+
+                <h4>二値分類の例: メールスパム検出</h4>
+                <p><strong>問題:</strong> メールをスパムか非スパムに分類</p>
+                <ul>
+                    <li><strong>特徴量:</strong>
+                        <ul>
+                            <li>感嘆符の数</li>
+                            <li>「無料」や「当選」の有無</li>
+                            <li>送信者ドメイン</li>
+                            <li>メールの長さ</li>
+                        </ul>
+                    </li>
+                    <li><strong>出力:</strong> スパムである確率（0から1）</li>
+                    <li><strong>決定:</strong> 確率 > 0.5 → スパム、それ以外 非スパム</li>
+                </ul>
+
+                <h4>多クラス分類</h4>
+                <p>ロジスティック回帰は複数クラスに拡張できます:</p>
+                <ul>
+                    <li><strong>One-vs-Rest:</strong> クラスごとに1つの分類器を訓練</li>
+                    <li><strong>ソフトマックス回帰:</strong> 直接的な多クラス拡張</li>
+                    <li><strong>例:</strong> 画像を猫、犬、または鳥に分類</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>4. Model Evaluation Metrics / モデル評価指標</h2>
+
+        <div class="key-terms">
+            <h3>Regression Metrics (回帰指標)</h3>
+            <ul>
+                <li><strong>Mean Squared Error (MSE) / 平均二乗誤差:</strong> Average of squared differences between predicted and actual values. Lower is better.</li>
+                <li><strong>Root Mean Squared Error (RMSE) / 二乗平均平方根誤差:</strong> Square root of MSE. Same units as target variable.</li>
+                <li><strong>Mean Absolute Error (MAE) / 平均絶対誤差:</strong> Average of absolute differences. Less sensitive to outliers than MSE.</li>
+                <li><strong>R² Score (決定係数):</strong> Proportion of variance explained by model. Range: 0 to 1, closer to 1 is better.</li>
+            </ul>
+        </div>
+
+        <div class="key-terms">
+            <h3>Classification Metrics (分類指標)</h3>
+            <ul>
+                <li><strong>Accuracy / 精度:</strong> Percentage of correct predictions. Simple but can be misleading with imbalanced data.</li>
+                <li><strong>Precision / 適合率:</strong> Of predicted positives, how many are truly positive? Important when false positives are costly.</li>
+                <li><strong>Recall (Sensitivity) / 再現率:</strong> Of actual positives, how many did we find? Important when false negatives are costly.</li>
+                <li><strong>F1 Score:</strong> Harmonic mean of precision and recall. Balances both metrics.</li>
+                <li><strong>Confusion Matrix / 混同行列:</strong> Table showing true positives, true negatives, false positives, false negatives.</li>
+            </ul>
+        </div>
+
+        <div class="highlight-box">
+            <h3>Understanding the Confusion Matrix</h3>
+            <div class="code-box">                  PREDICTED
+                 Positive  Negative
+            ┌─────────────┬─────────┐
+ACTUAL   P  │   TP        │   FN    │  TP = True Positive (正しく陽性と予測)
+         o  │  (Correct)  │ (Miss)  │  FN = False Negative (陰性と誤予測)
+         s  ├─────────────┼─────────┤
+         i  │   FP        │   TN    │  FP = False Positive (陽性と誤予測)
+         t  │ (False      │(Correct)│  TN = True Negative (正しく陰性と予測)
+         i  │  Alarm)     │         │
+         v  └─────────────┴─────────┘
+         e
+
+Accuracy  = (TP + TN) / Total
+Precision = TP / (TP + FP)
+Recall    = TP / (TP + FN)
+F1 Score  = 2 × (Precision × Recall) / (Precision + Recall)</div>
+
+            <p><strong>Medical Diagnosis Example:</strong></p>
+            <ul>
+                <li><strong>TP:</strong> Patient has disease, test says positive (Correct)</li>
+                <li><strong>TN:</strong> Patient healthy, test says negative (Correct)</li>
+                <li><strong>FP:</strong> Patient healthy, test says positive (False alarm - causes anxiety)</li>
+                <li><strong>FN:</strong> Patient has disease, test says negative (Dangerous - missed diagnosis)</li>
+            </ul>
+        </div>
+
+        <h2>5. Overfitting and Underfitting / 過学習と未学習</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Understanding the Bias-Variance Tradeoff</h3>
+
+                <h4>Underfitting (High Bias) - 未学習</h4>
+                <p><strong>Definition:</strong> Model is too simple to capture the underlying patterns in the data.</p>
+                <p><strong>Signs:</strong></p>
+                <ul>
+                    <li>Poor performance on training data</li>
+                    <li>Poor performance on test data</li>
+                    <li>Model is too simple</li>
+                </ul>
+                <p><strong>Example:</strong> Using a straight line to fit clearly curved data</p>
+                <p><strong>Solution:</strong></p>
+                <ul>
+                    <li>Use more complex model</li>
+                    <li>Add more features</li>
+                    <li>Reduce regularization</li>
+                    <li>Train longer</li>
+                </ul>
+
+                <h4>Overfitting (High Variance) - 過学習</h4>
+                <p><strong>Definition:</strong> Model learns training data too well, including noise and outliers, failing to generalize.</p>
+                <p><strong>Signs:</strong></p>
+                <ul>
+                    <li>Excellent performance on training data</li>
+                    <li>Poor performance on test data</li>
+                    <li>Large gap between train and test accuracy</li>
+                </ul>
+                <p><strong>Example:</strong> Memorizing every training example instead of learning patterns</p>
+                <p><strong>Solution:</strong></p>
+                <ul>
+                    <li>Get more training data</li>
+                    <li>Simplify model (reduce complexity)</li>
+                    <li>Use regularization</li>
+                    <li>Remove irrelevant features</li>
+                    <li>Use dropout (for neural networks)</li>
+                    <li>Early stopping</li>
+                </ul>
+
+                <h4>The Sweet Spot: Good Fit</h4>
+                <p><strong>Goal:</strong> Balance between underfitting and overfitting</p>
+                <p><strong>Characteristics:</strong></p>
+                <ul>
+                    <li>Good performance on training data</li>
+                    <li>Good performance on test data</li>
+                    <li>Model generalizes well to new data</li>
+                    <li>Captures true patterns without memorizing noise</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>バイアス-バリアンストレードオフの理解</h3>
+
+                <h4>未学習（高バイアス）- Underfitting</h4>
+                <p><strong>定義:</strong> モデルがデータの基礎となるパターンを捉えるには単純すぎる。</p>
+                <p><strong>兆候:</strong></p>
+                <ul>
+                    <li>訓練データでのパフォーマンスが悪い</li>
+                    <li>テストデータでのパフォーマンスが悪い</li>
+                    <li>モデルが単純すぎる</li>
+                </ul>
+                <p><strong>例:</strong> 明らかに曲線のデータに直線を当てはめる</p>
+                <p><strong>解決策:</strong></p>
+                <ul>
+                    <li>より複雑なモデルを使用</li>
+                    <li>より多くの特徴量を追加</li>
+                    <li>正則化を減らす</li>
+                    <li>より長く訓練</li>
+                </ul>
+
+                <h4>過学習（高バリアンス）- Overfitting</h4>
+                <p><strong>定義:</strong> モデルがノイズや外れ値を含む訓練データをよく学習しすぎて、一般化に失敗する。</p>
+                <p><strong>兆候:</strong></p>
+                <ul>
+                    <li>訓練データでの優れたパフォーマンス</li>
+                    <li>テストデータでの悪いパフォーマンス</li>
+                    <li>訓練とテストの精度の大きなギャップ</li>
+                </ul>
+                <p><strong>例:</strong> パターンを学習する代わりにすべての訓練例を記憶する</p>
+                <p><strong>解決策:</strong></p>
+                <ul>
+                    <li>より多くの訓練データを取得</li>
+                    <li>モデルを簡素化（複雑さを減らす）</li>
+                    <li>正則化を使用</li>
+                    <li>無関係な特徴量を削除</li>
+                    <li>ドロップアウトを使用（ニューラルネットワーク用）</li>
+                    <li>早期停止</li>
+                </ul>
+
+                <h4>最適点: 良いフィット</h4>
+                <p><strong>目標:</strong> 未学習と過学習のバランス</p>
+                <p><strong>特性:</strong></p>
+                <ul>
+                    <li>訓練データでの良いパフォーマンス</li>
+                    <li>テストデータでの良いパフォーマンス</li>
+                    <li>モデルが新しいデータによく一般化</li>
+                    <li>ノイズを記憶せずに真のパターンを捉える</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>6. Real-World Application / 実世界の応用</h2>
+
+        <div class="highlight-box">
+            <h3>Zillow: House Price Prediction</h3>
+            <h4>Link: <a href="https://www.zillow.com" target="_blank">https://www.zillow.com</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Challenge:</strong> Accurately estimate the value of millions of homes across the United States.</p>
+
+                    <p><strong>Supervised Learning Approach:</strong></p>
+                    <ul>
+                        <li><strong>Algorithm:</strong> Multiple regression models (including gradient boosting)</li>
+                        <li><strong>Features Used:</strong>
+                            <ul>
+                                <li>Square footage (size of house)</li>
+                                <li>Number of bedrooms and bathrooms</li>
+                                <li>Location (zip code, neighborhood)</li>
+                                <li>Year built and renovation history</li>
+                                <li>Lot size</li>
+                                <li>Recent sales of comparable homes</li>
+                                <li>Tax assessment data</li>
+                                <li>Market trends</li>
+                            </ul>
+                        </li>
+                        <li><strong>Training Data:</strong> Millions of actual home sales with known prices</li>
+                        <li><strong>Output:</strong> Zestimate - predicted home value</li>
+                    </ul>
+
+                    <p><strong>Model Evaluation:</strong></p>
+                    <ul>
+                        <li>Median error rate: ~2% in best markets</li>
+                        <li>Continuous retraining with new sales data</li>
+                        <li>A/B testing of model improvements</li>
+                        <li>Transparency: Shows confidence interval for each estimate</li>
+                    </ul>
+
+                    <p><strong>Impact:</strong> Over 100 million Zestimates updated daily, helping millions of people make informed real estate decisions.</p>
+
+                    <p><strong>Challenges:</strong></p>
+                    <ul>
+                        <li>Unique home features hard to quantify</li>
+                        <li>Market volatility</li>
+                        <li>Limited data in some areas</li>
+                        <li>Seasonal variations</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <p><strong>課題:</strong> 米国全土の数百万の住宅の価値を正確に推定する。</p>
+
+                    <p><strong>教師あり学習アプローチ:</strong></p>
+                    <ul>
+                        <li><strong>アルゴリズム:</strong> 複数の回帰モデル（勾配ブースティングを含む）</li>
+                        <li><strong>使用される特徴量:</strong>
+                            <ul>
+                                <li>平方フィート（住宅のサイズ）</li>
+                                <li>寝室とバスルームの数</li>
+                                <li>場所（郵便番号、近隣地域）</li>
+                                <li>建築年と改装履歴</li>
+                                <li>敷地サイズ</li>
+                                <li>類似住宅の最近の販売</li>
+                                <li>税務評価データ</li>
+                                <li>市場動向</li>
+                            </ul>
+                        </li>
+                        <li><strong>訓練データ:</strong> 既知の価格を持つ数百万の実際の住宅販売</li>
+                        <li><strong>出力:</strong> Zestimate - 予測される住宅価値</li>
+                    </ul>
+
+                    <p><strong>モデル評価:</strong></p>
+                    <ul>
+                        <li>中央値エラー率: 最良の市場で約2%</li>
+                        <li>新しい販売データでの継続的な再訓練</li>
+                        <li>モデル改善のA/Bテスト</li>
+                        <li>透明性: 各推定値の信頼区間を表示</li>
+                    </ul>
+
+                    <p><strong>影響:</strong> 1億以上のZestimateが毎日更新され、数百万人が情報に基づいた不動産の決定を下すのを支援しています。</p>
+
+                    <p><strong>課題:</strong></p>
+                    <ul>
+                        <li>定量化が難しい独自の住宅特徴</li>
+                        <li>市場のボラティリティ</li>
+                        <li>一部地域でのデータ不足</li>
+                        <li>季節変動</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="study-tip">
+            <h3>Study Tips for Supervised Learning</h3>
+            <ul>
+                <li>Understand the complete workflow from data to deployment</li>
+                <li>Know when to use linear regression vs logistic regression</li>
+                <li>Practice calculating metrics from a confusion matrix</li>
+                <li>Be able to explain overfitting and underfitting with examples</li>
+                <li>Understand why we split data into train/test sets</li>
+                <li>Know the difference between regression and classification metrics</li>
+                <li>Practice explaining concepts in both English and Japanese</li>
+            </ul>
+        </div>
+
+        <h2>📝 Test Questions / テスト問題</h2>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 1: Multiple Choice</h4>
+            <p><strong>What is the primary purpose of splitting data into training and test sets?</strong></p>
+            <ol type="A">
+                <li>To reduce the amount of data the model needs to process</li>
+                <li>To evaluate how well the model generalizes to new, unseen data</li>
+                <li>To make the training process faster</li>
+                <li>To increase the accuracy on the training data</li>
+            </ol>
+            <p><strong>Answer:</strong> B - The test set allows us to evaluate model performance on data it has never seen, measuring generalization ability.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 2: Multiple Choice</h4>
+            <p><strong>Which algorithm should you use to predict the selling price of a used car?</strong></p>
+            <ol type="A">
+                <li>K-means clustering</li>
+                <li>Linear regression</li>
+                <li>Logistic regression</li>
+                <li>Reinforcement learning</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Linear regression is used for predicting continuous numerical values like prices.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 3: Multiple Choice</h4>
+            <p><strong>What does the sigmoid function in logistic regression do?</strong></p>
+            <ol type="A">
+                <li>Calculates the error rate</li>
+                <li>Converts any value into a probability between 0 and 1</li>
+                <li>Splits the data into training and test sets</li>
+                <li>Finds the best features to use</li>
+            </ol>
+            <p><strong>Answer:</strong> B - The sigmoid function maps any input value to an output between 0 and 1, perfect for probability predictions.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 4: Multiple Choice</h4>
+            <p><strong>A model performs very well on training data (98% accuracy) but poorly on test data (65% accuracy). What is this called?</strong></p>
+            <ol type="A">
+                <li>Underfitting</li>
+                <li>Overfitting</li>
+                <li>Good generalization</li>
+                <li>Perfect fit</li>
+            </ol>
+            <p><strong>Answer:</strong> B - Overfitting occurs when a model learns the training data too well and fails to generalize to new data.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 5: Multiple Choice</h4>
+            <p><strong>In a medical diagnosis system, which metric is most important when missing a disease (false negative) is very dangerous?</strong></p>
+            <ol type="A">
+                <li>Accuracy</li>
+                <li>Precision</li>
+                <li>Recall</li>
+                <li>F1 Score</li>
+            </ol>
+            <p><strong>Answer:</strong> C - Recall measures how many actual positives we found. High recall means fewer false negatives (missed diseases).</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 6: Short Answer</h4>
+            <p><strong>Explain the difference between linear regression and logistic regression. When would you use each?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>Linear Regression:</strong></p>
+            <ul>
+                <li>Predicts continuous numerical values</li>
+                <li>Output can be any number</li>
+                <li>Example: Predicting house prices, temperature, stock prices</li>
+                <li>Uses: y = mx + b formula</li>
+            </ul>
+            <p><strong>Logistic Regression:</strong></p>
+            <ul>
+                <li>Predicts probabilities for classification</li>
+                <li>Output is between 0 and 1</li>
+                <li>Example: Spam/not spam, disease/healthy, pass/fail</li>
+                <li>Uses: Sigmoid function to convert to probability</li>
+            </ul>
+            <p>Use linear regression for regression problems (predicting quantities) and logistic regression for classification problems (predicting categories).</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 7: Short Answer</h4>
+            <p><strong>Calculate precision, recall, and accuracy from this confusion matrix:</strong></p>
+            <div class="code-box">              Predicted
+            Spam  Not Spam
+Actual Spam     80      20
+       Not Spam 10      90</div>
+            <p><strong>Sample Answer:</strong></p>
+            <p>TP = 80, FN = 20, FP = 10, TN = 90</p>
+            <p><strong>Accuracy</strong> = (TP + TN) / Total = (80 + 90) / 200 = 170/200 = 0.85 = 85%</p>
+            <p><strong>Precision</strong> = TP / (TP + FP) = 80 / (80 + 10) = 80/90 = 0.889 = 88.9%</p>
+            <p><strong>Recall</strong> = TP / (TP + FN) = 80 / (80 + 20) = 80/100 = 0.80 = 80%</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 8: Short Answer</h4>
+            <p><strong>Describe three solutions to prevent overfitting in a supervised learning model.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <ol>
+                <li><strong>Get More Training Data:</strong> With more examples, the model is less likely to memorize specific instances and will learn general patterns instead.</li>
+                <li><strong>Use Regularization:</strong> Add penalties for model complexity to prevent it from fitting noise. This keeps the model simpler and more generalizable.</li>
+                <li><strong>Remove Irrelevant Features:</strong> Feature selection helps by eliminating features that don't contribute to predictions, reducing the chance of learning spurious correlations.</li>
+            </ol>
+            <p>Other valid solutions: Cross-validation, early stopping, dropout (for neural networks), ensemble methods, or reducing model complexity.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 9: Application Question</h4>
+            <p><strong>Zillow uses supervised learning to predict house prices. Describe:</strong></p>
+            <p><strong>a) What type of supervised learning problem is this (classification or regression)?</strong></p>
+            <p><strong>b) List five features Zillow might use</strong></p>
+            <p><strong>c) What would be the training data?</strong></p>
+            <p><strong>d) What metric would be best to evaluate the model?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>a) Type:</strong> Regression problem - predicting continuous numerical values (home prices)</p>
+            <p><strong>b) Five features:</strong></p>
+            <ol>
+                <li>Square footage (house size)</li>
+                <li>Number of bedrooms and bathrooms</li>
+                <li>Location (zip code/neighborhood)</li>
+                <li>Year built</li>
+                <li>Recent comparable sales</li>
+            </ol>
+            <p><strong>c) Training data:</strong> Historical home sales with actual selling prices - millions of homes with known sale prices serve as labeled examples</p>
+            <p><strong>d) Best metric:</strong> RMSE (Root Mean Squared Error) or MAE (Mean Absolute Error) because they measure prediction error in dollars, making it easy to understand. R² score is also useful to show how much variance is explained.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 10: Essay Question</h4>
+            <p><strong>Explain the complete supervised learning workflow from data collection to deployment. For each step, describe what happens and why it's important. Use a real-world example (like spam detection or house price prediction) to illustrate.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>Example: Email Spam Detection System</strong></p>
+
+            <p><strong>Step 1: Data Collection</strong></p>
+            <p>Gather labeled email examples - thousands of emails marked as "spam" or "not spam". This is crucial because supervised learning requires labeled data to learn from. Without quality labeled data, the model cannot learn accurate patterns.</p>
+
+            <p><strong>Step 2: Data Preparation</strong></p>
+            <p>Clean the data (remove duplicates, handle missing values), extract features (word counts, sender domain, presence of links, number of exclamation marks), and normalize features. Split data 80% training, 20% testing. This ensures the model receives high-quality, consistent input.</p>
+
+            <p><strong>Step 3: Choose Model</strong></p>
+            <p>Select logistic regression for binary classification (spam vs. not spam). The choice depends on the problem type - classification needs different algorithms than regression.</p>
+
+            <p><strong>Step 4: Train Model</strong></p>
+            <p>Feed training data (80%) to the logistic regression algorithm. It learns patterns like "emails with 'free winner' and many exclamation marks are likely spam". The model adjusts its parameters to minimize classification errors.</p>
+
+            <p><strong>Step 5: Evaluate Model</strong></p>
+            <p>Test on the held-out 20% of data the model has never seen. Calculate metrics: accuracy (overall correctness), precision (of emails marked spam, how many truly are), and recall (of actual spam, how much did we catch). This reveals if the model generalizes well.</p>
+
+            <p><strong>Step 6: Tune & Improve</strong></p>
+            <p>If performance is poor, adjust hyperparameters, try different features, or use different algorithms. If overfitting (high training accuracy, low test accuracy), add regularization or get more data. Iterate until satisfactory performance.</p>
+
+            <p><strong>Step 7: Deploy</strong></p>
+            <p>Integrate the model into email systems to automatically filter spam in real-time. Monitor performance and retrain periodically with new data as spam patterns evolve.</p>
+
+            <p><strong>Importance:</strong> Following this systematic workflow ensures reliable, well-tested models that actually work in production, rather than just performing well in development.</p>
+        </div>
+
+        <h2>🎯 Key Takeaways / 重要ポイント</h2>
+
+        <div class="highlight-box">
+            <h3>Remember These Core Concepts:</h3>
+            <ul>
+                <li><strong>Supervised Learning Workflow:</strong> Collect → Prepare → Choose → Train → Evaluate → Tune → Deploy</li>
+                <li><strong>Data Splitting:</strong> 70-80% train, 20-30% test (never test on training data!)</li>
+                <li><strong>Linear Regression:</strong> Predicts continuous values (y = mx + b)</li>
+                <li><strong>Logistic Regression:</strong> Predicts probabilities for classification (uses sigmoid function)</li>
+                <li><strong>Overfitting:</strong> Great on training, poor on test → Need more data or simpler model</li>
+                <li><strong>Underfitting:</strong> Poor on both → Need more complex model or better features</li>
+                <li><strong>Classification Metrics:</strong> Accuracy, Precision, Recall, F1 Score</li>
+                <li><strong>Regression Metrics:</strong> MSE, RMSE, MAE, R² Score</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-09/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+            <a href="../week-11/lecture.html">Next Week →</a>
+        </div>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Week 10 Lecture Notes - Introduction to AI and Data Science</p>
+            <p>Chukyo University - 2025</p>
+        </footer>
+    </div>
+</body>
+</html>
