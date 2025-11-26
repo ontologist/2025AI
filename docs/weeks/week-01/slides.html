@@ -103,26 +103,21 @@
             margin-bottom: 10px;
         }
 
-        .bilingual {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
+        .content-section {
             margin: 20px 0;
         }
 
-        .english, .japanese {
+        .japanese-content {
+            margin-top: 25px;
             padding: 20px;
-            border-radius: 10px;
-        }
-
-        .english {
-            background: #dbeafe;
-            border-left: 4px solid #2563eb;
-        }
-
-        .japanese {
-            background: #f3e8ff;
+            background: #f8f9fa;
             border-left: 4px solid #7c3aed;
+            border-radius: 8px;
+        }
+
+        .japanese-heading {
+            color: #7c3aed;
+            font-style: italic;
         }
 
         .highlight-box {
@@ -218,11 +213,16 @@
             margin: 10px 0;
         }
 
-        .two-column {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 30px;
+        .column-section {
             margin: 20px 0;
+        }
+
+        .column-item {
+            margin-bottom: 30px;
+        }
+
+        .column-item:last-child {
+            margin-bottom: 0;
         }
 
         /* Responsive Design */
@@ -261,13 +261,8 @@
                 font-size: 1.6em;
             }
 
-            .bilingual {
-                grid-template-columns: 1fr;
-                gap: 15px;
-            }
-
-            .two-column {
-                grid-template-columns: 1fr;
+            .slide h3 {
+                font-size: 1.5em;
             }
 
             .title-slide h1 {
@@ -289,53 +284,10 @@
             }
         }
 
-        .slides-nav {
-            background-color: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1001;
-            padding: 10px 20px;
-        }
-
-        .slides-nav .container {
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            max-width: 1200px;
-            margin: 0 auto;
-            flex-wrap: wrap;
-        }
-
-        .slides-nav a {
-            color: #1f2937;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
-            font-size: 0.95em;
-        }
-
-        .slides-nav a:hover {
-            color: #2563eb;
-        }
-
-        body {
-            padding-top: 50px;
-        }
     </style>
     <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
-    <nav class="slides-nav">
-        <div class="container">
-            <a href="../../index.html">← Course Home</a>
-            <a href="lecture.html">Lecture Notes</a>
-            <a href="assignment.html">Assignment</a>
-        </div>
-    </nav>
-
     <div class="slide-number" id="slideNumber">Slide 1 / 14</div>
 
     <div class="slide-container">
@@ -350,20 +302,18 @@
 
         <!-- Slide 2: Introduction -->
         <div class="slide">
-            <h2>Introduction</h2>
-            <h2>はじめに</h2>
-            <div class="bilingual">
-                <div class="english">
-                    <h3>Today's Learning Goals:</h3>
-                    <ul>
-                        <li>Understand the origins of AI as a field</li>
-                        <li>Learn about Alan Turing's contributions</li>
-                        <li>Discover the significance of the Dartmouth Conference</li>
-                        <li>Explore early AI developments (1950s-1960s)</li>
-                    </ul>
-                </div>
-                <div class="japanese">
-                    <h3>本日の学習目標：</h3>
+            <h2>Introduction / はじめに</h2>
+            <div class="content-section">
+                <h3>Today's Learning Goals:</h3>
+                <ul>
+                    <li>Understand the origins of AI as a field</li>
+                    <li>Learn about Alan Turing's contributions</li>
+                    <li>Discover the significance of the Dartmouth Conference</li>
+                    <li>Explore early AI developments (1950s-1960s)</li>
+                </ul>
+
+                <div class="japanese-content">
+                    <h3 class="japanese-heading">本日の学習目標：</h3>
                     <ul>
                         <li>AI分野の起源を理解する</li>
                         <li>アラン・チューリングの貢献について学ぶ</li>
@@ -376,26 +326,24 @@
 
         <!-- Slide 3: What is AI? -->
         <div class="slide">
-            <h2>What is Artificial Intelligence?</h2>
-            <h2>人工知能とは？</h2>
+            <h2>What is Artificial Intelligence? / 人工知能とは？</h2>
             <div class="highlight-box">
                 <h3>Definition / 定義:</h3>
                 <p><strong>Artificial Intelligence (AI)</strong> = The science and engineering of making intelligent machines</p>
                 <p><strong>人工知能（AI）</strong> = 知的な機械を作る科学と工学</p>
             </div>
-            <div class="bilingual">
-                <div class="english">
-                    <h4>Key Characteristics:</h4>
-                    <ul>
-                        <li>Learning from experience</li>
-                        <li>Adapting to new situations</li>
-                        <li>Understanding and reasoning</li>
-                        <li>Solving complex problems</li>
-                        <li>Perceiving and interacting with the world</li>
-                    </ul>
-                </div>
-                <div class="japanese">
-                    <h4>主な特徴：</h4>
+            <div class="content-section">
+                <h4>Key Characteristics:</h4>
+                <ul>
+                    <li>Learning from experience</li>
+                    <li>Adapting to new situations</li>
+                    <li>Understanding and reasoning</li>
+                    <li>Solving complex problems</li>
+                    <li>Perceiving and interacting with the world</li>
+                </ul>
+
+                <div class="japanese-content">
+                    <h4 class="japanese-heading">主な特徴：</h4>
                     <ul>
                         <li>経験から学習する</li>
                         <li>新しい状況に適応する</li>
@@ -409,21 +357,19 @@
 
         <!-- Slide 4: Before AI - Ancient Dreams -->
         <div class="slide">
-            <h2>Ancient Dreams of Intelligent Machines</h2>
-            <h2>知的機械の古代の夢</h2>
-            <div class="bilingual">
-                <div class="english">
-                    <h3>Historical Context:</h3>
-                    <p>The idea of artificial beings with intelligence has ancient roots:</p>
-                    <ul>
-                        <li><strong>Greek Mythology:</strong> Talos, the bronze automaton</li>
-                        <li><strong>Medieval Europe:</strong> Mechanical automatons and clocks</li>
-                        <li><strong>18th Century:</strong> The Mechanical Turk (chess-playing "machine")</li>
-                        <li><strong>19th Century:</strong> Charles Babbage's Analytical Engine</li>
-                    </ul>
-                </div>
-                <div class="japanese">
-                    <h3>歴史的背景：</h3>
+            <h2>Ancient Dreams of Intelligent Machines / 知的機械の古代の夢</h2>
+            <div class="content-section">
+                <h3>Historical Context:</h3>
+                <p>The idea of artificial beings with intelligence has ancient roots:</p>
+                <ul>
+                    <li><strong>Greek Mythology:</strong> Talos, the bronze automaton</li>
+                    <li><strong>Medieval Europe:</strong> Mechanical automatons and clocks</li>
+                    <li><strong>18th Century:</strong> The Mechanical Turk (chess-playing "machine")</li>
+                    <li><strong>19th Century:</strong> Charles Babbage's Analytical Engine</li>
+                </ul>
+
+                <div class="japanese-content">
+                    <h3 class="japanese-heading">歴史的背景：</h3>
                     <p>知性を持つ人工的な存在の概念は古代からあります：</p>
                     <ul>
                         <li><strong>ギリシャ神話：</strong>タロス、青銅の自動人形</li>
@@ -437,12 +383,10 @@
 
         <!-- Slide 5: Alan Turing -->
         <div class="slide">
-            <h2>Alan Turing: The Father of Computer Science</h2>
-            <h2>アラン・チューリング：コンピュータ科学の父</h2>
-            <div class="two-column">
-                <div>
-                    <h3>About Turing</h3>
-                    <h3>チューリングについて</h3>
+            <h2>Alan Turing: The Father of Computer Science / アラン・チューリング：コンピュータ科学の父</h2>
+            <div class="column-section">
+                <div class="column-item">
+                    <h3>About Turing / チューリングについて</h3>
                     <ul>
                         <li><strong>Born:</strong> 1912 in London / ロンドン</li>
                         <li><strong>Education:</strong> Cambridge University / ケンブリッジ大学</li>
@@ -450,9 +394,8 @@
                         <li><strong>Legacy:</strong> Foundations of computing and AI / コンピューティングとAIの基礎</li>
                     </ul>
                 </div>
-                <div>
-                    <h3>Key Contributions</h3>
-                    <h3>主な貢献</h3>
+                <div class="column-item">
+                    <h3>Key Contributions / 主な貢献</h3>
                     <ul>
                         <li><strong>1936:</strong> Turing Machine concept / チューリングマシンの概念</li>
                         <li><strong>1940s:</strong> Enigma code breaking / エニグマ暗号解読</li>
@@ -465,25 +408,23 @@
 
         <!-- Slide 6: The Turing Test -->
         <div class="slide">
-            <h2>The Turing Test (1950)</h2>
-            <h2>チューリングテスト（1950年）</h2>
+            <h2>The Turing Test (1950) / チューリングテスト（1950年）</h2>
             <div class="highlight-box">
                 <h3>The Imitation Game / 模倣ゲーム</h3>
                 <p><strong>Question:</strong> "Can machines think?"</p>
                 <p><strong>質問：</strong>「機械は考えることができるか？」</p>
             </div>
-            <div class="bilingual">
-                <div class="english">
-                    <h4>How It Works:</h4>
-                    <ol>
-                        <li>A human judge converses with both a human and a machine (without seeing them)</li>
-                        <li>Both try to appear human through text responses</li>
-                        <li>If the judge cannot reliably distinguish the machine from the human, the machine passes the test</li>
-                    </ol>
-                    <p><strong>Significance:</strong> Shifted focus from "Can machines think?" to "Can machines behave intelligently?"</p>
-                </div>
-                <div class="japanese">
-                    <h4>仕組み：</h4>
+            <div class="content-section">
+                <h4>How It Works:</h4>
+                <ol>
+                    <li>A human judge converses with both a human and a machine (without seeing them)</li>
+                    <li>Both try to appear human through text responses</li>
+                    <li>If the judge cannot reliably distinguish the machine from the human, the machine passes the test</li>
+                </ol>
+                <p><strong>Significance:</strong> Shifted focus from "Can machines think?" to "Can machines behave intelligently?"</p>
+
+                <div class="japanese-content">
+                    <h4 class="japanese-heading">仕組み：</h4>
                     <ol>
                         <li>人間の審査員が人間と機械の両方と会話する（見ずに）</li>
                         <li>両方がテキスト応答で人間らしく見えるように試みる</li>
@@ -496,28 +437,25 @@
 
         <!-- Slide 7: The Dartmouth Conference (1956) -->
         <div class="slide">
-            <h2>The Dartmouth Conference (1956)</h2>
-            <h2>ダートマス会議（1956年）</h2>
+            <h2>The Dartmouth Conference (1956) / ダートマス会議（1956年）</h2>
             <div class="highlight-box">
-                <h3>The Birth of AI as a Field</h3>
-                <h3>分野としてのAIの誕生</h3>
+                <h3>The Birth of AI as a Field / 分野としてのAIの誕生</h3>
                 <p><strong>Location:</strong> Dartmouth College, New Hampshire, USA</p>
                 <p><strong>場所：</strong>ダートマス大学、ニューハンプシャー州、米国</p>
                 <p><strong>Duration:</strong> Summer 1956 (6-8 weeks)</p>
                 <p><strong>期間：</strong>1956年夏（6-8週間）</p>
             </div>
-            <div class="bilingual">
-                <div class="english">
-                    <h4>Key Organizers:</h4>
-                    <ul>
-                        <li><strong>John McCarthy</strong> (coined term "Artificial Intelligence")</li>
-                        <li><strong>Marvin Minsky</strong> (MIT)</li>
-                        <li><strong>Claude Shannon</strong> (information theory)</li>
-                        <li><strong>Nathaniel Rochester</strong> (IBM)</li>
-                    </ul>
-                </div>
-                <div class="japanese">
-                    <h4>主要主催者：</h4>
+            <div class="content-section">
+                <h4>Key Organizers:</h4>
+                <ul>
+                    <li><strong>John McCarthy</strong> (coined term "Artificial Intelligence")</li>
+                    <li><strong>Marvin Minsky</strong> (MIT)</li>
+                    <li><strong>Claude Shannon</strong> (information theory)</li>
+                    <li><strong>Nathaniel Rochester</strong> (IBM)</li>
+                </ul>
+
+                <div class="japanese-content">
+                    <h4 class="japanese-heading">主要主催者：</h4>
                     <ul>
                         <li><strong>ジョン・マッカーシー</strong>（「人工知能」という用語を作った）</li>
                         <li><strong>マービン・ミンスキー</strong>（MIT）</li>

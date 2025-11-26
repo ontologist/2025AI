@@ -6,7 +6,7 @@
     <title>Week 13: Reinforcement Learning</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: #333; overflow: hidden; padding-top: 50px; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%); color: #333; overflow: hidden; }
         .slide-container { width: 100vw; height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
         .slide { display: none; background: white; width: 90%; max-width: 1200px; height: 85vh; border-radius: 20px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); padding: 60px 80px; position: relative; overflow-y: auto; }
         .slide.active { display: block; animation: slideIn 0.5s ease-out; }
@@ -34,10 +34,6 @@
         .title-slide .subtitle { font-size: 2em; color: #7c3aed; margin-bottom: 40px; }
         .title-slide .info { font-size: 1.3em; color: #666; margin: 10px 0; }
         .two-column { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin: 20px 0; }
-        .slides-nav { background-color: rgba(255, 255, 255, 0.95); box-shadow: 0 2px 4px rgba(0,0,0,0.1); position: fixed; top: 0; left: 0; right: 0; z-index: 1001; padding: 10px 20px; }
-        .slides-nav .container { display: flex; gap: 20px; align-items: center; max-width: 1200px; margin: 0 auto; flex-wrap: wrap; }
-        .slides-nav a { color: #1f2937; text-decoration: none; font-weight: 500; transition: color 0.3s ease; font-size: 0.95em; }
-        .slides-nav a:hover { color: #2563eb; }
         @media screen and (max-width: 768px) {
             .slide { width: 100vw; height: auto; min-height: 100vh; padding: 20px; border-radius: 0; }
             .bilingual, .two-column { grid-template-columns: 1fr; gap: 15px; }
@@ -46,14 +42,6 @@
     <link rel="stylesheet" href="../../styles.css">
 </head>
 <body>
-    <nav class="slides-nav">
-        <div class="container">
-            <a href="../../index.html">← Course Home</a>
-            <a href="lecture.html">Lecture Notes</a>
-            <a href="assignment.html">Assignment</a>
-        </div>
-    </nav>
-
     <div class="slide-number" id="slideNumber">Slide 1 / 13</div>
 
     <div class="slide-container">
