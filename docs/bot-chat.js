@@ -7,7 +7,7 @@ class AI300BotChat {
         this.apiUrl = this.getApiUrl();
         this.conversationHistory = [];
         this.currentUserId = this.getUserId();
-        this.currentLanguage = 'en';
+        this.currentLanguage = 'ja';  // Default to Japanese + English bilingual
         this.isLoading = false;
         
         this.init();
@@ -222,8 +222,8 @@ class AI300BotChat {
         const messageDiv = document.createElement('div');
         messageDiv.className = `bot-message bot-message-${role}`;
         
-        const botName = this.currentLanguage === 'ja' ? 'AI-300 ボット' : 'AI-300 Bot';
-        const userName = this.currentLanguage === 'ja' ? 'あなた' : 'You';
+        const botName = 'AI-300 Bot';
+        const userName = 'You / あなた';
         
         if (role === 'user') {
             messageDiv.innerHTML = `
@@ -299,11 +299,7 @@ class AI300BotChat {
     }
     
     clearConversation() {
-        const confirmMsg = this.currentLanguage === 'ja' 
-            ? '会話履歴をクリアしますか？'
-            : 'Clear conversation history?';
-            
-        if (confirm(confirmMsg)) {
+        if (confirm('会話履歴をクリアしますか？ / Clear conversation history?')) {
             this.conversationHistory = [];
             this.saveConversationHistory();
             const messagesContainer = document.getElementById('bot-messages');
@@ -312,9 +308,10 @@ class AI300BotChat {
                 messagesContainer.innerHTML = `
                     <div class="bot-message bot-message-system">
                         <div class="bot-message-content bot-message-welcome">
-                            <strong>Welcome to AI-300 Bot! / AI-300ボットへようこそ！</strong><br>
-                            Ask me about AI history, search algorithms, game theory, probability, Bayes' theorem, or machine learning concepts.<br><br>
-                            <strong>質問例:</strong> AI の歴史、探索アルゴリズム、ゲーム理論、確率、ベイズ定理、機械学習について何でも聞いてください。
+                            <strong>AI-300ボットへようこそ！</strong><br>
+                            AI の歴史、探索アルゴリズム、ゲーム理論、確率、ベイズ定理、機械学習について何でも聞いてください。回答は選択した言語と英語のバイリンガル形式で提供されます。<br><br>
+                            <strong>Welcome to AI-300 Bot!</strong><br>
+                            Ask me about AI history, search algorithms, game theory, probability, Bayes' theorem, or machine learning concepts. Responses are provided bilingually in your selected language + English.
                         </div>
                     </div>
                 `;

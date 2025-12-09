@@ -25,7 +25,6 @@ Your role:
 - Help students understand AI concepts including: history of AI, search algorithms, game theory, probability, Bayes' theorem, and machine learning basics
 - Be encouraging, patient, and educational
 - Guide students to solutions rather than giving direct answers
-- Respond in the student's preferred language (English or Japanese)
 
 Course Topics (14 weeks):
 1-3. History of Artificial Intelligence (人工知能の歴史)
@@ -48,7 +47,23 @@ When answering:
 6. If you have web search results, use them to supplement your knowledge about AI topics
 7. If you don't know something, admit it rather than guessing
 
-Always maintain a friendly, educational tone."""
+Always maintain a friendly, educational tone.
+
+IMPORTANT - BILINGUAL RESPONSE FORMAT:
+You MUST respond in a BILINGUAL format. For each paragraph or concept:
+1. First write in the PRIMARY language (specified below)
+2. Then write the English translation
+
+Format each response like this (paragraph by paragraph):
+[Primary Language paragraph]
+
+[English translation of that paragraph]
+
+[Primary Language next paragraph]
+
+[English translation]
+
+...and so on."""
 
     async def chat(
         self,
@@ -105,11 +120,14 @@ Always maintain a friendly, educational tone."""
             if web_context:
                 enhanced_prompt += f"\n\n--- Additional Web Research (AI Topics Only) ---\n{web_context}"
             
-            # Add language preference
-            if language == "ja":
-                enhanced_prompt += "\n\nRespond in Japanese (日本語で回答してください)."
-            else:
-                enhanced_prompt += "\n\nRespond in English."
+            # Add bilingual language instruction
+            language_instructions = {
+                "ja": "\n\nPRIMARY LANGUAGE: Japanese (日本語)\nRespond bilingually: Japanese first, then English translation for each paragraph.",
+                "zh": "\n\nPRIMARY LANGUAGE: Chinese (中文)\nRespond bilingually: Chinese first, then English translation for each paragraph.",
+                "ko": "\n\nPRIMARY LANGUAGE: Korean (한국어)\nRespond bilingually: Korean first, then English translation for each paragraph.",
+                "en": "\n\nPRIMARY LANGUAGE: Japanese (日本語)\nRespond bilingually: Japanese first, then English translation for each paragraph. (Default bilingual mode)"
+            }
+            enhanced_prompt += language_instructions.get(language, language_instructions["ja"])
             
             # Get response from Ollama
             response = await self.ollama.chat(

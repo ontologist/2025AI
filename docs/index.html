@@ -314,8 +314,9 @@
                         <label for="bot-language-toggle" style="margin-right: 10px;">
                             Language / 言語:
                             <select id="bot-language-toggle" style="margin-left: 5px; padding: 5px;">
-                                <option value="en">English</option>
-                                <option value="ja">日本語</option>
+                                <option value="ja" selected>日本語 + English</option>
+                                <option value="zh">中文 + English</option>
+                                <option value="ko">한국어 + English</option>
                             </select>
                         </label>
                         <button onclick="window.ai300BotChat?.clearConversation()" class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.9em;">
@@ -327,9 +328,10 @@
                 <div id="bot-messages" class="bot-messages">
                     <div class="bot-message bot-message-system">
                         <div class="bot-message-content bot-message-welcome">
-                            <strong>Welcome to AI-300 Bot! / AI-300ボットへようこそ！</strong><br>
-                            Ask me about AI history, search algorithms, game theory, probability, Bayes' theorem, or machine learning concepts.<br><br>
-                            <strong>質問例:</strong> AI の歴史、探索アルゴリズム、ゲーム理論、確率、ベイズ定理、機械学習について何でも聞いてください。
+                            <strong>AI-300ボットへようこそ！</strong><br>
+                            AI の歴史、探索アルゴリズム、ゲーム理論、確率、ベイズ定理、機械学習について何でも聞いてください。回答は選択した言語と英語のバイリンガル形式で提供されます。<br><br>
+                            <strong>Welcome to AI-300 Bot!</strong><br>
+                            Ask me about AI history, search algorithms, game theory, probability, Bayes' theorem, or machine learning concepts. Responses are provided bilingually in your selected language + English.
                         </div>
                     </div>
                 </div>
