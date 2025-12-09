@@ -53,17 +53,6 @@ class AI300BotChat {
     init() {
         this.setupEventListeners();
         this.loadConversationHistory();
-        this.showWelcomeMessage();
-    }
-    
-    showWelcomeMessage() {
-        const messagesContainer = document.getElementById('bot-messages');
-        if (!messagesContainer || messagesContainer.children.length > 0) return;
-        
-        const welcomeEn = "👋 Hello! I'm AI-300 Bot, your assistant for the Basic Artificial Intelligence course. I can help you understand AI concepts, search algorithms, probability, and machine learning. Ask me anything!";
-        const welcomeJa = "👋 こんにちは！AI-300ボットです。人工知能基礎コースのアシスタントとして、AIの概念、探索アルゴリズム、確率、機械学習について質問にお答えします。何でも聞いてください！";
-        
-        this.addMessageToUI('assistant', this.currentLanguage === 'ja' ? welcomeJa : welcomeEn);
     }
     
     setupEventListeners() {
@@ -77,7 +66,7 @@ class AI300BotChat {
         }
         
         if (messageInput) {
-            messageInput.addEventListener('keypress', (e) => {
+            messageInput.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     this.sendMessage();
@@ -316,9 +305,17 @@ class AI300BotChat {
             this.saveConversationHistory();
             const messagesContainer = document.getElementById('bot-messages');
             if (messagesContainer) {
-                messagesContainer.innerHTML = '';
+                // Keep the welcome message, just clear conversation
+                messagesContainer.innerHTML = `
+                    <div class="bot-message bot-message-system">
+                        <div class="bot-message-content bot-message-welcome">
+                            <strong>Welcome to AI-300 Bot! / AI-300ボットへようこそ！</strong><br>
+                            Ask me about AI history, search algorithms, game theory, probability, Bayes' theorem, or machine learning concepts.<br><br>
+                            <strong>質問例:</strong> AI の歴史、探索アルゴリズム、ゲーム理論、確率、ベイズ定理、機械学習について何でも聞いてください。
+                        </div>
+                    </div>
+                `;
             }
-            this.showWelcomeMessage();
         }
     }
 }

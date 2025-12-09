@@ -307,39 +307,57 @@
             <h2>🤖 AI-300 Bot Portal / ボットポータル</h2>
 
             <!-- Bot Chat Interface -->
-            <div class="bot-chat-container" id="bot-chat-container">
+            <div id="bot-chat-container" class="bot-chat-container" data-lang="en">
                 <div class="bot-chat-header">
-                    <h3>💬 AI-300 Course Bot / AI-300コースボット</h3>
-                    <div class="bot-controls">
-                        <select id="bot-language-toggle" class="bot-language-select">
-                            <option value="en">English</option>
-                            <option value="ja">日本語</option>
-                        </select>
-                        <button id="bot-clear-btn" class="btn btn-small" title="Clear conversation">🗑️</button>
+                    <h3>💬 Chat with AI-300 Bot / AI-300ボットとチャット</h3>
+                    <div class="bot-chat-controls">
+                        <label for="bot-language-toggle" style="margin-right: 10px;">
+                            Language / 言語:
+                            <select id="bot-language-toggle" style="margin-left: 5px; padding: 5px;">
+                                <option value="en">English</option>
+                                <option value="ja">日本語</option>
+                            </select>
+                        </label>
+                        <button onclick="window.ai300BotChat?.clearConversation()" class="btn btn-secondary" style="padding: 5px 10px; font-size: 0.9em;">
+                            Clear / クリア
+                        </button>
                     </div>
                 </div>
 
-                <div class="bot-messages" id="bot-messages">
-                    <!-- Messages will be added here dynamically -->
+                <div id="bot-messages" class="bot-messages">
+                    <div class="bot-message bot-message-system">
+                        <div class="bot-message-content bot-message-welcome">
+                            <strong>Welcome to AI-300 Bot! / AI-300ボットへようこそ！</strong><br>
+                            Ask me about AI history, search algorithms, game theory, probability, Bayes' theorem, or machine learning concepts.<br><br>
+                            <strong>質問例:</strong> AI の歴史、探索アルゴリズム、ゲーム理論、確率、ベイズ定理、機械学習について何でも聞いてください。
+                        </div>
+                    </div>
                 </div>
                 
                 <div id="bot-loading" class="bot-loading" style="display: none;">
-                    <span class="loading-dots">Thinking<span>.</span><span>.</span><span>.</span></span>
+                    <div class="bot-loading-indicator">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <span class="bot-loading-text">AI-300 Bot is thinking... / 考え中...</span>
                 </div>
 
-                <div class="bot-input-container">
-                    <input type="text" 
-                           id="bot-message-input" 
-                           class="bot-input" 
-                           placeholder="Ask about AI concepts... / AIについて質問してください..."
-                           autocomplete="off">
-                    <button id="bot-send-btn" class="btn btn-primary bot-send-btn">Send / 送信</button>
+                <div class="bot-chat-input-container">
+                    <textarea 
+                        id="bot-message-input" 
+                        class="bot-message-input" 
+                        placeholder="Type your question here... / ここに質問を入力してください..."
+                        rows="2"
+                    ></textarea>
+                    <button id="bot-send-btn" class="btn btn-primary bot-send-btn">
+                        Send / 送信
+                    </button>
                 </div>
                 
-                <div class="bot-features">
-                    <span class="feature-badge">📚 Course Materials</span>
-                    <span class="feature-badge">🔍 Web Search</span>
-                    <span class="feature-badge">🌐 Bilingual EN/JA</span>
+                <div class="bot-chat-footer">
+                    <small>
+                        📚 Powered by course materials + 🔍 AI web search | 
+                        🌐 Bilingual EN/JA
+                    </small>
                 </div>
             </div>
         </section>
