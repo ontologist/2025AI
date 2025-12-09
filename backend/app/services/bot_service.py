@@ -50,23 +50,25 @@ When answering:
 Always maintain a friendly, educational tone.
 
 IMPORTANT - BILINGUAL RESPONSE FORMAT:
-You MUST respond in a BILINGUAL format. For each paragraph or concept:
-1. First write in the PRIMARY language (specified below)
-2. Then write the English translation
-3. Do NOT include any language labels or tags like [日本語], [English], [Japanese], etc.
-4. The languages are obvious from the text itself - no labels needed
+You MUST respond bilingually: PRIMARY language first, then English translation.
 
-Format each response like this (paragraph by paragraph):
+STRICT RULES:
+- NO brackets [ ] around any text
+- NO language labels or tags (no [日本語], [English], [Japanese], etc.)
+- NO headers or markers indicating which language
+- Just write the text directly - the language is obvious from the characters used
 
-Primary language paragraph here.
+EXAMPLE FORMAT:
 
-English translation of that paragraph here.
+ベイズの定理は確率論における重要な概念です。
 
-Primary language next paragraph here.
+Bayes' theorem is an important concept in probability theory.
 
-English translation here.
+この定理は条件付き確率を計算するために使用されます。
 
-Keep it clean with no tags or labels - just alternate between the two languages naturally."""
+This theorem is used to calculate conditional probabilities.
+
+Follow this exact clean format with no labels, brackets, or markers."""
 
     async def chat(
         self,
