@@ -42,6 +42,9 @@ class Settings(BaseSettings):
     
     # Security
     SECRET_KEY: str = "ai300-secret-key-change-in-production"
+
+    # Assignment Grading / Resource Limits
+    ASSIGNMENT_RESOURCE_LIMIT: float = float(os.getenv("ASSIGNMENT_RESOURCE_LIMIT", "0.2"))
     
     # Logging
     LOG_LEVEL: str = "INFO"

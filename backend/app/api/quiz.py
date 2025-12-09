@@ -51,19 +51,11 @@ async def generate_quiz(request: GenerateQuizRequest):
         raise HTTPException(status_code=500, detail=f"Error generating quiz: {str(e)}")
 
 
-@router.get("/quiz/{quiz_id}")
-async def get_quiz(quiz_id: int):
-    """Get a quiz by ID."""
-    try:
-        quiz = quiz_service.get_quiz(quiz_id)
-        if not quiz:
-            raise HTTPException(status_code=404, detail="Quiz not found")
-        return quiz
-    except HTTPException:
-        raise
-    except Exception as e:
-        logger.error(f"Error getting quiz: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+@router.get("/quiz/topics")
+async def get_available_topics():
+    """Get list of available quiz topics by week."""
+    from app.services.quiz_service import COURSE_TOPICS
+    return {"topics": COURSE_TOPICS}
 
 
 @router.post("/quiz/submit")
@@ -91,6 +83,21 @@ async def submit_quiz(request: SubmitQuizRequest):
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
 
+@router.get("/quiz/{quiz_id}")
+async def get_quiz(quiz_id: int):
+    """Get a quiz by ID."""
+    try:
+        quiz = quiz_service.get_quiz(quiz_id)
+        if not quiz:
+            raise HTTPException(status_code=404, detail="Quiz not found")
+        return quiz
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Error getting quiz: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
+
+
 @router.get("/quiz/history/{email}")
 async def get_quiz_history(email: str):
     """Get quiz attempt history for a student."""
@@ -101,10 +108,4 @@ async def get_quiz_history(email: str):
         logger.error(f"Error getting quiz history: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error: {str(e)}")
 
-
-@router.get("/quiz/topics")
-async def get_available_topics():
-    """Get list of available quiz topics by week."""
-    from app.services.quiz_service import COURSE_TOPICS
-    return {"topics": COURSE_TOPICS}
 

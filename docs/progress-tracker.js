@@ -6,6 +6,7 @@ class ProgressTracker {
         this.apiUrl = this.getApiUrl();
         this.userEmail = null;
         this.progress = null;
+        this.assignments = [];
         this.viewedPages = [];
         this.pageStartTime = Date.now();
         
@@ -44,6 +45,7 @@ class ProgressTracker {
         
         // Sync with server
         await this.syncProgress();
+        await this.loadAssignments();
         
         // Track current page view
         this.trackPageView();
@@ -53,6 +55,8 @@ class ProgressTracker {
         
         // Update progress display
         this.updateProgressDisplay();
+        this.updateWeekCards();
+        this.enhanceAssignmentPage();
         
         console.log('Progress tracking initialized for:', this.userEmail);
     }
@@ -262,6 +266,9 @@ class ProgressTracker {
         
         // Mark viewed pages in navigation
         this.markViewedPages();
+
+        // Update week cards with assignment status/score
+        this.updateWeekCards();
     }
     
     updateDashboard() {
@@ -353,6 +360,176 @@ class ProgressTracker {
                     link.appendChild(check);
                 }
             });
+        });
+    }
+
+    async loadAssignments() {
+        if (!this.userEmail) return;
+        try {
+            const response = await fetch(`${this.apiUrl}/progress/${this.userEmail}/assignments`);
+            if (response.ok) {
+                const data = await response.json();
+                this.assignments = data.assignments || [];
+            }
+        } catch (e) {
+            console.error('Error loading assignments:', e);
+        }
+    }
+
+    updateWeekCards() {
+        if (!this.progress || !this.progress.weekly_progress) return;
+        const statusMap = {
+            not_started: { text: 'Not Started', color: '#9ca3af' },
+            submitted: { text: 'Submitted', color: '#2563eb' },
+            completed: { text: 'Completed', color: '#16a34a' },
+        };
+        document.querySelectorAll('.week-card').forEach(card => {
+            const numEl = card.querySelector('.week-number');
+            if (!numEl) return;
+            const weekText = numEl.textContent || '';
+            const weekMatch = weekText.match(/Week\\s*(\\d+)/i);
+            if (!weekMatch) return;
+            const week = parseInt(weekMatch[1], 10);
+            const data = this.progress.weekly_progress.find(w => w.week_number === week);
+            if (!data) return;
+
+            const statusKey = data.assignment_status || 'not_started';
+            const statusInfo = statusMap[statusKey] || statusMap.not_started;
+            const score = data.assignment_score;
+
+            let badge = card.querySelector('.assignment-status');
+            if (!badge) {
+                badge = document.createElement('span');
+                badge.className = 'assignment-status';
+                badge.style.display = 'inline-block';
+                badge.style.marginLeft = '8px';
+                badge.style.padding = '4px 8px';
+                badge.style.borderRadius = '12px';
+                badge.style.fontSize = '0.85em';
+                badge.style.background = '#e5e7eb';
+                badge.style.color = '#111827';
+                card.querySelector('.week-header')?.appendChild(badge);
+            }
+            badge.textContent = `Assignment: ${statusInfo.text}${score != null ? ` | Score: ${score}` : ''}`;
+            badge.style.background = statusInfo.color + '20';
+            badge.style.color = statusInfo.color;
+        });
+    }
+
+    async submitAssignment(assignmentId, submissionPayload) {
+        if (!this.userEmail) throw new Error('User not authenticated');
+        const body = {
+            email: this.userEmail,
+            assignment_id: assignmentId,
+            status: 'submitted',
+            submission: submissionPayload,
+        };
+        const resp = await fetch(`${this.apiUrl}/progress/assignment/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+        if (!resp.ok) throw new Error('Failed to submit assignment');
+        const data = await resp.json();
+        await this.syncProgress();
+        await this.loadAssignments();
+        this.updateProgressDisplay();
+        return data;
+    }
+
+    enhanceAssignmentPage() {
+        const path = this.getCurrentPagePath();
+        if (!path.includes('assignment.html')) return;
+        const weekMatch = path.match(/week-(\\d+)/);
+        const weekNumber = weekMatch ? parseInt(weekMatch[1], 10) : null;
+        const container = document.querySelector('.container');
+        if (!container || !weekNumber) return;
+
+        const formWrap = document.createElement('div');
+        formWrap.className = 'highlight-box';
+        formWrap.style.marginTop = '20px';
+        formWrap.innerHTML = `
+            <h3>Submit Assignment / 課題提出</h3>
+            <p>Provide your responses below. They will be stored as JSON for grading.</p>
+            <label style="display:block;margin-top:10px;">Title / タイトル
+                <input id="assignment-title" type="text" style="width:100%;padding:8px;margin-top:4px;">
+            </label>
+            <label style="display:block;margin-top:10px;">Your Answers / 回答 (free text)
+                <textarea id="assignment-answers" rows="8" style="width:100%;padding:8px;margin-top:4px;"></textarea>
+            </label>
+            <label style="display:block;margin-top:10px;">Links (optional) / 参考リンク（任意）
+                <input id="assignment-links" type="text" placeholder="https://..." style="width:100%;padding:8px;margin-top:4px;">
+            </label>
+            <button id="assignment-submit-btn" class="btn btn-primary" style="margin-top:12px;padding:10px 16px;border:none;border-radius:8px;background:#2563eb;color:white;cursor:pointer;">Submit / 提出</button>
+            <div id="assignment-submit-status" style="margin-top:10px;"></div>
+        `;
+        container.insertBefore(formWrap, container.firstChild.nextSibling);
+
+        const assign = this.assignments.find(a => a.week_number === weekNumber);
+        const submitBtn = formWrap.querySelector('#assignment-submit-btn');
+        const statusEl = formWrap.querySelector('#assignment-submit-status');
+
+        if (!assign) {
+            statusEl.textContent = 'Assignment metadata not loaded. Please refresh after login.';
+            return;
+        }
+
+        submitBtn.addEventListener('click', async () => {
+            submitBtn.disabled = true;
+            statusEl.textContent = 'Submitting...';
+            const payload = {
+                week_number: weekNumber,
+                page: path,
+                title: formWrap.querySelector('#assignment-title').value || '',
+                answers: formWrap.querySelector('#assignment-answers').value || '',
+                links: formWrap.querySelector('#assignment-links').value || '',
+                submitted_at: new Date().toISOString(),
+            };
+            try {
+                const result = await this.submitAssignment(assign.id, payload);
+                statusEl.textContent = 'Submitted! Grading queued.';
+                if (result?.grading?.result?.score) {
+                    statusEl.textContent += ` Score: ${result.grading.result.score}`;
+                }
+                this.updateRubricScores(weekNumber, result?.grading?.result?.score);
+            } catch (e) {
+                console.error(e);
+                statusEl.textContent = 'Submission failed. Please try again.';
+            } finally {
+                submitBtn.disabled = false;
+            }
+        });
+
+        // Initialize rubric score column if available
+        const assignmentScore = assign.score || null;
+        this.updateRubricScores(weekNumber, assignmentScore);
+    }
+
+    updateRubricScores(weekNumber, score) {
+        const rubricHeading = Array.from(document.querySelectorAll('h2')).find(h => h.textContent.includes('Grading Rubric'));
+        if (!rubricHeading) return;
+        const table = rubricHeading.nextElementSibling;
+        if (!table || table.tagName !== 'TABLE') return;
+
+        // Ensure header column exists
+        const headerRow = table.querySelector('thead tr');
+        if (headerRow && !headerRow.querySelector('.rubric-score-col')) {
+            const th = document.createElement('th');
+            th.className = 'rubric-score-col';
+            th.textContent = 'Your score / あなたの採点';
+            headerRow.insertBefore(th, headerRow.firstChild.nextSibling);
+        }
+
+        // Add cells per row if missing
+        table.querySelectorAll('tbody tr').forEach(row => {
+            if (!row.querySelector('.rubric-score-cell')) {
+                const td = document.createElement('td');
+                td.className = 'rubric-score-cell';
+                td.textContent = score != null ? `${score}/100` : '--';
+                row.insertBefore(td, row.firstChild.nextSibling);
+            } else if (score != null) {
+                row.querySelector('.rubric-score-cell').textContent = `${score}/100`;
+            }
         });
     }
     

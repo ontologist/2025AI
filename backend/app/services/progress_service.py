@@ -2,6 +2,7 @@
 from typing import Dict, List, Optional, Any
 from datetime import datetime
 from app.models.database import get_db_connection
+from app.services.assignment_grading_service import AssignmentGradingService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -10,8 +11,23 @@ logger = logging.getLogger(__name__)
 class ProgressService:
     """Service for managing student progress tracking."""
     
-    def __init__(self):
-        pass
+    def __init__(self, grading_service: Optional[AssignmentGradingService] = None):
+        self.grading_service = grading_service or AssignmentGradingService()
+        self._ensure_assignment_columns()
+
+    def _ensure_assignment_columns(self):
+        """Add optional columns if the DB was created before new fields existed."""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("PRAGMA table_info(assignment_submissions)")
+        cols = {row["name"] for row in cursor.fetchall()}
+        if "submission_path" not in cols:
+            try:
+                cursor.execute("ALTER TABLE assignment_submissions ADD COLUMN submission_path TEXT")
+            except Exception:
+                pass
+        conn.commit()
+        conn.close()
     
     def get_or_create_student(self, email: str, name: Optional[str] = None) -> Dict:
         """Get or create a student record."""
@@ -96,14 +112,14 @@ class ProgressService:
         cursor.execute('SELECT COUNT(*) FROM course_content WHERE is_required = 1')
         total_content = cursor.fetchone()[0]
         
-        # Get viewed content count
+        # Get viewed content count (all pages), then clamp to total required
         cursor.execute('''
             SELECT COUNT(DISTINCT pv.page_path) 
             FROM page_views pv
-            JOIN course_content cc ON pv.page_path = cc.page_path
-            WHERE pv.student_email = ? AND cc.is_required = 1
+            WHERE pv.student_email = ?
         ''', (email,))
-        viewed_content = cursor.fetchone()[0]
+        viewed_content_raw = cursor.fetchone()[0]
+        viewed_content = min(viewed_content_raw, total_content)
         
         # Get bot interactions count
         cursor.execute(
@@ -144,16 +160,31 @@ class ProgressService:
         ''', (email,))
         avg_quiz_score = cursor.fetchone()[0] or 0
         
-        # Get detailed page views by week
+        # Get detailed page views by week plus assignment status/score
         cursor.execute('''
-            SELECT cc.week_number, COUNT(DISTINCT pv.page_path) as viewed,
-                   (SELECT COUNT(*) FROM course_content WHERE week_number = cc.week_number AND is_required = 1) as total
+            SELECT cc.week_number,
+                   COUNT(DISTINCT pv.page_path) as viewed,
+                   (SELECT COUNT(*) FROM course_content WHERE week_number = cc.week_number AND is_required = 1) as total,
+                   COALESCE((
+                        SELECT s.status FROM assignments a
+                        LEFT JOIN assignment_submissions s 
+                            ON s.assignment_id = a.id AND s.student_email = ?
+                        WHERE a.week_number = cc.week_number
+                        ORDER BY a.id LIMIT 1
+                   ), 'not_started') as assignment_status,
+                   COALESCE((
+                        SELECT s.score FROM assignments a
+                        LEFT JOIN assignment_submissions s 
+                            ON s.assignment_id = a.id AND s.student_email = ?
+                        WHERE a.week_number = cc.week_number
+                        ORDER BY a.id LIMIT 1
+                   ), NULL) as assignment_score
             FROM course_content cc
             LEFT JOIN page_views pv ON cc.page_path = pv.page_path AND pv.student_email = ?
             WHERE cc.is_required = 1
             GROUP BY cc.week_number
             ORDER BY cc.week_number
-        ''', (email,))
+        ''', (email, email, email))
         weekly_progress = [dict(row) for row in cursor.fetchall()]
         
         conn.close()
@@ -199,10 +230,20 @@ class ProgressService:
         
         return pages
     
-    def submit_assignment(self, email: str, assignment_id: int, status: str = "submitted") -> Dict:
-        """Submit or update an assignment."""
+    def submit_assignment(
+        self,
+        email: str,
+        assignment_id: int,
+        status: str = "submitted",
+        submission: Optional[Dict[str, Any]] = None,
+    ) -> Dict:
+        """Submit or update an assignment and trigger grading."""
         conn = get_db_connection()
         cursor = conn.cursor()
+        submission_path = None
+
+        if submission:
+            submission_path = self.grading_service.save_submission(email, assignment_id, submission)
         
         cursor.execute('''
             INSERT INTO assignment_submissions (student_email, assignment_id, status, submitted_at)
@@ -211,11 +252,56 @@ class ProgressService:
                 status = excluded.status,
                 submitted_at = CURRENT_TIMESTAMP
         ''', (email, assignment_id, status))
+
+        if submission_path:
+            cursor.execute(
+                '''
+                UPDATE assignment_submissions
+                SET submission_path = ?
+                WHERE student_email = ? AND assignment_id = ?
+                ''',
+                (str(submission_path), email, assignment_id),
+            )
         
         conn.commit()
         conn.close()
-        
-        return {"status": "submitted", "assignment_id": assignment_id}
+
+        grading_result = None
+        if submission:
+            grading_result = self.grading_service.enqueue(email, assignment_id, submission, submission_path)
+            if grading_result.get("result"):
+                self._persist_grade(grading_result["result"])
+        return {
+            "status": status,
+            "assignment_id": assignment_id,
+            "grading": grading_result,
+        }
+
+    def _persist_grade(self, result: Dict[str, Any]) -> None:
+        """Store grading results into the database."""
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            '''
+            UPDATE assignment_submissions
+            SET status = 'completed',
+                score = ?,
+                feedback = ?,
+                graded_at = ?,
+                submission_path = COALESCE(submission_path, ?)
+            WHERE student_email = ? AND assignment_id = ?
+            ''',
+            (
+                result.get("score"),
+                result.get("feedback"),
+                result.get("graded_at"),
+                result.get("submission_path"),
+                result.get("email"),
+                result.get("assignment_id"),
+            ),
+        )
+        conn.commit()
+        conn.close()
     
     def get_assignments(self, email: str) -> List[Dict]:
         """Get all assignments with student's submission status."""

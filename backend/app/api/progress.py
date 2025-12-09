@@ -35,6 +35,7 @@ class AssignmentSubmitRequest(BaseModel):
     email: str
     assignment_id: int
     status: str = "submitted"
+    submission: Optional[Dict[str, Any]] = None
 
 
 class SyncRequest(BaseModel):
@@ -134,7 +135,8 @@ async def submit_assignment(request: AssignmentSubmitRequest):
         result = progress_service.submit_assignment(
             email=request.email,
             assignment_id=request.assignment_id,
-            status=request.status
+            status=request.status,
+            submission=request.submission
         )
         return result
     except Exception as e:

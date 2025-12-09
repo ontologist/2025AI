@@ -3,6 +3,7 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime
 import json
 import random
+import re
 from app.models.database import get_db_connection
 from app.services.ollama_service import OllamaService
 from app.services.progress_service import ProgressService
@@ -157,16 +158,21 @@ Generate the questions now:"""
             
             # Parse JSON from response
             questions = self._parse_questions_json(response)
+            questions = self._sanitize_questions(questions)
             
             if not questions or len(questions) < num_questions:
                 # Fallback: generate simple questions
-                questions = self._generate_fallback_questions(topic, num_questions)
+                questions = self._sanitize_questions(
+                    self._generate_fallback_questions(topic, num_questions)
+                )
             
             return questions[:num_questions]
             
         except Exception as e:
             logger.error(f"Error generating questions with Ollama: {str(e)}")
-            return self._generate_fallback_questions(topic, num_questions)
+            return self._sanitize_questions(
+                self._generate_fallback_questions(topic, num_questions)
+            )
     
     def _parse_questions_json(self, response: str) -> List[Dict]:
         """Parse questions JSON from Ollama response."""
@@ -199,6 +205,35 @@ Generate the questions now:"""
             }
         ]
         return fallback * num_questions
+
+    def _sanitize_questions(self, questions: List[Dict[str, Any]]) -> List[Dict[str, Any]]:
+        """Fix common spelling/encoding issues in generated questions."""
+        return [self._sanitize_question_data(q) for q in questions]
+
+    def _sanitize_question_data(self, question: Dict[str, Any]) -> Dict[str, Any]:
+        """Normalize text fields within a single question."""
+        typo_patterns = {
+            r"タ[Uu][Rr][Ii][Nn][Gg]": "チューリング",
+            r"タuring": "チューリング",
+        }
+
+        def _fix(text: Any) -> Any:
+            if not isinstance(text, str):
+                return text
+            fixed = text
+            for pattern, replacement in typo_patterns.items():
+                fixed = re.sub(pattern, replacement, fixed)
+            return fixed
+
+        for field in ["question", "question_ja", "explanation", "explanation_ja"]:
+            if field in question:
+                question[field] = _fix(question[field])
+
+        for opt_field in ["options", "options_ja"]:
+            if opt_field in question and isinstance(question[opt_field], dict):
+                question[opt_field] = {k: _fix(v) for k, v in question[opt_field].items()}
+
+        return question
     
     def _get_viewed_weeks(self, email: str) -> List[int]:
         """Get list of weeks the student has viewed content for."""
@@ -314,7 +349,7 @@ Generate the questions now:"""
         results = []
         
         for i, question in enumerate(questions):
-            student_answer = answers.get(i, answers.get(str(i), ""))
+            student_answer = answers.get(i, answers.get(str(i), "")) or ""
             is_correct = student_answer.upper() == question['correct_answer'].upper()
             
             if is_correct:

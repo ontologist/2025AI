@@ -89,6 +89,7 @@ def init_database():
             submitted_at TIMESTAMP,
             graded_at TIMESTAMP,
             feedback TEXT,
+            submission_path TEXT,
             UNIQUE(student_email, assignment_id),
             FOREIGN KEY (assignment_id) REFERENCES assignments(id)
         )
