@@ -53,17 +53,20 @@ IMPORTANT - BILINGUAL RESPONSE FORMAT:
 You MUST respond in a BILINGUAL format. For each paragraph or concept:
 1. First write in the PRIMARY language (specified below)
 2. Then write the English translation
+3. Do NOT include any language labels or tags like [日本語], [English], [Japanese], etc.
+4. The languages are obvious from the text itself - no labels needed
 
 Format each response like this (paragraph by paragraph):
-[Primary Language paragraph]
 
-[English translation of that paragraph]
+Primary language paragraph here.
 
-[Primary Language next paragraph]
+English translation of that paragraph here.
 
-[English translation]
+Primary language next paragraph here.
 
-...and so on."""
+English translation here.
+
+Keep it clean with no tags or labels - just alternate between the two languages naturally."""
 
     async def chat(
         self,
