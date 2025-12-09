@@ -306,31 +306,40 @@
         <section id="bot-portal" class="section">
             <h2>🤖 AI-300 Bot Portal / ボットポータル</h2>
 
-            <!-- Bot Under Construction Notice -->
-            <div class="bot-chat-container">
+            <!-- Bot Chat Interface -->
+            <div class="bot-chat-container" id="bot-chat-container">
                 <div class="bot-chat-header">
                     <h3>💬 AI-300 Course Bot / AI-300コースボット</h3>
+                    <div class="bot-controls">
+                        <select id="bot-language-toggle" class="bot-language-select">
+                            <option value="en">English</option>
+                            <option value="ja">日本語</option>
+                        </select>
+                        <button id="bot-clear-btn" class="btn btn-small" title="Clear conversation">🗑️</button>
+                    </div>
                 </div>
 
-                <div class="bot-messages" style="justify-content: center; align-items: center; min-height: 400px;">
-                    <div class="bot-construction-notice">
-                        <h2 style="font-size: 3em; margin-bottom: 20px;">🏗️ 🤖 🚧</h2>
-                        <h3 style="color: #2563eb; margin-bottom: 15px;">Under Construction / 建設中</h3>
-                        <p style="font-size: 1.2em; color: #666; margin-bottom: 10px;">
-                            <strong>English:</strong> Our AI teaching assistant is currently learning Japanese... and English... and how to teach AI!
-                            It's having an existential crisis trying to figure out if it's intelligent enough to teach intelligence.
-                            Check back soon! 🎓
-                        </p>
-                        <p style="font-size: 1.2em; color: #666; margin-bottom: 20px;">
-                            <strong>日本語:</strong> AIティーチングアシスタントは現在、日本語と英語、そしてAIの教え方を学習中です！
-                            知能を教えるのに十分な知能があるかどうか、実存的危機に直面しています。
-                            近日公開予定です！🎓
-                        </p>
-                        <p style="font-style: italic; color: #7c3aed; font-size: 1.1em;">
-                            "Teaching AI about AI... It's AI all the way down!" 🤯<br>
-                            「AIについてAIに教える...それは無限のAIループです！」🤯
-                        </p>
-                    </div>
+                <div class="bot-messages" id="bot-messages">
+                    <!-- Messages will be added here dynamically -->
+                </div>
+                
+                <div id="bot-loading" class="bot-loading" style="display: none;">
+                    <span class="loading-dots">Thinking<span>.</span><span>.</span><span>.</span></span>
+                </div>
+
+                <div class="bot-input-container">
+                    <input type="text" 
+                           id="bot-message-input" 
+                           class="bot-input" 
+                           placeholder="Ask about AI concepts... / AIについて質問してください..."
+                           autocomplete="off">
+                    <button id="bot-send-btn" class="btn btn-primary bot-send-btn">Send / 送信</button>
+                </div>
+                
+                <div class="bot-features">
+                    <span class="feature-badge">📚 Course Materials</span>
+                    <span class="feature-badge">🔍 Web Search</span>
+                    <span class="feature-badge">🌐 Bilingual EN/JA</span>
                 </div>
             </div>
         </section>

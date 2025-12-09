@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 11 Lecture Notes: Classification Algorithms</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+        }
+
+        h1 {
+            color: #2563eb;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #7c3aed;
+            font-size: 2em;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            border-left: 6px solid #2563eb;
+            padding-left: 15px;
+        }
+
+        h3 {
+            color: #2563eb;
+            font-size: 1.5em;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        h4 {
+            color: #555;
+            font-size: 1.2em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        .english {
+            background: #dbeafe;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .test-question {
+            background: #fce7f3;
+            border: 3px solid #ec4899;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .test-question h4::before {
+            content: "⚠️ ";
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            background: #e0e7ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 12px 24px;
+            background: #2563eb;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+        }
+
+        .navigation a:hover {
+            background: #7c3aed;
+            transform: translateY(-2px);
+        }
+
+        .key-terms {
+            background: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .study-tip {
+            background: #fff7ed;
+            border-left: 5px solid #f97316;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .bilingual {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Week 11 Lecture Notes</h1>
+        <p class="subtitle">Classification Algorithms<br>分類アルゴリズム</p>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-10/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+        </div>
+
+        <h2>📚 Overview / 概要</h2>
+        <div class="bilingual">
+            <div class="english">
+                <p>This week explores advanced classification algorithms beyond logistic regression. We'll study Decision Trees, Random Forests, Support Vector Machines (SVM), and k-Nearest Neighbors (k-NN). Each algorithm has unique strengths and is suited for different types of classification problems.</p>
+                <p><strong>Learning Objectives:</strong></p>
+                <ul>
+                    <li>Understand how Decision Trees make classifications</li>
+                    <li>Learn about ensemble methods like Random Forests</li>
+                    <li>Master the k-Nearest Neighbors algorithm</li>
+                    <li>Explore Support Vector Machines and kernel tricks</li>
+                    <li>Compare different classification algorithms</li>
+                    <li>Apply appropriate algorithms to real-world problems</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <p>今週は、ロジスティック回帰を超えた高度な分類アルゴリズムを探ります。決定木、ランダムフォレスト、サポートベクターマシン（SVM）、k近傍法（k-NN）を学びます。各アルゴリズムには独自の強みがあり、異なるタイプの分類問題に適しています。</p>
+                <p><strong>学習目標:</strong></p>
+                <ul>
+                    <li>決定木がどのように分類を行うかを理解する</li>
+                    <li>ランダムフォレストのようなアンサンブル手法について学ぶ</li>
+                    <li>k近傍法アルゴリズムを習得する</li>
+                    <li>サポートベクターマシンとカーネルトリックを探る</li>
+                    <li>異なる分類アルゴリズムを比較する</li>
+                    <li>実世界の問題に適切なアルゴリズムを適用する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>1. Decision Trees / 決定木</h2>
+
+        <div class="definition-box">
+            <h3>What is a Decision Tree? / 決定木とは？</h3>
+            <p><strong>Decision Tree:</strong> A supervised learning algorithm that makes decisions by learning simple decision rules from data features, creating a tree-like model of decisions and their possible consequences.</p>
+            <p><strong>決定木:</strong> データの特徴量から単純な決定ルールを学習し、決定とその可能性のある結果のツリー状モデルを作成することで決定を行う教師あり学習アルゴリズム。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>How Decision Trees Work</h3>
+
+                <h4>Tree Structure</h4>
+                <div class="code-box">Example: Will customer buy product?
+
+                   [Income > $50k?]  ← Root Node (最初の質問)
+                    /            \
+                 Yes              No
+                  /                \
+         [Age > 30?]         [Has kids?]  ← Internal Nodes
+          /      \            /      \
+       Yes       No         Yes      No
+        /         \          /        \
+     BUY      MAYBE      BUY      DON'T BUY  ← Leaf Nodes (予測)
+</div>
+
+                <h4>Key Components:</h4>
+                <ul>
+                    <li><strong>Root Node:</strong> The first decision, represents the best feature to split on</li>
+                    <li><strong>Internal Nodes:</strong> Each represents a decision based on a feature</li>
+                    <li><strong>Branches:</strong> Represent the outcome of a decision</li>
+                    <li><strong>Leaf Nodes:</strong> Final predictions (class labels)</li>
+                </ul>
+
+                <h4>How Trees Learn (Building the Tree)</h4>
+                <ol>
+                    <li><strong>Select Best Feature:</strong> Choose feature that best separates classes
+                        <ul>
+                            <li>Uses metrics like Information Gain or Gini Impurity</li>
+                            <li>Goal: Maximize purity of resulting groups</li>
+                        </ul>
+                    </li>
+                    <li><strong>Split Data:</strong> Divide data based on feature value</li>
+                    <li><strong>Repeat Recursively:</strong> For each branch, repeat steps 1-2</li>
+                    <li><strong>Stop When:</strong>
+                        <ul>
+                            <li>All samples in node belong to same class</li>
+                            <li>Maximum depth reached</li>
+                            <li>Minimum samples per node reached</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>Advantages:</h4>
+                <ul>
+                    <li><strong>Interpretable:</strong> Easy to understand and visualize</li>
+                    <li><strong>No scaling needed:</strong> Works with features of different scales</li>
+                    <li><strong>Handles mixed data:</strong> Both numerical and categorical</li>
+                    <li><strong>Non-linear:</strong> Can capture complex patterns</li>
+                    <li><strong>Feature importance:</strong> Shows which features matter most</li>
+                </ul>
+
+                <h4>Disadvantages:</h4>
+                <ul>
+                    <li><strong>Overfitting:</strong> Can create overly complex trees</li>
+                    <li><strong>Unstable:</strong> Small changes in data can change tree structure</li>
+                    <li><strong>Biased:</strong> Favors features with more levels</li>
+                    <li><strong>Not optimal:</strong> Greedy algorithm may miss best solution</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>決定木の仕組み</h3>
+
+                <h4>ツリー構造</h4>
+                <div class="code-box">例: 顧客は製品を購入するか？
+
+                [収入 > $50k?]  ← ルートノード（最初の質問）
+                /            \
+             はい              いいえ
+              /                \
+       [年齢 > 30?]         [子供あり?]  ← 内部ノード
+        /      \            /      \
+     はい      いいえ      はい      いいえ
+      /         \          /        \
+   購入      多分      購入     購入しない  ← リーフノード（予測）
+</div>
+
+                <h4>主要コンポーネント:</h4>
+                <ul>
+                    <li><strong>ルートノード:</strong> 最初の決定、分割する最適な特徴量を表す</li>
+                    <li><strong>内部ノード:</strong> それぞれ特徴量に基づく決定を表す</li>
+                    <li><strong>ブランチ:</strong> 決定の結果を表す</li>
+                    <li><strong>リーフノード:</strong> 最終予測（クラスラベル）</li>
+                </ul>
+
+                <h4>ツリーの学習方法（ツリーの構築）</h4>
+                <ol>
+                    <li><strong>最適な特徴量を選択:</strong> クラスを最もよく分離する特徴量を選択
+                        <ul>
+                            <li>情報利得やジニ不純度などのメトリクスを使用</li>
+                            <li>目標: 結果グループの純度を最大化</li>
+                        </ul>
+                    </li>
+                    <li><strong>データを分割:</strong> 特徴量の値に基づいてデータを分割</li>
+                    <li><strong>再帰的に繰り返し:</strong> 各ブランチに対して、ステップ1-2を繰り返す</li>
+                    <li><strong>停止条件:</strong>
+                        <ul>
+                            <li>ノード内のすべてのサンプルが同じクラスに属する</li>
+                            <li>最大深度に到達</li>
+                            <li>ノードごとの最小サンプル数に到達</li>
+                        </ul>
+                    </li>
+                </ol>
+
+                <h4>利点:</h4>
+                <ul>
+                    <li><strong>解釈可能:</strong> 理解と可視化が容易</li>
+                    <li><strong>スケーリング不要:</strong> 異なるスケールの特徴量で機能</li>
+                    <li><strong>混合データを処理:</strong> 数値とカテゴリ両方</li>
+                    <li><strong>非線形:</strong> 複雑なパターンを捉えられる</li>
+                    <li><strong>特徴量の重要度:</strong> どの特徴量が最も重要かを示す</li>
+                </ul>
+
+                <h4>欠点:</h4>
+                <ul>
+                    <li><strong>過学習:</strong> 過度に複雑なツリーを作成する可能性</li>
+                    <li><strong>不安定:</strong> データの小さな変化でツリー構造が変わる可能性</li>
+                    <li><strong>偏り:</strong> より多くのレベルを持つ特徴量を優遇</li>
+                    <li><strong>最適でない:</strong> 貪欲アルゴリズムは最良の解を見逃す可能性</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>2. Random Forests / ランダムフォレスト</h2>
+
+        <div class="definition-box">
+            <h3>What is a Random Forest? / ランダムフォレストとは？</h3>
+            <p><strong>Random Forest:</strong> An ensemble learning method that creates multiple decision trees and combines their predictions through voting (classification) or averaging (regression) to improve accuracy and reduce overfitting.</p>
+            <p><strong>ランダムフォレスト:</strong> 複数の決定木を作成し、投票（分類）または平均化（回帰）を通じてそれらの予測を組み合わせることで、精度を向上させ過学習を減らすアンサンブル学習手法。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>The Wisdom of Crowds</h3>
+
+                <h4>How Random Forest Works</h4>
+                <div class="code-box">RANDOM FOREST PROCESS
+
+Step 1: Bootstrap Sampling (ブートストラップサンプリング)
+├─ Create N different random samples from training data
+├─ Each sample: randomly select data with replacement
+└─ Different trees see different data
+
+Step 2: Build Multiple Trees (複数の木を構築)
+├─ Train N decision trees (e.g., 100 trees)
+├─ Each tree built on different bootstrap sample
+└─ Random feature selection at each split
+
+Step 3: Make Predictions (予測を行う)
+├─ Each tree makes independent prediction
+└─ Classification: Majority vote wins
+    Regression: Average all predictions
+
+Example with 100 trees predicting spam:
+Tree 1: Spam     Tree 2: Spam     Tree 3: Not Spam
+Tree 4: Spam     Tree 5: Spam     ...
+└─ 73 trees say "Spam", 27 say "Not Spam"
+   → Final Prediction: Spam (majority vote)</div>
+
+                <h4>Key Concepts:</h4>
+                <ul>
+                    <li><strong>Bootstrap Sampling:</strong> Randomly sample data with replacement
+                        <ul>
+                            <li>Creates diverse training sets</li>
+                            <li>Each tree sees different examples</li>
+                        </ul>
+                    </li>
+                    <li><strong>Feature Randomness:</strong> At each split, consider only random subset of features
+                        <ul>
+                            <li>Prevents correlation between trees</li>
+                            <li>Increases diversity</li>
+                        </ul>
+                    </li>
+                    <li><strong>Ensemble Voting:</strong> Combine predictions from all trees
+                        <ul>
+                            <li>Reduces impact of individual errors</li>
+                            <li>More robust than single tree</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>Why Random Forests Work Better</h4>
+                <ul>
+                    <li><strong>Reduces Overfitting:</strong> Individual trees may overfit, but averaging cancels out errors</li>
+                    <li><strong>Handles Missing Data:</strong> Can maintain accuracy even with missing values</li>
+                    <li><strong>Feature Importance:</strong> Ranks which features are most useful</li>
+                    <li><strong>Works Well Out-of-Box:</strong> Often good with default parameters</li>
+                    <li><strong>Parallelizable:</strong> Trees can be built independently</li>
+                </ul>
+
+                <h4>Disadvantages:</h4>
+                <ul>
+                    <li><strong>Less Interpretable:</strong> Hard to understand 100+ trees</li>
+                    <li><strong>Slower:</strong> Training many trees takes time</li>
+                    <li><strong>Memory:</strong> Requires storing multiple trees</li>
+                    <li><strong>Not for Real-time:</strong> Slower prediction than single tree</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>群衆の知恵</h3>
+
+                <h4>ランダムフォレストの仕組み</h4>
+                <div class="code-box">ランダムフォレストプロセス
+
+ステップ1: ブートストラップサンプリング
+├─ 訓練データからN個の異なるランダムサンプルを作成
+├─ 各サンプル: 置換ありでデータをランダムに選択
+└─ 異なるツリーが異なるデータを見る
+
+ステップ2: 複数のツリーを構築
+├─ N個の決定木を訓練（例: 100本のツリー）
+├─ 各ツリーは異なるブートストラップサンプルで構築
+└─ 各分割でランダムな特徴量選択
+
+ステップ3: 予測を行う
+├─ 各ツリーが独立した予測を行う
+└─ 分類: 多数決が勝つ
+    回帰: すべての予測を平均
+
+スパム予測する100本のツリーの例:
+ツリー1: スパム   ツリー2: スパム   ツリー3: 非スパム
+ツリー4: スパム   ツリー5: スパム   ...
+└─ 73本が「スパム」、27本が「非スパム」
+   → 最終予測: スパム（多数決）</div>
+
+                <h4>主要概念:</h4>
+                <ul>
+                    <li><strong>ブートストラップサンプリング:</strong> 置換ありでデータをランダムにサンプル
+                        <ul>
+                            <li>多様な訓練セットを作成</li>
+                            <li>各ツリーが異なる例を見る</li>
+                        </ul>
+                    </li>
+                    <li><strong>特徴量のランダム性:</strong> 各分割で、特徴量のランダムなサブセットのみを考慮
+                        <ul>
+                            <li>ツリー間の相関を防ぐ</li>
+                            <li>多様性を増やす</li>
+                        </ul>
+                    </li>
+                    <li><strong>アンサンブル投票:</strong> すべてのツリーからの予測を組み合わせる
+                        <ul>
+                            <li>個々のエラーの影響を減らす</li>
+                            <li>単一のツリーよりも堅牢</li>
+                        </ul>
+                    </li>
+                </ul>
+
+                <h4>ランダムフォレストがより良く機能する理由</h4>
+                <ul>
+                    <li><strong>過学習を減らす:</strong> 個々のツリーは過学習する可能性があるが、平均化によりエラーが相殺される</li>
+                    <li><strong>欠損データを処理:</strong> 欠損値があっても精度を維持できる</li>
+                    <li><strong>特徴量の重要度:</strong> どの特徴量が最も有用かをランク付け</li>
+                    <li><strong>すぐに使える:</strong> デフォルトパラメータで良好なことが多い</li>
+                    <li><strong>並列化可能:</strong> ツリーを独立して構築できる</li>
+                </ul>
+
+                <h4>欠点:</h4>
+                <ul>
+                    <li><strong>解釈性が低い:</strong> 100以上のツリーを理解するのは困難</li>
+                    <li><strong>遅い:</strong> 多くのツリーの訓練に時間がかかる</li>
+                    <li><strong>メモリ:</strong> 複数のツリーを保存する必要がある</li>
+                    <li><strong>リアルタイム向きでない:</strong> 単一ツリーよりも予測が遅い</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>3. k-Nearest Neighbors (k-NN) / k近傍法</h2>
+
+        <div class="definition-box">
+            <h3>What is k-NN? / k-NNとは？</h3>
+            <p><strong>k-Nearest Neighbors:</strong> A simple, instance-based learning algorithm that classifies new data points based on the majority class of their k nearest neighbors in the training data.</p>
+            <p><strong>k近傍法:</strong> 訓練データ内のk個の最近傍の多数クラスに基づいて新しいデータポイントを分類するシンプルなインスタンスベース学習アルゴリズム。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>The "You Are Your Neighbors" Algorithm</h3>
+
+                <h4>How k-NN Works</h4>
+                <div class="code-box">k-NN ALGORITHM (k=3 example)
+
+Step 1: Store training data (no actual "training")
+├─ Keep all labeled examples in memory
+└─ No model building phase
+
+Step 2: Receive new data point to classify
+└─ Example: New house to price
+
+Step 3: Calculate distances to ALL training points
+├─ Use Euclidean distance (or other metric)
+└─ d = √[(x₁-x₂)² + (y₁-y₂)²]
+
+Step 4: Find k nearest neighbors
+├─ Sort by distance
+└─ Select k closest points (e.g., k=3)
+
+Step 5: Vote for classification
+├─ Count class labels of k neighbors
+└─ Majority class wins
+
+Example: Classify fruit (Apple or Orange?)
+New fruit: [Weight=150g, Diameter=8cm]
+
+Nearest 3 neighbors (k=3):
+1. Apple   - distance 2.1
+2. Apple   - distance 2.3
+3. Orange  - distance 2.8
+
+Vote: 2 Apples, 1 Orange
+→ Prediction: Apple</div>
+
+                <h4>Choosing K</h4>
+                <ul>
+                    <li><strong>K = 1:</strong> Sensitive to noise, overfitting risk</li>
+                    <li><strong>K = 3 or 5:</strong> Good starting point</li>
+                    <li><strong>K = N (all data):</strong> Always predicts majority class, underfitting</li>
+                    <li><strong>Odd K:</strong> Prevents ties in binary classification</li>
+                    <li><strong>Rule of thumb:</strong> K = √N where N is number of samples</li>
+                </ul>
+
+                <h4>Distance Metrics</h4>
+                <ul>
+                    <li><strong>Euclidean:</strong> Straight-line distance (most common)</li>
+                    <li><strong>Manhattan:</strong> Sum of absolute differences</li>
+                    <li><strong>Minkowski:</strong> Generalization of above</li>
+                    <li><strong>Hamming:</strong> For categorical features</li>
+                </ul>
+
+                <h4>Advantages:</h4>
+                <ul>
+                    <li><strong>Simple:</strong> Easy to understand and implement</li>
+                    <li><strong>No training:</strong> Just store data</li>
+                    <li><strong>New data:</strong> Immediately uses new training examples</li>
+                    <li><strong>Multi-class:</strong> Naturally handles multiple classes</li>
+                    <li><strong>Non-linear:</strong> Can capture complex decision boundaries</li>
+                </ul>
+
+                <h4>Disadvantages:</h4>
+                <ul>
+                    <li><strong>Slow prediction:</strong> Must calculate distance to all points</li>
+                    <li><strong>Memory intensive:</strong> Stores all training data</li>
+                    <li><strong>Curse of dimensionality:</strong> Poor performance with many features</li>
+                    <li><strong>Scale sensitive:</strong> Requires feature normalization</li>
+                    <li><strong>Imbalanced data:</strong> Dominated by majority class</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>「あなたは隣人のようになる」アルゴリズム</h3>
+
+                <h4>k-NNの仕組み</h4>
+                <div class="code-box">k-NNアルゴリズム（k=3の例）
+
+ステップ1: 訓練データを保存（実際の「訓練」なし）
+├─ すべてのラベル付き例をメモリに保持
+└─ モデル構築フェーズなし
+
+ステップ2: 分類する新しいデータポイントを受け取る
+└─ 例: 価格を付ける新しい住宅
+
+ステップ3: すべての訓練ポイントまでの距離を計算
+├─ ユークリッド距離（または他のメトリック）を使用
+└─ d = √[(x₁-x₂)² + (y₁-y₂)²]
+
+ステップ4: k個の最近傍を見つける
+├─ 距離でソート
+└─ k個の最も近いポイントを選択（例: k=3）
+
+ステップ5: 分類のために投票
+├─ k個の隣人のクラスラベルを数える
+└─ 多数クラスが勝つ
+
+例: 果物を分類（リンゴかオレンジか？）
+新しい果物: [重量=150g、直径=8cm]
+
+最近傍3個（k=3）:
+1. リンゴ   - 距離 2.1
+2. リンゴ   - 距離 2.3
+3. オレンジ  - 距離 2.8
+
+投票: リンゴ2個、オレンジ1個
+→ 予測: リンゴ</div>
+
+                <h4>Kの選択</h4>
+                <ul>
+                    <li><strong>K = 1:</strong> ノイズに敏感、過学習リスク</li>
+                    <li><strong>K = 3または5:</strong> 良い出発点</li>
+                    <li><strong>K = N（すべてのデータ）:</strong> 常に多数クラスを予測、未学習</li>
+                    <li><strong>奇数K:</strong> 二値分類での同点を防ぐ</li>
+                    <li><strong>経験則:</strong> K = √N、Nはサンプル数</li>
+                </ul>
+
+                <h4>距離メトリック</h4>
+                <ul>
+                    <li><strong>ユークリッド:</strong> 直線距離（最も一般的）</li>
+                    <li><strong>マンハッタン:</strong> 絶対差の合計</li>
+                    <li><strong>ミンコフスキー:</strong> 上記の一般化</li>
+                    <li><strong>ハミング:</strong> カテゴリ特徴量用</li>
+                </ul>
+
+                <h4>利点:</h4>
+                <ul>
+                    <li><strong>シンプル:</strong> 理解と実装が容易</li>
+                    <li><strong>訓練なし:</strong> データを保存するだけ</li>
+                    <li><strong>新しいデータ:</strong> 新しい訓練例をすぐに使用</li>
+                    <li><strong>多クラス:</strong> 複数クラスを自然に処理</li>
+                    <li><strong>非線形:</strong> 複雑な決定境界を捉えられる</li>
+                </ul>
+
+                <h4>欠点:</h4>
+                <ul>
+                    <li><strong>予測が遅い:</strong> すべてのポイントまでの距離を計算する必要</li>
+                    <li><strong>メモリ集約的:</strong> すべての訓練データを保存</li>
+                    <li><strong>次元の呪い:</strong> 多くの特徴量でパフォーマンスが悪い</li>
+                    <li><strong>スケールに敏感:</strong> 特徴量の正規化が必要</li>
+                    <li><strong>不均衡データ:</strong> 多数クラスに支配される</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>4. Support Vector Machines (SVM) / サポートベクターマシン</h2>
+
+        <div class="definition-box">
+            <h3>What is SVM? / SVMとは？</h3>
+            <p><strong>Support Vector Machine:</strong> A powerful classification algorithm that finds the optimal hyperplane (decision boundary) that maximizes the margin between different classes.</p>
+            <p><strong>サポートベクターマシン:</strong> 異なるクラス間のマージンを最大化する最適な超平面（決定境界）を見つける強力な分類アルゴリズム。</p>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Maximum Margin Classification</h3>
+
+                <h4>Core Concept: The Margin</h4>
+                <div class="code-box">VISUALIZING SVM (2D example)
+
+Class A (●)              Decision Boundary (|)              Class B (■)
+
+    ●                              |                             ■
+      ●                            |                           ■
+        ●                          |                         ■
+    ●     ●                        |                       ■
+      ●                            |                     ■   ■
+                                   |
+        ← Support Vectors          |          Support Vectors →
+           (closest points)        |          (closest points)
+                                   |
+           |← Margin →|← Margin →|
+           (maximum distance from boundary)
+
+Goal: Find the line that maximizes the margin
+Margin = Distance from boundary to nearest points of each class</div>
+
+                <h4>How SVM Works</h4>
+                <ol>
+                    <li><strong>Find Decision Boundary:</strong> Line (2D), plane (3D), or hyperplane (>3D) that separates classes</li>
+                    <li><strong>Maximize Margin:</strong> Choose boundary that maximizes distance to nearest points</li>
+                    <li><strong>Support Vectors:</strong> The critical points closest to boundary that "support" it</li>
+                    <li><strong>Make Predictions:</strong> New points classified based on which side of boundary they fall</li>
+                </ol>
+
+                <h4>The Kernel Trick</h4>
+                <p>What if data isn't linearly separable? Use kernels to transform data into higher dimensions!</p>
+
+                <ul>
+                    <li><strong>Linear Kernel:</strong> Standard straight line/plane</li>
+                    <li><strong>Polynomial Kernel:</strong> Curved boundaries</li>
+                    <li><strong>RBF (Radial Basis Function):</strong> Complex circular/curved boundaries</li>
+                    <li><strong>Sigmoid Kernel:</strong> Similar to neural networks</li>
+                </ul>
+
+                <div class="code-box">Example: XOR Problem (not linearly separable)
+
+2D Space (can't draw straight line):
+  ■    ●
+  ●    ■
+
+Transform to 3D (now can separate with plane):
+     ●
+  ■     ■
+     ●</div>
+
+                <h4>Advantages:</h4>
+                <ul>
+                    <li><strong>Effective in high dimensions:</strong> Works well with many features</li>
+                    <li><strong>Memory efficient:</strong> Only uses support vectors</li>
+                    <li><strong>Versatile:</strong> Different kernels for different patterns</li>
+                    <li><strong>Robust:</strong> Works well with clear margin of separation</li>
+                </ul>
+
+                <h4>Disadvantages:</h4>
+                <ul>
+                    <li><strong>Slow with large datasets:</strong> Training time increases with data size</li>
+                    <li><strong>Kernel choice:</strong> Selecting right kernel can be tricky</li>
+                    <li><strong>No probability estimates:</strong> Only gives class predictions</li>
+                    <li><strong>Sensitive to noise:</strong> Outliers can affect boundary</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>最大マージン分類</h3>
+
+                <h4>コア概念: マージン</h4>
+                <div class="code-box">SVMの可視化（2D例）
+
+クラスA（●）              決定境界（|）              クラスB（■）
+
+    ●                              |                             ■
+      ●                            |                           ■
+        ●                          |                         ■
+    ●     ●                        |                       ■
+      ●                            |                     ■   ■
+                                   |
+        ← サポートベクター         |          サポートベクター →
+           (最も近いポイント)      |          (最も近いポイント)
+                                   |
+           |← マージン →|← マージン →|
+           (境界からの最大距離)
+
+目標: マージンを最大化する線を見つける
+マージン = 境界から各クラスの最も近いポイントまでの距離</div>
+
+                <h4>SVMの仕組み</h4>
+                <ol>
+                    <li><strong>決定境界を見つける:</strong> クラスを分離する線（2D）、平面（3D）、または超平面（>3D）</li>
+                    <li><strong>マージンを最大化:</strong> 最も近いポイントまでの距離を最大化する境界を選択</li>
+                    <li><strong>サポートベクター:</strong> 境界を「サポート」する境界に最も近い重要なポイント</li>
+                    <li><strong>予測を行う:</strong> 新しいポイントは境界のどちら側に落ちるかに基づいて分類される</li>
+                </ol>
+
+                <h4>カーネルトリック</h4>
+                <p>データが線形分離可能でない場合は？カーネルを使用してデータをより高い次元に変換！</p>
+
+                <ul>
+                    <li><strong>線形カーネル:</strong> 標準的な直線/平面</li>
+                    <li><strong>多項式カーネル:</strong> 曲線境界</li>
+                    <li><strong>RBF（放射基底関数）:</strong> 複雑な円形/曲線境界</li>
+                    <li><strong>シグモイドカーネル:</strong> ニューラルネットワークに類似</li>
+                </ul>
+
+                <div class="code-box">例: XOR問題（線形分離不可能）
+
+2D空間（直線を引けない）:
+  ■    ●
+  ●    ■
+
+3Dに変換（平面で分離可能）:
+     ●
+  ■     ■
+     ●</div>
+
+                <h4>利点:</h4>
+                <ul>
+                    <li><strong>高次元で効果的:</strong> 多くの特徴量でうまく機能</li>
+                    <li><strong>メモリ効率:</strong> サポートベクターのみを使用</li>
+                    <li><strong>多用途:</strong> 異なるパターンのための異なるカーネル</li>
+                    <li><strong>堅牢:</strong> 明確な分離マージンでうまく機能</li>
+                </ul>
+
+                <h4>欠点:</h4>
+                <ul>
+                    <li><strong>大規模データセットで遅い:</strong> 訓練時間がデータサイズとともに増加</li>
+                    <li><strong>カーネル選択:</strong> 適切なカーネルの選択が難しい場合がある</li>
+                    <li><strong>確率推定なし:</strong> クラス予測のみを提供</li>
+                    <li><strong>ノイズに敏感:</strong> 外れ値が境界に影響を与える可能性</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>5. Comparing Classification Algorithms / 分類アルゴリズムの比較</h2>
+
+        <div class="highlight-box">
+            <h3>Algorithm Comparison Table</h3>
+            <div class="code-box">┌─────────────────┬──────────────┬──────────────┬──────────────┬──────────────┐
+│ Algorithm       │ Speed        │Interpretable │ Accuracy     │ Best For     │
+│ アルゴリズム    │ 速度         │解釈可能性    │ 精度         │ 最適用途     │
+├─────────────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+│ Logistic        │ Fast         │ High         │ Good         │ Linear       │
+│ Regression      │ 速い         │ 高い         │ 良い         │ 線形問題     │
+├─────────────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+│ Decision Tree   │ Fast         │ Very High    │ Good         │ Mixed data   │
+│ 決定木          │ 速い         │ 非常に高い   │ 良い         │ 混合データ   │
+├─────────────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+│ Random Forest   │ Medium       │ Low          │ Excellent    │ General      │
+│ ランダム        │ 中程度       │ 低い         │ 優秀         │ 汎用         │
+│ フォレスト      │              │              │              │              │
+├─────────────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+│ k-NN            │ Slow         │ Medium       │ Good         │ Small data   │
+│ k近傍法         │ 遅い         │ 中程度       │ 良い         │ 小データ     │
+├─────────────────┼──────────────┼──────────────┼──────────────┼──────────────┤
+│ SVM             │ Slow (large) │ Low          │ Excellent    │ High-dim     │
+│ SVM             │遅い(大規模)  │ 低い         │ 優秀         │ 高次元       │
+└─────────────────┴──────────────┴──────────────┴──────────────┴──────────────┘</div>
+        </div>
+
+        <h2>6. Real-World Application / 実世界の応用</h2>
+
+        <div class="highlight-box">
+            <h3>Amazon: Product Recommendation System</h3>
+            <h4>Link: <a href="https://www.amazon.com" target="_blank">https://www.amazon.com</a></h4>
+
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Challenge:</strong> Recommend relevant products to millions of customers from billions of items.</p>
+
+                    <p><strong>Classification Approach:</strong></p>
+                    <ul>
+                        <li><strong>Problem Type:</strong> Binary classification - Will user click/buy this product? (Yes/No)</li>
+                        <li><strong>Algorithm:</strong> Ensemble of Random Forests, Gradient Boosted Trees</li>
+                        <li><strong>Features Used:</strong>
+                            <ul>
+                                <li>User browsing history</li>
+                                <li>Past purchases</li>
+                                <li>Product categories viewed</li>
+                                <li>Time spent on product pages</li>
+                                <li>Reviews read and written</li>
+                                <li>Search queries</li>
+                                <li>Similar users' behavior (collaborative filtering)</li>
+                                <li>Product attributes (price, category, brand)</li>
+                                <li>Current session behavior</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>Multiple Classification Models:</strong></p>
+                    <ul>
+                        <li><strong>"Customers who bought this also bought":</strong> Item-to-item collaborative filtering with classification</li>
+                        <li><strong>"Recommended for you":</strong> Personalized recommendations using user features</li>
+                        <li><strong>"Frequently bought together":</strong> Association rules + classification</li>
+                        <li><strong>Search results ranking:</strong> Classifying relevance of each product to query</li>
+                    </ul>
+
+                    <p><strong>Why Random Forests?</strong></p>
+                    <ul>
+                        <li>Handles millions of features well</li>
+                        <li>Provides feature importance (what matters most?)</li>
+                        <li>Resistant to overfitting with large feature sets</li>
+                        <li>Can combine multiple data types</li>
+                        <li>Good accuracy with minimal tuning</li>
+                    </ul>
+
+                    <p><strong>Impact:</strong> 35% of Amazon's revenue comes from recommendation engine. Billions in sales attributed to ML-powered recommendations.</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>課題:</strong> 数十億のアイテムから数百万の顧客に関連製品を推薦する。</p>
+
+                    <p><strong>分類アプローチ:</strong></p>
+                    <ul>
+                        <li><strong>問題タイプ:</strong> 二値分類 - ユーザーはこの製品をクリック/購入するか？（はい/いいえ）</li>
+                        <li><strong>アルゴリズム:</strong> ランダムフォレスト、勾配ブースティング木のアンサンブル</li>
+                        <li><strong>使用される特徴量:</strong>
+                            <ul>
+                                <li>ユーザーの閲覧履歴</li>
+                                <li>過去の購入</li>
+                                <li>閲覧した製品カテゴリ</li>
+                                <li>製品ページに費やした時間</li>
+                                <li>読んだ・書いたレビュー</li>
+                                <li>検索クエリ</li>
+                                <li>類似ユーザーの行動（協調フィルタリング）</li>
+                                <li>製品属性（価格、カテゴリ、ブランド）</li>
+                                <li>現在のセッション行動</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <p><strong>複数の分類モデル:</strong></p>
+                    <ul>
+                        <li><strong>「これを買った人はこんな商品も買っています」:</strong> 分類を伴うアイテム間協調フィルタリング</li>
+                        <li><strong>「あなたへのおすすめ」:</strong> ユーザー特徴量を使用したパーソナライズされた推薦</li>
+                        <li><strong>「よく一緒に購入されている商品」:</strong> アソシエーションルール + 分類</li>
+                        <li><strong>検索結果のランキング:</strong> クエリに対する各製品の関連性を分類</li>
+                    </ul>
+
+                    <p><strong>なぜランダムフォレスト？</strong></p>
+                    <ul>
+                        <li>数百万の特徴量をうまく処理</li>
+                        <li>特徴量の重要度を提供（何が最も重要か？）</li>
+                        <li>大規模な特徴量セットでも過学習に耐性がある</li>
+                        <li>複数のデータタイプを組み合わせられる</li>
+                        <li>最小限の調整で良好な精度</li>
+                    </ul>
+
+                    <p><strong>影響:</strong> Amazonの収益の35%が推薦エンジンから来ています。ML駆動の推薦により数十億ドルの売上が貢献されています。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="study-tip">
+            <h3>Study Tips for Classification Algorithms</h3>
+            <ul>
+                <li>Create a comparison table of all algorithms in your own words</li>
+                <li>Draw a decision tree by hand for a simple dataset</li>
+                <li>Understand why Random Forests reduce overfitting</li>
+                <li>Practice calculating k-NN predictions with small examples</li>
+                <li>Visualize SVM margin concept with sketches</li>
+                <li>Know when to use each algorithm (strengths/weaknesses)</li>
+                <li>Understand ensemble methods and why they work</li>
+            </ul>
+        </div>
+
+        <h2>📝 Test Questions / テスト問題</h2>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 1: Multiple Choice</h4>
+            <p><strong>What is the main advantage of Random Forest over a single Decision Tree?</strong></p>
+            <ol type="A">
+                <li>Faster training time</li>
+                <li>More interpretable results</li>
+                <li>Reduces overfitting by averaging multiple trees</li>
+                <li>Requires less memory</li>
+            </ol>
+            <p><strong>Answer:</strong> C - Random Forest reduces overfitting because individual trees may overfit differently, but averaging cancels out errors.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 2: Multiple Choice</h4>
+            <p><strong>In k-NN with k=5, a new data point has 3 neighbors of Class A and 2 neighbors of Class B. What will be the predicted class?</strong></p>
+            <ol type="A">
+                <li>Class A (majority vote)</li>
+                <li>Class B</li>
+                <li>Cannot determine</li>
+                <li>Average of both classes</li>
+            </ol>
+            <p><strong>Answer:</strong> A - k-NN uses majority voting, so Class A wins with 3 votes vs 2.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 3: Multiple Choice</h4>
+            <p><strong>What is a "support vector" in SVM?</strong></p>
+            <ol type="A">
+                <li>Any data point in the training set</li>
+                <li>The decision boundary line</li>
+                <li>The data points closest to the decision boundary</li>
+                <li>The center point of each class</li>
+            </ol>
+            <p><strong>Answer:</strong> C - Support vectors are the critical points closest to the decision boundary that define the margin.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 4: Multiple Choice</h4>
+            <p><strong>Which algorithm would be BEST for a problem with clear linear separation between classes?</strong></p>
+            <ol type="A">
+                <li>Decision Tree</li>
+                <li>Random Forest</li>
+                <li>Logistic Regression</li>
+                <li>k-NN with k=1</li>
+            </ol>
+            <p><strong>Answer:</strong> C - Logistic Regression is simple, fast, and effective for linearly separable data.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 5: Multiple Choice</h4>
+            <p><strong>What is the purpose of the "kernel trick" in SVM?</strong></p>
+            <ol type="A">
+                <li>To speed up training</li>
+                <li>To reduce memory usage</li>
+                <li>To handle non-linearly separable data by transforming to higher dimensions</li>
+                <li>To improve interpretability</li>
+            </ol>
+            <p><strong>Answer:</strong> C - The kernel trick transforms data into higher dimensions where it becomes linearly separable.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 6: Short Answer</h4>
+            <p><strong>Explain how a Decision Tree makes a prediction. Use a simple example like predicting whether to play tennis based on weather.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p>A Decision Tree makes predictions by following a series of yes/no questions from the root to a leaf node.</p>
+            <p><strong>Example: Play Tennis?</strong></p>
+            <ol>
+                <li><strong>Root Node:</strong> "Is it sunny?"
+                    <ul>
+                        <li>If YES → Go to next question: "Is humidity high?"
+                            <ul>
+                                <li>If YES → DON'T PLAY (too humid)</li>
+                                <li>If NO → PLAY</li>
+                            </ul>
+                        </li>
+                        <li>If NO → Go to next question: "Is it windy?"
+                            <ul>
+                                <li>If YES → DON'T PLAY (too windy)</li>
+                                <li>If NO → PLAY</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+            </ol>
+            <p>The tree follows the path from root to leaf based on the feature values, and the leaf node gives the final prediction.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 7: Short Answer</h4>
+            <p><strong>Why does Random Forest use bootstrap sampling and random feature selection? What problem does this solve?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>Bootstrap Sampling:</strong> Each tree is trained on a different random sample of the data (with replacement). This creates diversity among trees because each one sees slightly different training examples.</p>
+            <p><strong>Random Feature Selection:</strong> At each split, only a random subset of features is considered. This prevents all trees from making the same decisions.</p>
+            <p><strong>Problem Solved:</strong> These techniques solve the overfitting problem. If all trees were identical and trained on the same data, they would make the same mistakes. By creating diverse trees through randomness, their errors are different and cancel out when averaged, resulting in better generalization to new data.</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 8: Short Answer</h4>
+            <p><strong>Describe the complete process of how k-NN (k=3) would classify a new data point. Include all steps.</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <ol>
+                <li><strong>Store Training Data:</strong> k-NN doesn't build a model; it stores all training examples in memory.</li>
+                <li><strong>Receive New Point:</strong> A new unlabeled data point arrives for classification.</li>
+                <li><strong>Calculate Distances:</strong> Compute the distance from the new point to every training point using a distance metric (e.g., Euclidean distance).</li>
+                <li><strong>Find k Nearest:</strong> Sort all distances and select the 3 closest training points (k=3).</li>
+                <li><strong>Majority Vote:</strong> Look at the class labels of these 3 neighbors. Count the votes for each class.</li>
+                <li><strong>Predict:</strong> Assign the new point to the class with the most votes among the 3 neighbors.</li>
+            </ol>
+            <p><strong>Example:</strong> New point has 2 neighbors labeled "Cat" and 1 labeled "Dog" → Prediction: "Cat"</p>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 9: Application Question</h4>
+            <p><strong>Amazon uses Random Forests for product recommendations. Explain:</strong></p>
+            <p><strong>a) What classification problem is Amazon solving?</strong></p>
+            <p><strong>b) List 5 features they might use</strong></p>
+            <p><strong>c) Why is Random Forest a good choice for this problem?</strong></p>
+            <p><strong>Sample Answer:</strong></p>
+            <p><strong>a) Classification Problem:</strong> Binary classification - predicting whether a user will click on or purchase a recommended product (Yes/No). For each user-product pair, predict: Will the user interact with this product?</p>
+            <p><strong>b) Five Features:</strong></p>
+            <ol>
+                <li>User's past purchase history (categories bought)</li>
+                <li>Browsing time spent on similar products</li>
+                <li>User's search queries</li>
+                <li>Products purchased by similar users (collaborative filtering)</li>
+                <li>Product price relative to user's typical spending</li>
+            </ol>
+            <p><strong>c) Why Random Forest:</strong></p>
+            <ul>
+                <li>Handles millions of features (users have complex behavior patterns)</li>
+                <li>Provides feature importance to understand what drives purchases</li>
+                <li>Resistant to overfitting despite huge feature sets</li>
+                <li>Works well with mixed data types (numerical prices, categorical product types)</li>
+                <li>High accuracy with minimal parameter tuning, crucial for production systems</li>
+            </ul>
+        </div>
+
+        <div class="test-question">
+            <h4>TEST QUESTION 10: Essay Question</h4>
+            <p><strong>Compare Decision Trees, Random Forests, k-NN, and SVM. For each algorithm, explain:</strong></p>
+            <ul>
+                <li>How it makes predictions</li>
+                <li>One major advantage</li>
+                <li>One major disadvantage</li>
+                <li>A scenario where it would be the best choice</li>
+            </ul>
+            <p><strong>Sample Answer:</strong></p>
+
+            <p><strong>Decision Tree:</strong></p>
+            <p><strong>Prediction:</strong> Follows a tree of yes/no questions from root to leaf node, where each internal node tests a feature and each leaf provides a class label.</p>
+            <p><strong>Advantage:</strong> Highly interpretable - you can visualize and explain exactly why a prediction was made.</p>
+            <p><strong>Disadvantage:</strong> Prone to overfitting, creating overly complex trees that memorize training data.</p>
+            <p><strong>Best For:</strong> When you need to explain decisions to non-technical stakeholders (e.g., medical diagnosis where doctors need to understand the reasoning).</p>
+
+            <p><strong>Random Forest:</strong></p>
+            <p><strong>Prediction:</strong> Builds many decision trees on random data samples, then combines their predictions through majority voting.</p>
+            <p><strong>Advantage:</strong> Excellent accuracy and reduces overfitting by averaging diverse trees.</p>
+            <p><strong>Disadvantage:</strong> Low interpretability - hard to understand 100+ trees working together.</p>
+            <p><strong>Best For:</strong> General-purpose classification when accuracy is more important than interpretability (e.g., product recommendations, fraud detection).</p>
+
+            <p><strong>k-NN:</strong></p>
+            <p><strong>Prediction:</strong> Finds k nearest training examples and assigns the majority class among those neighbors.</p>
+            <p><strong>Advantage:</strong> Simple to understand and implement; no training phase required.</p>
+            <p><strong>Disadvantage:</strong> Slow prediction because it must calculate distance to all training points.</p>
+            <p><strong>Best For:</strong> Small datasets where simplicity is valued or when you need to immediately incorporate new training examples without retraining (e.g., small-scale image recognition with limited data).</p>
+
+            <p><strong>SVM:</strong></p>
+            <p><strong>Prediction:</strong> Finds the optimal hyperplane that maximizes the margin between classes; new points are classified based on which side of the boundary they fall.</p>
+            <p><strong>Advantage:</strong> Effective in high-dimensional spaces and with complex non-linear boundaries (using kernel trick).</p>
+            <p><strong>Disadvantage:</strong> Slow to train on large datasets and choosing the right kernel can be challenging.</p>
+            <p><strong>Best For:</strong> High-dimensional data with clear margins like text classification where you have thousands of features (words) but need to separate documents into categories.</p>
+
+            <p><strong>Summary:</strong> Choose Decision Tree for interpretability, Random Forest for accuracy, k-NN for simplicity with small data, and SVM for high-dimensional problems with good separation.</p>
+        </div>
+
+        <h2>🎯 Key Takeaways / 重要ポイント</h2>
+
+        <div class="highlight-box">
+            <h3>Remember These Core Concepts:</h3>
+            <ul>
+                <li><strong>Decision Trees:</strong> Tree of yes/no questions, interpretable but prone to overfitting</li>
+                <li><strong>Random Forest:</strong> Ensemble of trees, reduces overfitting, excellent accuracy</li>
+                <li><strong>k-NN:</strong> Majority vote of k nearest neighbors, simple but slow prediction</li>
+                <li><strong>SVM:</strong> Maximizes margin between classes, good for high-dimensional data</li>
+                <li><strong>Ensemble Methods:</strong> Combining multiple models improves performance</li>
+                <li><strong>Trade-offs:</strong> Speed vs Accuracy vs Interpretability</li>
+                <li><strong>Real-World:</strong> Amazon uses Random Forests for recommendations (35% of revenue!)</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-10/lecture.html">← Previous Week</a>
+            <a href="slides.html">View Slides</a>
+            <a href="assignment.html">Assignment</a>
+            <a href="../week-12/lecture.html">Next Week →</a>
+        </div>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Week 11 Lecture Notes - Introduction to AI and Data Science</p>
+            <p>Chukyo University - 2025</p>
+        </footer>
+    </div>
+</body>
+</html>

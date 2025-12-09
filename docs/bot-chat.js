@@ -1,47 +1,16 @@
-// ML-101 Bot Chat Interface
-// Connects to backend API - automatically detects environment
+// AI-300 Bot Chat Interface
+// Connects to backend API with RAG and Web Search capabilities
 
-class ML101BotChat {
+class AI300BotChat {
     constructor() {
         // Determine API URL based on environment
         this.apiUrl = this.getApiUrl();
         this.conversationHistory = [];
-        this.currentUserId = null;
-        this.currentUserEmail = null;
+        this.currentUserId = this.getUserId();
         this.currentLanguage = 'en';
         this.isLoading = false;
-        this.isAuthenticated = false;
         
-        // Initialize login first
-        this.initAuth();
-    }
-    
-    initAuth() {
-        // Check if login is required
-        const authOverride = localStorage.getItem('bot_require_auth');
-        let requiresAuth;
-
-        if (authOverride !== null) {
-            requiresAuth = authOverride === 'true';
-        } else {
-            // Default: allow access without OTP to avoid blocking while email is unconfigured.
-            requiresAuth = false;
-        }
-        
-        if (requiresAuth) {
-            // Initialize login
-            this.login = new BotLogin(this.apiUrl, (userId, email) => {
-                this.currentUserId = userId;
-                this.currentUserEmail = email;
-                this.isAuthenticated = true;
-                this.init();
-            });
-        } else {
-            // No auth required - use local storage
-            this.currentUserId = this.getUserId();
-            this.isAuthenticated = true;
-            this.init();
-        }
+        this.init();
     }
     
     getApiUrl() {
@@ -53,37 +22,30 @@ class ML101BotChat {
         // Check if we're on HTTPS (GitHub Pages)
         const isHttps = window.location.protocol === 'https:';
         
-        // For HTTPS pages, we need HTTPS API URL
-        // For local development, HTTP is fine
         if (isLocal) {
-            // Local development - use HTTP
-            // Check for port override in URL hash or localStorage
-            const port = localStorage.getItem('bot_api_port') || '8001';
+            // Local development - use HTTP on port 8003
+            const port = localStorage.getItem('bot_api_port') || '8003';
             return `http://localhost:${port}/api`;
         } else if (isHttps) {
-            // HTTPS page (GitHub Pages) - need HTTPS API
-            // Check for Cloudflare Tunnel URL in localStorage or default
+            // HTTPS page (GitHub Pages) - need HTTPS API via Cloudflare Tunnel
             const cloudflareUrl = localStorage.getItem('bot_cloudflare_url');
             if (cloudflareUrl) {
                 return `${cloudflareUrl}/api`;
             }
-            // Fallback: Default to latest ngrok/Cloudflare URL
-            // Update this when tunnel changes
-            return 'https://8073b9e974bf.ngrok-free.app/api';
+            // Fallback: Default Cloudflare Tunnel URL (configure this)
+            return 'https://ai300bot.tijerino.ai/api';
         } else {
             // HTTP page - can use HTTP API with fixed IP
-            const port = localStorage.getItem('bot_api_port') || '8001';
+            const port = localStorage.getItem('bot_api_port') || '8003';
             return `http://192.218.175.132:${port}/api`;
         }
     }
     
     getUserId() {
-        // Try to get user ID from localStorage or generate one
-        let userId = localStorage.getItem('bot_user_id');
+        let userId = localStorage.getItem('ai300_user_id');
         if (!userId) {
-            // Fallback for non-authenticated local use
             userId = 'user_' + Math.random().toString(36).substr(2, 9);
-            localStorage.setItem('bot_user_id', userId);
+            localStorage.setItem('ai300_user_id', userId);
         }
         return userId;
     }
@@ -91,29 +53,24 @@ class ML101BotChat {
     init() {
         this.setupEventListeners();
         this.loadConversationHistory();
-        this.checkApiUrl();
+        this.showWelcomeMessage();
     }
     
-    checkApiUrl() {
-        // Show notice if API URL is not configured for HTTPS
-        const isHttps = window.location.protocol === 'https:';
-        const needsHttps = isHttps && (this.apiUrl.includes('YOUR_HTTPS_API_URL') || 
-                                      (this.apiUrl.startsWith('http://') && !this.apiUrl.includes('localhost')));
+    showWelcomeMessage() {
+        const messagesContainer = document.getElementById('bot-messages');
+        if (!messagesContainer || messagesContainer.children.length > 0) return;
         
-        if (needsHttps) {
-            const notice = document.getElementById('bot-https-notice');
-            if (notice) {
-                notice.style.display = 'block';
-            }
-            console.warn('⚠️ HTTPS API URL not configured. See docs/HTTPS-SETUP.md');
-            console.warn('Current API URL:', this.apiUrl);
-        }
+        const welcomeEn = "👋 Hello! I'm AI-300 Bot, your assistant for the Basic Artificial Intelligence course. I can help you understand AI concepts, search algorithms, probability, and machine learning. Ask me anything!";
+        const welcomeJa = "👋 こんにちは！AI-300ボットです。人工知能基礎コースのアシスタントとして、AIの概念、探索アルゴリズム、確率、機械学習について質問にお答えします。何でも聞いてください！";
+        
+        this.addMessageToUI('assistant', this.currentLanguage === 'ja' ? welcomeJa : welcomeEn);
     }
     
     setupEventListeners() {
         const sendButton = document.getElementById('bot-send-btn');
         const messageInput = document.getElementById('bot-message-input');
         const languageToggle = document.getElementById('bot-language-toggle');
+        const clearButton = document.getElementById('bot-clear-btn');
         
         if (sendButton) {
             sendButton.addEventListener('click', () => this.sendMessage());
@@ -134,10 +91,14 @@ class ML101BotChat {
                 this.updateLanguageUI();
             });
         }
+        
+        if (clearButton) {
+            clearButton.addEventListener('click', () => this.clearConversation());
+        }
     }
     
     loadConversationHistory() {
-        const saved = localStorage.getItem('ml101_conversation');
+        const saved = localStorage.getItem('ai300_conversation');
         if (saved) {
             try {
                 this.conversationHistory = JSON.parse(saved);
@@ -149,17 +110,21 @@ class ML101BotChat {
     }
     
     saveConversationHistory() {
-        localStorage.setItem('ml101_conversation', JSON.stringify(this.conversationHistory));
+        localStorage.setItem('ai300_conversation', JSON.stringify(this.conversationHistory));
     }
     
     updateLanguageUI() {
         const chatContainer = document.getElementById('bot-chat-container');
-        if (!chatContainer) return;
+        if (chatContainer) {
+            chatContainer.setAttribute('data-lang', this.currentLanguage);
+        }
         
-        if (this.currentLanguage === 'ja') {
-            chatContainer.setAttribute('data-lang', 'ja');
-        } else {
-            chatContainer.setAttribute('data-lang', 'en');
+        // Update placeholder text
+        const messageInput = document.getElementById('bot-message-input');
+        if (messageInput) {
+            messageInput.placeholder = this.currentLanguage === 'ja' 
+                ? 'AIについて質問してください...' 
+                : 'Ask about AI concepts...';
         }
     }
     
@@ -184,64 +149,72 @@ class ML101BotChat {
                 content: msg.content
             }));
             
-            // Add current message to history
-            history.push({ role: 'user', content: message });
-            
             // Call API
             const response = await fetch(`${this.apiUrl}/chat`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    'ngrok-skip-browser-warning': 'true',
                 },
                 body: JSON.stringify({
                     user_id: this.currentUserId,
                     message: message,
                     language: this.currentLanguage,
-                    conversation_history: history.slice(0, -1), // Exclude current message
-                    use_rag: true
+                    conversation_history: history,
+                    use_rag: true,
+                    use_web_search: true
                 })
             });
             
             if (!response.ok) {
-                throw new Error(`API error: ${response.status}`);
+                const errorText = await response.text();
+                throw new Error(`API error: ${response.status} - ${errorText.substring(0, 100)}`);
             }
             
-            const data = await response.json();
+            const responseText = await response.text();
+            let data;
+            try {
+                data = JSON.parse(responseText);
+            } catch (parseError) {
+                if (responseText.includes('html') || responseText.length === 0) {
+                    throw new Error('Service unavailable. Please check if the backend is running.');
+                }
+                throw new Error(`Invalid response: ${responseText.substring(0, 200)}`);
+            }
             
             // Add messages to history
             this.conversationHistory.push({ role: 'user', content: message });
             this.conversationHistory.push({ role: 'assistant', content: data.response });
             this.saveConversationHistory();
             
-            // Add bot response to UI
-            this.addMessageToUI('assistant', data.response);
+            // Add bot response to UI with source indicators
+            let responseWithSources = data.response;
+            if (data.web_search_used) {
+                responseWithSources += '\n\n🔍 _Web search was used to enhance this response._';
+            }
+            this.addMessageToUI('assistant', responseWithSources);
             
         } catch (error) {
             console.error('Chat error:', error);
             
-            // Provide more detailed error messages
             let errorMessage = '';
             if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
-                // Network/CORS error
                 const isHttps = window.location.protocol === 'https:';
                 const apiIsHttp = this.apiUrl.startsWith('http://');
                 
                 if (isHttps && apiIsHttp) {
-                    // Mixed content error (HTTPS page trying to access HTTP API)
                     errorMessage = this.currentLanguage === 'ja'
-                        ? 'セキュリティ上の理由により、HTTPSページからHTTP APIに接続できません。ローカルでテストする場合は、http://localhost:8000 でページを開いてください。'
-                        : 'Cannot connect to HTTP API from HTTPS page (mixed content blocked). For local testing, open this page at http://localhost:8000 or use a proxy.';
+                        ? '⚠️ HTTPSページからHTTP APIに接続できません。ローカルでテストする場合は、http://localhost で開いてください。'
+                        : '⚠️ Cannot connect to HTTP API from HTTPS page. For local testing, open at http://localhost';
                 } else {
-                    // General network error
                     errorMessage = this.currentLanguage === 'ja'
-                        ? 'APIサーバーに接続できません。バックエンドサーバーが起動しているか確認してください。'
-                        : 'Cannot connect to API server. Please ensure the backend server is running at ' + this.apiUrl;
+                        ? '⚠️ APIサーバーに接続できません。バックエンドが起動しているか確認してください。'
+                        : '⚠️ Cannot connect to API server. Please ensure the backend is running at ' + this.apiUrl;
                 }
             } else {
-                // Other errors
                 errorMessage = this.currentLanguage === 'ja'
-                    ? 'エラーが発生しました: ' + error.message
-                    : 'An error occurred: ' + error.message;
+                    ? '⚠️ エラーが発生しました: ' + error.message
+                    : '⚠️ An error occurred: ' + error.message;
             }
             
             this.addMessageToUI('system', errorMessage);
@@ -257,16 +230,19 @@ class ML101BotChat {
         const messageDiv = document.createElement('div');
         messageDiv.className = `bot-message bot-message-${role}`;
         
+        const botName = this.currentLanguage === 'ja' ? 'AI-300 ボット' : 'AI-300 Bot';
+        const userName = this.currentLanguage === 'ja' ? 'あなた' : 'You';
+        
         if (role === 'user') {
             messageDiv.innerHTML = `
                 <div class="bot-message-content">
-                    <strong>You:</strong> ${this.escapeHtml(content)}
+                    <strong>${userName}:</strong> ${this.escapeHtml(content)}
                 </div>
             `;
         } else if (role === 'assistant') {
             messageDiv.innerHTML = `
                 <div class="bot-message-content">
-                    <strong>ML-101 Bot:</strong> ${this.formatBotResponse(content)}
+                    <strong>🤖 ${botName}:</strong> ${this.formatBotResponse(content)}
                 </div>
             `;
         } else {
@@ -286,6 +262,8 @@ class ML101BotChat {
         return this.escapeHtml(text)
             .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
             .replace(/\*(.+?)\*/g, '<em>$1</em>')
+            .replace(/_(.+?)_/g, '<em>$1</em>')
+            .replace(/`(.+?)`/g, '<code>$1</code>')
             .replace(/\n/g, '<br>');
     }
     
@@ -329,15 +307,18 @@ class ML101BotChat {
     }
     
     clearConversation() {
-        if (confirm(this.currentLanguage === 'ja' 
+        const confirmMsg = this.currentLanguage === 'ja' 
             ? '会話履歴をクリアしますか？'
-            : 'Clear conversation history?')) {
+            : 'Clear conversation history?';
+            
+        if (confirm(confirmMsg)) {
             this.conversationHistory = [];
             this.saveConversationHistory();
             const messagesContainer = document.getElementById('bot-messages');
             if (messagesContainer) {
                 messagesContainer.innerHTML = '';
             }
+            this.showWelcomeMessage();
         }
     }
 }
@@ -345,9 +326,8 @@ class ML101BotChat {
 // Initialize chat when DOM is ready
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
-        window.ml101BotChat = new ML101BotChat();
+        window.ai300BotChat = new AI300BotChat();
     });
 } else {
-    window.ml101BotChat = new ML101BotChat();
+    window.ai300BotChat = new AI300BotChat();
 }
-

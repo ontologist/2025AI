@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 9 Assignment: Overview of AI and ML</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2563eb;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 15px;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #7c3aed;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 5px solid #2563eb;
+            padding-left: 15px;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #2563eb;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .english, .japanese {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .info-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .nav-links {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .nav-links a {
+            color: #2563eb;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #cbd5e1;
+        }
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+        }
+        @media screen and (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2em; }
+            .bilingual { grid-template-columns: 1fr; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+
+        <h1>Week 9 Assignment</h1>
+        <h1>第9週課題</h1>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Assignment Title:</h3>
+                <p><strong>Understanding AI Types and ML Paradigms</strong></p>
+            </div>
+            <div class="japanese">
+                <h3>課題タイトル:</h3>
+                <p><strong>AIタイプとMLパラダイムの理解</strong></p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Due Date:</strong> Before next class (Week 10)</p>
+                    <p><strong>Estimated Time:</strong> 50-60 minutes</p>
+                    <p><strong>Grade Weight:</strong> Part of 40% Individual Reports</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>締切:</strong> 次回授業前（第10週）</p>
+                    <p><strong>予想時間:</strong> 50-60分</p>
+                    <p><strong>成績配分:</strong> 個別レポート40%の一部</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Learning Objectives / 学習目標</h2>
+        <div class="bilingual">
+            <div class="english">
+                <ul>
+                    <li>Distinguish between different types of AI systems</li>
+                    <li>Understand the three main ML paradigms</li>
+                    <li>Analyze real-world AI applications critically</li>
+                    <li>Evaluate ethical implications of AI deployment</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <ul>
+                    <li>異なるタイプのAIシステムを区別する</li>
+                    <li>3つの主要なMLパラダイムを理解する</li>
+                    <li>実世界のAI応用を批判的に分析する</li>
+                    <li>AI展開の倫理的影響を評価する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Part 1: AI Types and Hierarchy (30 points)</h2>
+        <h2>パート1: AIタイプと階層（30点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.1 (15 points)</h3>
+                <p>Create a visual diagram or detailed description showing the relationship between AI, ML, and DL. Your diagram/description should:</p>
+                <ul>
+                    <li>Show how these concepts nest within each other</li>
+                    <li>Provide a clear definition for each level</li>
+                    <li>Give 2-3 examples of applications at each level</li>
+                    <li>Explain why the hierarchy exists this way</li>
+                </ul>
+                <p><em>You can hand-draw and scan/photo your diagram, or create it digitally. Include 150-200 words of explanation.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.1（15点）</h3>
+                <p>AI、ML、DLの関係を示す視覚的な図または詳細な説明を作成してください。図/説明には以下を含める必要があります:</p>
+                <ul>
+                    <li>これらの概念が互いにどのように入れ子になっているかを示す</li>
+                    <li>各レベルの明確な定義を提供する</li>
+                    <li>各レベルでの応用の2-3の例を示す</li>
+                    <li>なぜこのような階層が存在するのかを説明する</li>
+                </ul>
+                <p><em>図を手描きしてスキャン/撮影するか、デジタルで作成できます。150-200語の説明を含めてください。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.2 (15 points)</h3>
+                <p>Compare and contrast Narrow AI (ANI) and General AI (AGI):</p>
+                <ul>
+                    <li>What are the fundamental differences?</li>
+                    <li>Why does only Narrow AI exist today?</li>
+                    <li>What challenges must be overcome to achieve AGI?</li>
+                    <li>Provide THREE examples of current Narrow AI systems and explain why they are "narrow"</li>
+                    <li>What might be the societal implications if AGI is achieved?</li>
+                </ul>
+                <p><em>Write 250-300 words.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.2（15点）</h3>
+                <p>弱いAI（ANI）と強いAI（AGI）を比較対照してください:</p>
+                <ul>
+                    <li>根本的な違いは何か？</li>
+                    <li>なぜ今日は弱いAIのみが存在するのか？</li>
+                    <li>AGIを達成するために克服しなければならない課題は何か？</li>
+                    <li>現在の弱いAIシステムの3つの例を示し、なぜそれらが「弱い」のかを説明する</li>
+                    <li>AGIが達成された場合、社会的な影響はどのようなものか？</li>
+                </ul>
+                <p><em>250-300語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 2: ML Paradigms Application Chart (35 points)</h2>
+        <h2>パート2: MLパラダイム応用チャート（35点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.1 (20 points)</h3>
+                <p>Create a comprehensive chart comparing the three ML paradigms (Supervised, Unsupervised, Reinforcement Learning). Your chart should include:</p>
+                <ul>
+                    <li><strong>Data Requirements:</strong> What kind of data is needed?</li>
+                    <li><strong>Learning Process:</strong> How does learning occur?</li>
+                    <li><strong>Goal:</strong> What is the algorithm trying to achieve?</li>
+                    <li><strong>Example Algorithms:</strong> Name at least 2 for each paradigm</li>
+                    <li><strong>Real-World Applications:</strong> At least 3 applications per paradigm</li>
+                    <li><strong>Strengths:</strong> What is each paradigm best at?</li>
+                    <li><strong>Limitations:</strong> What are the challenges/weaknesses?</li>
+                </ul>
+                <p><em>Present as a clear table or organized comparison.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問2.1（20点）</h3>
+                <p>3つのMLパラダイム（教師あり、教師なし、強化学習）を比較する包括的なチャートを作成してください。チャートには以下を含める必要があります:</p>
+                <ul>
+                    <li><strong>データ要件:</strong> どのような種類のデータが必要か？</li>
+                    <li><strong>学習プロセス:</strong> 学習はどのように行われるか？</li>
+                    <li><strong>目標:</strong> アルゴリズムは何を達成しようとしているか？</li>
+                    <li><strong>例のアルゴリズム:</strong> 各パラダイムに対して少なくとも2つ</li>
+                    <li><strong>実世界の応用:</strong> パラダイムごとに少なくとも3つの応用</li>
+                    <li><strong>強み:</strong> 各パラダイムは何が最も得意か？</li>
+                    <li><strong>限界:</strong> 課題/弱点は何か？</li>
+                </ul>
+                <p><em>明確な表または整理された比較として提示してください。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.2 (15 points)</h3>
+                <p>Choose ONE complex AI system (e.g., YouTube recommendations, Tesla Autopilot, Google Translate) and analyze which ML paradigms it uses:</p>
+                <ul>
+                    <li>Identify which paradigms are likely used (may be multiple)</li>
+                    <li>Explain how each paradigm contributes to the system's functionality</li>
+                    <li>Why does this system require multiple paradigms?</li>
+                    <li>What would be missing if only one paradigm was used?</li>
+                </ul>
+                <p><em>Write 200-250 words with specific examples.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問2.2（15点）</h3>
+                <p>1つの複雑なAIシステム（例: YouTube推薦、Teslaオートパイロット、Google翻訳）を選択し、どのMLパラダイムを使用しているかを分析してください:</p>
+                <ul>
+                    <li>使用されている可能性のあるパラダイムを特定する（複数の場合もある）</li>
+                    <li>各パラダイムがシステムの機能にどのように貢献するかを説明する</li>
+                    <li>なぜこのシステムは複数のパラダイムを必要とするのか？</li>
+                    <li>1つのパラダイムのみが使用された場合、何が欠けるか？</li>
+                </ul>
+                <p><em>具体的な例を含めて200-250語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 3: Ethical AI Analysis (35 points)</h2>
+        <h2>パート3: 倫理的AI分析（35点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 3.1 (35 points)</h3>
+                <p>Select ONE AI application from the following domains and conduct a comprehensive ethical analysis:</p>
+                <ul>
+                    <li>Predictive Policing (crime prediction systems)</li>
+                    <li>AI in Hiring/Recruitment</li>
+                    <li>Social Media Content Recommendation</li>
+                    <li>Healthcare Diagnosis AI</li>
+                    <li>Autonomous Weapons Systems</li>
+                </ul>
+
+                <p>Your analysis should address:</p>
+                <ol>
+                    <li><strong>System Description (50 words):</strong> What does the AI system do and how does it work?</li>
+                    <li><strong>Benefits (100 words):</strong> What are the potential positive impacts on society?</li>
+                    <li><strong>Ethical Concerns (150 words):</strong> Identify at least THREE specific ethical issues:
+                        <ul>
+                            <li>Bias and fairness</li>
+                            <li>Privacy concerns</li>
+                            <li>Transparency and explainability</li>
+                            <li>Accountability</li>
+                            <li>Other relevant concerns</li>
+                        </ul>
+                    </li>
+                    <li><strong>Stakeholder Impact (100 words):</strong> Who is affected and how?</li>
+                    <li><strong>Mitigation Strategies (100 words):</strong> What safeguards or policies could address the concerns?</li>
+                    <li><strong>Personal Position (100 words):</strong> Should this AI application be used? Under what conditions? Justify your stance.</li>
+                </ol>
+                <p><em>Total: 500-600 words with clear structure and reasoning.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問3.1（35点）</h3>
+                <p>以下の領域から1つのAI応用を選択し、包括的な倫理的分析を実施してください:</p>
+                <ul>
+                    <li>予測的警察活動（犯罪予測システム）</li>
+                    <li>採用/リクルートメントにおけるAI</li>
+                    <li>ソーシャルメディアコンテンツ推薦</li>
+                    <li>ヘルスケア診断AI</li>
+                    <li>自律兵器システム</li>
+                </ul>
+
+                <p>分析には以下を含める必要があります:</p>
+                <ol>
+                    <li><strong>システムの説明（50語）:</strong> AIシステムは何をし、どのように機能するか？</li>
+                    <li><strong>利点（100語）:</strong> 社会への潜在的なプラスの影響は何か？</li>
+                    <li><strong>倫理的懸念（150語）:</strong> 少なくとも3つの具体的な倫理的問題を特定:
+                        <ul>
+                            <li>バイアスと公平性</li>
+                            <li>プライバシーの懸念</li>
+                            <li>透明性と説明可能性</li>
+                            <li>説明責任</li>
+                            <li>その他の関連する懸念</li>
+                        </ul>
+                    </li>
+                    <li><strong>ステークホルダーへの影響（100語）:</strong> 誰が影響を受け、どのように？</li>
+                    <li><strong>緩和戦略（100語）:</strong> 懸念に対処するためのどのような保護措置や政策があるか？</li>
+                    <li><strong>個人的な立場（100語）:</strong> このAI応用は使用されるべきか？どのような条件下で？あなたの立場を正当化してください。</li>
+                </ol>
+                <p><em>合計: 明確な構造と推論で500-600語。</em></p>
+            </div>
+        </div>
+
+        <h2>Submission Instructions / 提出方法</h2>
+        <div class="bilingual">
+            <div class="english">
+                <h3>Format:</h3>
+                <ul>
+                    <li>Submit as a PDF or Word document</li>
+                    <li>Include your name and student ID at the top</li>
+                    <li>Clearly label each question (Part 1.1, 1.2, etc.)</li>
+                    <li>For diagrams/charts, ensure they are clearly visible</li>
+                    <li>Use headings to organize your responses</li>
+                </ul>
+                <h3>Language:</h3>
+                <ul>
+                    <li>You may write in English, Japanese, or a combination of both</li>
+                    <li>Focus on clear analysis and critical thinking</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>形式:</h3>
+                <ul>
+                    <li>PDFまたはWordドキュメントとして提出</li>
+                    <li>上部に氏名と学生IDを記載</li>
+                    <li>各質問に明確にラベルを付ける（パート1.1、1.2など）</li>
+                    <li>図/チャートは明確に見えるようにする</li>
+                    <li>見出しを使用して回答を整理する</li>
+                </ul>
+                <h3>言語:</h3>
+                <ul>
+                    <li>英語、日本語、または両方の組み合わせで記述可能</li>
+                    <li>明確な分析と批判的思考に焦点を当てる</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Grading Rubric / 採点基準</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Category / 項目</th>
+                    <th>Points / 配点</th>
+                    <th>Criteria / 基準</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Part 1: AI Types (30 points)</strong></td>
+                    <td>30</td>
+                    <td>Clear hierarchy diagram/description, accurate definitions, thoughtful comparison of ANI vs AGI<br>明確な階層図/説明、正確な定義、ANI vs AGIの思慮深い比較</td>
+                </tr>
+                <tr>
+                    <td><strong>Part 2: ML Paradigms (35 points)</strong></td>
+                    <td>35</td>
+                    <td>Comprehensive comparison chart, accurate categorization, insightful analysis of complex systems<br>包括的な比較チャート、正確な分類、複雑なシステムの洞察力のある分析</td>
+                </tr>
+                <tr>
+                    <td><strong>Part 3: Ethical Analysis (35 points)</strong></td>
+                    <td>35</td>
+                    <td>Deep ethical analysis, multiple perspectives, well-reasoned position, practical mitigation strategies<br>深い倫理的分析、複数の視点、よく推論された立場、実用的な緩和戦略</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box">
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Tips for Success:</h3>
+                    <ul>
+                        <li>Review lecture materials on AI hierarchy and ML paradigms</li>
+                        <li>Research real-world examples to support your analysis</li>
+                        <li>For ethical analysis, consider multiple stakeholder perspectives</li>
+                        <li>Use specific examples rather than generalizations</li>
+                        <li>Show your reasoning process, not just conclusions</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>成功のためのヒント:</h3>
+                    <ul>
+                        <li>AI階層とMLパラダイムに関する講義資料を確認</li>
+                        <li>分析を支援するために実世界の例を調査</li>
+                        <li>倫理的分析では、複数のステークホルダーの視点を考慮</li>
+                        <li>一般化ではなく具体的な例を使用</li>
+                        <li>結論だけでなく推論プロセスを示す</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-links" style="margin-top: 30px;">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+    </div>
+</body>
+</html>

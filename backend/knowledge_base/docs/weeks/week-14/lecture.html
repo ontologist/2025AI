@@ -1,0 +1,1141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 14: Comprehensive Exam Study Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #dc2626;
+            font-size: 3em;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 5px solid #991b1b;
+            padding-bottom: 20px;
+        }
+
+        h2 {
+            color: #991b1b;
+            font-size: 2.2em;
+            margin-top: 50px;
+            margin-bottom: 25px;
+            border-left: 8px solid #dc2626;
+            padding-left: 20px;
+            background: #fee2e2;
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        h3 {
+            color: #dc2626;
+            font-size: 1.8em;
+            margin-top: 35px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #fca5a5;
+            padding-bottom: 10px;
+        }
+
+        h4 {
+            color: #7f1d1d;
+            font-size: 1.3em;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .exam-alert {
+            background: #fee2e2;
+            border: 4px solid #dc2626;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .exam-alert h3 {
+            color: #991b1b;
+            margin-bottom: 15px;
+            border: none;
+        }
+
+        .topic-box {
+            background: #f0fdf4;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .definition-box {
+            background: #e0f2fe;
+            border: 3px solid #0ea5e9;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 20px;
+            font-family: 'Courier New', monospace;
+            margin: 20px 0;
+            white-space: pre-wrap;
+            overflow-x: auto;
+        }
+
+        .test-question {
+            background: #fef3c7;
+            border: 3px solid #f59e0b;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 10px;
+        }
+
+        .test-question h4 {
+            color: #92400e;
+        }
+
+        .test-question h4::before {
+            content: "📝 ";
+        }
+
+        .study-strategy {
+            background: #ede9fe;
+            border-left: 5px solid #7c3aed;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 5px;
+        }
+
+        .key-concept {
+            background: #fef3cd;
+            border: 2px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+
+        ul, ol {
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        .navigation {
+            background: #fee2e2;
+            padding: 25px;
+            border-radius: 10px;
+            margin: 30px 0;
+            text-align: center;
+            border: 3px solid #dc2626;
+        }
+
+        .navigation a {
+            display: inline-block;
+            margin: 10px;
+            padding: 15px 30px;
+            background: #dc2626;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s;
+            font-weight: bold;
+        }
+
+        .navigation a:hover {
+            background: #991b1b;
+            transform: translateY(-2px);
+        }
+
+        .glossary-term {
+            background: #f0fdf4;
+            border-left: 4px solid #10b981;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        .week-section {
+            background: #eff6ff;
+            padding: 30px;
+            margin: 30px 0;
+            border-radius: 15px;
+            border: 3px solid #3b82f6;
+        }
+
+        .week-section h3 {
+            color: #1e40af;
+            border-bottom: 2px solid #3b82f6;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            h2 {
+                font-size: 1.6em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 WEEK 14: COMPREHENSIVE EXAM STUDY GUIDE</h1>
+        <p class="subtitle">Final Exam Preparation<br>期末試験対策</p>
+
+        <div class="exam-alert">
+            <h3>EXAM PREPARATION GUIDE</h3>
+            <p>This comprehensive study guide covers all material from Weeks 8-13. Use this to systematically review all concepts, practice with test questions, and prepare for your final exam.</p>
+            <p><strong>Topics Covered:</strong> Clustering, AI/ML Overview, Supervised Learning, Classification Algorithms, Neural Networks, and Reinforcement Learning</p>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-13/lecture.html">← Previous Week</a>
+            <a href="#study-plan">Study Plan</a>
+            <a href="#all-questions">All Test Questions</a>
+            <a href="#glossary">Glossary</a>
+        </div>
+
+        <h2 id="study-plan">📋 How to Use This Study Guide / 学習ガイドの使い方</h2>
+
+        <div class="study-strategy">
+            <h3>Effective Study Strategy</h3>
+            <ol>
+                <li><strong>Week-by-Week Review (Days 1-3):</strong>
+                    <ul>
+                        <li>Read through each week's key concepts below</li>
+                        <li>Review the original lecture notes for details</li>
+                        <li>Focus on understanding WHY, not just WHAT</li>
+                    </ul>
+                </li>
+                <li><strong>Practice Questions (Days 4-5):</strong>
+                    <ul>
+                        <li>Attempt all test questions without looking at answers</li>
+                        <li>Check your answers and understand mistakes</li>
+                        <li>Revisit lecture notes for questions you missed</li>
+                    </ul>
+                </li>
+                <li><strong>Active Recall (Day 6):</strong>
+                    <ul>
+                        <li>Explain concepts out loud in both English and Japanese</li>
+                        <li>Draw diagrams from memory (neural networks, RL cycle, etc.)</li>
+                        <li>Use the glossary to test terminology</li>
+                    </ul>
+                </li>
+                <li><strong>Final Review (Day 7):</strong>
+                    <ul>
+                        <li>Skim through all key takeaways</li>
+                        <li>Focus on areas where you feel less confident</li>
+                        <li>Get good sleep before exam!</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+        <div class="study-strategy">
+            <h3>Exam Tips / 試験のコツ</h3>
+            <ul>
+                <li><strong>Read Carefully:</strong> Understand what the question is asking before answering</li>
+                <li><strong>Time Management:</strong> Don't spend too long on any one question</li>
+                <li><strong>Show Your Work:</strong> For short answer and essay questions, explain your reasoning</li>
+                <li><strong>Use Examples:</strong> Illustrate concepts with real-world applications you've learned</li>
+                <li><strong>Both Languages:</strong> Be comfortable explaining concepts in English and Japanese</li>
+                <li><strong>Key Terms:</strong> Use proper terminology (supervised learning, neural network, Q-value, etc.)</li>
+                <li><strong>Check Your Answers:</strong> If time permits, review your responses</li>
+            </ul>
+        </div>
+
+        <h2>📖 Week-by-Week Key Concepts Review</h2>
+
+        <div class="week-section">
+            <h3>Week 8: Clustering & Overview of AI/ML</h3>
+
+            <div class="key-concept">
+                <h4>Essential Concepts:</h4>
+                <ul>
+                    <li><strong>Supervised vs. Unsupervised Learning:</strong>
+                        <ul>
+                            <li>Supervised: Labeled data, predicts output (classification/regression)</li>
+                            <li>Unsupervised: Unlabeled data, discovers patterns (clustering)</li>
+                        </ul>
+                    </li>
+                    <li><strong>K-means Clustering:</strong>
+                        <ul>
+                            <li>Steps: Choose K → Initialize centroids → Assign points → Update centroids → Repeat</li>
+                            <li>Goal: Minimize distance between points and centroids</li>
+                            <li>Elbow method to choose K</li>
+                        </ul>
+                    </li>
+                    <li><strong>AI Hierarchy:</strong>
+                        <ul>
+                            <li>AI ⊃ Machine Learning ⊃ Deep Learning ⊃ Neural Networks</li>
+                        </ul>
+                    </li>
+                    <li><strong>Real-World Examples:</strong>
+                        <ul>
+                            <li>Netflix: User segmentation for recommendations</li>
+                            <li>Spotify: Music clustering by audio features</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="definition-box">
+                <h4>Key Definitions:</h4>
+                <p><strong>Clustering:</strong> Grouping similar items without predefined labels</p>
+                <p><strong>Centroid:</strong> Center point of a cluster (mean position)</p>
+                <p><strong>K:</strong> Number of clusters in K-means</p>
+                <p><strong>Distance Metric:</strong> Measure of similarity (e.g., Euclidean distance)</p>
+            </div>
+        </div>
+
+        <div class="week-section">
+            <h3>Week 9: Overview of AI and ML</h3>
+
+            <div class="key-concept">
+                <h4>Essential Concepts:</h4>
+                <ul>
+                    <li><strong>AI Foundations:</strong>
+                        <ul>
+                            <li>Reasoning & Problem Solving</li>
+                            <li>Knowledge Representation</li>
+                            <li>Learning</li>
+                            <li>Natural Language Processing</li>
+                            <li>Perception</li>
+                        </ul>
+                    </li>
+                    <li><strong>Three Types of ML:</strong>
+                        <ul>
+                            <li>Supervised: Learn from labeled examples</li>
+                            <li>Unsupervised: Discover patterns in unlabeled data</li>
+                            <li>Reinforcement: Learn from rewards through trial and error</li>
+                        </ul>
+                    </li>
+                    <li><strong>AI History Milestones:</strong>
+                        <ul>
+                            <li>1950: Turing Test</li>
+                            <li>1956: Dartmouth Conference (AI term coined)</li>
+                            <li>1997: Deep Blue beats Kasparov</li>
+                            <li>2012: AlexNet (deep learning revolution)</li>
+                            <li>2016: AlphaGo beats Lee Sedol</li>
+                        </ul>
+                    </li>
+                    <li><strong>Real-World Examples:</strong>
+                        <ul>
+                            <li>Google Search: NLP and RankBrain</li>
+                            <li>Tesla Autopilot: Computer vision and deep learning</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="week-section">
+            <h3>Week 10: Supervised Learning Basics</h3>
+
+            <div class="key-concept">
+                <h4>Essential Concepts:</h4>
+                <ul>
+                    <li><strong>Supervised Learning Workflow:</strong>
+                        <ul>
+                            <li>Collect → Prepare → Choose Model → Train → Evaluate → Tune → Deploy</li>
+                        </ul>
+                    </li>
+                    <li><strong>Data Splitting:</strong>
+                        <ul>
+                            <li>Training Set: 70-80% (for learning)</li>
+                            <li>Test Set: 20-30% (for evaluation)</li>
+                            <li>Why: Measure generalization, prevent overfitting</li>
+                        </ul>
+                    </li>
+                    <li><strong>Linear Regression:</strong>
+                        <ul>
+                            <li>Predicts continuous values: y = mx + b</li>
+                            <li>Example: House price prediction</li>
+                            <li>Metric: MSE, RMSE, R²</li>
+                        </ul>
+                    </li>
+                    <li><strong>Logistic Regression:</strong>
+                        <ul>
+                            <li>Binary classification using sigmoid function</li>
+                            <li>Output: Probability (0 to 1)</li>
+                            <li>Example: Spam detection</li>
+                        </ul>
+                    </li>
+                    <li><strong>Overfitting vs. Underfitting:</strong>
+                        <ul>
+                            <li>Overfitting: Great on training, poor on test → Need more data or simpler model</li>
+                            <li>Underfitting: Poor on both → Need more complex model or better features</li>
+                        </ul>
+                    </li>
+                    <li><strong>Evaluation Metrics:</strong>
+                        <ul>
+                            <li>Classification: Accuracy, Precision, Recall, F1 Score</li>
+                            <li>Regression: MSE, RMSE, MAE, R²</li>
+                        </ul>
+                    </li>
+                    <li><strong>Real-World Example:</strong>
+                        <ul>
+                            <li>Zillow: House price prediction using regression</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="definition-box">
+                <h4>Confusion Matrix:</h4>
+                <div class="code-box">                  PREDICTED
+                 Positive  Negative
+            ┌─────────────┬─────────┐
+ACTUAL   P  │   TP        │   FN    │
+         o  │  (Correct)  │ (Miss)  │
+         s  ├─────────────┼─────────┤
+         i  │   FP        │   TN    │
+         t  │ (False      │(Correct)│
+         i  │  Alarm)     │         │
+         v  └─────────────┴─────────┘
+         e
+
+Accuracy  = (TP + TN) / Total
+Precision = TP / (TP + FP)
+Recall    = TP / (TP + FN)</div>
+            </div>
+        </div>
+
+        <div class="week-section">
+            <h3>Week 11: Classification Algorithms</h3>
+
+            <div class="key-concept">
+                <h4>Essential Concepts:</h4>
+                <ul>
+                    <li><strong>Decision Trees:</strong>
+                        <ul>
+                            <li>Tree of yes/no questions from root to leaf</li>
+                            <li>Advantages: Interpretable, no scaling needed, handles mixed data</li>
+                            <li>Disadvantages: Prone to overfitting, unstable</li>
+                        </ul>
+                    </li>
+                    <li><strong>Random Forests:</strong>
+                        <ul>
+                            <li>Ensemble of many decision trees</li>
+                            <li>Bootstrap sampling + random feature selection</li>
+                            <li>Majority voting for classification</li>
+                            <li>Reduces overfitting, excellent accuracy</li>
+                        </ul>
+                    </li>
+                    <li><strong>k-Nearest Neighbors (k-NN):</strong>
+                        <ul>
+                            <li>Classify by majority vote of k nearest neighbors</li>
+                            <li>No training phase (instance-based)</li>
+                            <li>Advantages: Simple, no training</li>
+                            <li>Disadvantages: Slow prediction, memory intensive</li>
+                        </ul>
+                    </li>
+                    <li><strong>Support Vector Machines (SVM):</strong>
+                        <ul>
+                            <li>Finds hyperplane that maximizes margin between classes</li>
+                            <li>Support vectors: Critical points closest to boundary</li>
+                            <li>Kernel trick: Transform data to higher dimensions</li>
+                            <li>Effective in high-dimensional spaces</li>
+                        </ul>
+                    </li>
+                    <li><strong>Algorithm Comparison:</strong>
+                        <ul>
+                            <li>Decision Tree: Interpretable, fast, good for mixed data</li>
+                            <li>Random Forest: Best accuracy, handles large datasets</li>
+                            <li>k-NN: Simple, good for small datasets</li>
+                            <li>SVM: Excellent for high-dimensional data</li>
+                        </ul>
+                    </li>
+                    <li><strong>Real-World Example:</strong>
+                        <ul>
+                            <li>Amazon: Random Forests for product recommendations</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="week-section">
+            <h3>Week 12: Neural Networks & ML Algorithms</h3>
+
+            <div class="key-concept">
+                <h4>Essential Concepts:</h4>
+                <ul>
+                    <li><strong>Artificial Neuron:</strong>
+                        <ul>
+                            <li>Inputs × Weights + Bias → Activation Function → Output</li>
+                            <li>Inspired by biological neurons</li>
+                        </ul>
+                    </li>
+                    <li><strong>Neural Network Architecture:</strong>
+                        <ul>
+                            <li>Input Layer → Hidden Layers → Output Layer</li>
+                            <li>Deep Learning: 3+ hidden layers</li>
+                            <li>Hierarchical feature learning</li>
+                        </ul>
+                    </li>
+                    <li><strong>Activation Functions:</strong>
+                        <ul>
+                            <li>ReLU: Hidden layers (most common)</li>
+                            <li>Sigmoid: Binary classification output</li>
+                            <li>Softmax: Multi-class classification output</li>
+                            <li>Purpose: Introduce non-linearity</li>
+                        </ul>
+                    </li>
+                    <li><strong>Training (Backpropagation):</strong>
+                        <ul>
+                            <li>Forward Prop → Calculate Loss → Backward Prop → Update Weights</li>
+                            <li>Learning rate (α): Step size for weight updates</li>
+                            <li>Epochs: Complete passes through training data</li>
+                        </ul>
+                    </li>
+                    <li><strong>Convolutional Neural Networks (CNNs):</strong>
+                        <ul>
+                            <li>Designed for image processing</li>
+                            <li>Convolutional layers: Extract features with filters</li>
+                            <li>Pooling layers: Reduce dimensions</li>
+                            <li>Preserve spatial structure</li>
+                        </ul>
+                    </li>
+                    <li><strong>Real-World Example:</strong>
+                        <ul>
+                            <li>Facebook DeepFace: 97.35% facial recognition accuracy</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="definition-box">
+                <h4>CNN Architecture Pattern:</h4>
+                <div class="code-box">Input Image
+    ↓
+[Conv → ReLU → Pool]  ← Repeat multiple times
+    ↓
+Flatten
+    ↓
+Dense (Fully Connected) → ReLU
+    ↓
+Dense → Softmax
+    ↓
+Output (Class Probabilities)</div>
+            </div>
+        </div>
+
+        <div class="week-section">
+            <h3>Week 13: Reinforcement Learning</h3>
+
+            <div class="key-concept">
+                <h4>Essential Concepts:</h4>
+                <ul>
+                    <li><strong>RL Framework:</strong>
+                        <ul>
+                            <li>Agent ↔ Environment cycle</li>
+                            <li>Components: Agent, Environment, State, Action, Reward, Policy</li>
+                            <li>Goal: Maximize cumulative reward</li>
+                        </ul>
+                    </li>
+                    <li><strong>Exploration vs. Exploitation:</strong>
+                        <ul>
+                            <li>Exploration: Try new actions to discover better strategies</li>
+                            <li>Exploitation: Use known good actions to maximize reward</li>
+                            <li>ε-greedy: Balance with epsilon parameter</li>
+                        </ul>
+                    </li>
+                    <li><strong>Q-Learning:</strong>
+                        <ul>
+                            <li>Q(s,a) = Expected cumulative reward of action 'a' in state 's'</li>
+                            <li>Update: Q(s,a) ← Q(s,a) + α[r + γ·max Q(s',a') - Q(s,a)]</li>
+                            <li>Parameters: α (learning rate), γ (discount factor), ε (exploration)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Deep Q-Networks (DQN):</strong>
+                        <ul>
+                            <li>Use neural networks to approximate Q-values</li>
+                            <li>Solves problem of large/continuous state spaces</li>
+                            <li>Experience replay + target network</li>
+                        </ul>
+                    </li>
+                    <li><strong>Real-World Examples:</strong>
+                        <ul>
+                            <li>AlphaGo: Defeated world champion Lee Sedol 4-1</li>
+                            <li>AlphaGo Zero: Learned purely from self-play, no human games</li>
+                            <li>DQN: Atari games from raw pixels</li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="definition-box">
+                <h4>RL Cycle:</h4>
+                <div class="code-box">        ┌─────────────────────────────┐
+        │        ENVIRONMENT          │
+        └─────────────────────────────┘
+                ↑           |
+            Reward R_t      | State S_t
+                |           ↓
+        ┌─────────────────────────────┐
+        │          AGENT              │
+        └─────────────────────────────┘
+                    |
+                Action A_t
+                    ↓</div>
+            </div>
+        </div>
+
+        <h2 id="all-questions">📝 Master Test Question Bank (60 Questions)</h2>
+
+        <div class="exam-alert">
+            <h3>ALL TEST QUESTIONS FROM WEEKS 8-13</h3>
+            <p>This section contains all 60 test questions (10 per week). Practice these thoroughly!</p>
+            <p><strong>Question Types:</strong> Multiple Choice (30), Short Answer (18), Application (6), Essay (6)</p>
+        </div>
+
+        <h3>WEEK 8 QUESTIONS: Clustering & AI Overview</h3>
+
+        <div class="test-question">
+            <h4>Question 8.1: Multiple Choice</h4>
+            <p><strong>Which of the following is TRUE about K-means clustering?</strong></p>
+            <ol type="A">
+                <li>It requires labeled training data</li>
+                <li>It is a supervised learning algorithm</li>
+                <li>It groups similar data points without predefined labels</li>
+                <li>It can only work with two-dimensional data</li>
+            </ol>
+            <p><strong>Answer:</strong> C</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 8.2: Multiple Choice</h4>
+            <p><strong>In the K-means algorithm, what does "K" represent?</strong></p>
+            <ol type="A">
+                <li>The number of data points</li>
+                <li>The number of clusters to create</li>
+                <li>The number of iterations</li>
+                <li>The distance metric used</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 8.3: Multiple Choice</h4>
+            <p><strong>What is the correct order of steps in K-means clustering?</strong></p>
+            <ol type="A">
+                <li>Update centroids → Assign points → Initialize centroids → Choose K</li>
+                <li>Choose K → Initialize centroids → Assign points → Update centroids</li>
+                <li>Assign points → Choose K → Initialize centroids → Update centroids</li>
+                <li>Initialize centroids → Choose K → Update centroids → Assign points</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 8.4: Multiple Choice</h4>
+            <p><strong>Which relationship correctly describes the AI hierarchy?</strong></p>
+            <ol type="A">
+                <li>Deep Learning ⊃ Machine Learning ⊃ AI</li>
+                <li>AI ⊃ Deep Learning ⊃ Machine Learning</li>
+                <li>AI ⊃ Machine Learning ⊃ Deep Learning</li>
+                <li>Machine Learning ⊃ AI ⊃ Deep Learning</li>
+            </ol>
+            <p><strong>Answer:</strong> C</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 8.5: Multiple Choice</h4>
+            <p><strong>How does Netflix use clustering?</strong></p>
+            <ol type="A">
+                <li>To predict exact ratings users will give movies</li>
+                <li>To group users with similar viewing patterns for personalized recommendations</li>
+                <li>To classify movies as "good" or "bad"</li>
+                <li>To determine which movies to produce next</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 8.6-8.10: Short Answer & Essay</h4>
+            <p>See Week 8 lecture notes for questions 6-10 (supervised vs unsupervised, K-means steps, elbow method, application question, and Spotify essay)</p>
+        </div>
+
+        <h3>WEEK 9 QUESTIONS: AI and ML Overview</h3>
+
+        <div class="test-question">
+            <h4>Question 9.1: Multiple Choice</h4>
+            <p><strong>Which statement best describes the relationship between AI, ML, and DL?</strong></p>
+            <ol type="A">
+                <li>They are three completely separate fields</li>
+                <li>AI ⊃ ML ⊃ DL (AI contains ML, which contains DL)</li>
+                <li>DL ⊃ ML ⊃ AI (DL contains ML, which contains AI)</li>
+                <li>ML and DL are separate subsets of AI</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 9.2: Multiple Choice</h4>
+            <p><strong>Which type of machine learning would be best for organizing customers into groups based on purchasing behavior without predefined categories?</strong></p>
+            <ol type="A">
+                <li>Supervised Learning</li>
+                <li>Unsupervised Learning</li>
+                <li>Reinforcement Learning</li>
+                <li>Semi-supervised Learning</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 9.3-9.10</h4>
+            <p>See Week 9 lecture notes for remaining questions (Dartmouth Conference, reinforcement learning agent, Google Search, classification vs regression, RL process, AI foundations, Tesla Autopilot, and comparing ML types essay)</p>
+        </div>
+
+        <h3>WEEK 10 QUESTIONS: Supervised Learning Basics</h3>
+
+        <div class="test-question">
+            <h4>Question 10.1: Multiple Choice</h4>
+            <p><strong>What is the primary purpose of splitting data into training and test sets?</strong></p>
+            <ol type="A">
+                <li>To reduce the amount of data the model needs to process</li>
+                <li>To evaluate how well the model generalizes to new, unseen data</li>
+                <li>To make the training process faster</li>
+                <li>To increase the accuracy on the training data</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 10.2: Multiple Choice</h4>
+            <p><strong>Which algorithm should you use to predict the selling price of a used car?</strong></p>
+            <ol type="A">
+                <li>K-means clustering</li>
+                <li>Linear regression</li>
+                <li>Logistic regression</li>
+                <li>Reinforcement learning</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 10.3-10.10</h4>
+            <p>See Week 10 lecture notes for remaining questions (sigmoid function, overfitting, recall metric, linear vs logistic regression, confusion matrix calculation, overfitting solutions, Zillow application, and supervised learning workflow essay)</p>
+        </div>
+
+        <h3>WEEK 11 QUESTIONS: Classification Algorithms</h3>
+
+        <div class="test-question">
+            <h4>Question 11.1: Multiple Choice</h4>
+            <p><strong>What is the main advantage of Random Forest over a single Decision Tree?</strong></p>
+            <ol type="A">
+                <li>Faster training time</li>
+                <li>More interpretable results</li>
+                <li>Reduces overfitting by averaging multiple trees</li>
+                <li>Requires less memory</li>
+            </ol>
+            <p><strong>Answer:</strong> C</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 11.2: Multiple Choice</h4>
+            <p><strong>In k-NN with k=5, a new data point has 3 neighbors of Class A and 2 neighbors of Class B. What will be the predicted class?</strong></p>
+            <ol type="A">
+                <li>Class A (majority vote)</li>
+                <li>Class B</li>
+                <li>Cannot determine</li>
+                <li>Average of both classes</li>
+            </ol>
+            <p><strong>Answer:</strong> A</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 11.3-11.10</h4>
+            <p>See Week 11 lecture notes for remaining questions (support vector, linear separation algorithm, kernel trick, decision tree prediction, Random Forest strategy, k-NN process, Amazon application, and algorithm comparison essay)</p>
+        </div>
+
+        <h3>WEEK 12 QUESTIONS: Neural Networks</h3>
+
+        <div class="test-question">
+            <h4>Question 12.1: Multiple Choice</h4>
+            <p><strong>What is the purpose of an activation function in a neural network?</strong></p>
+            <ol type="A">
+                <li>To store the network weights</li>
+                <li>To introduce non-linearity so the network can learn complex patterns</li>
+                <li>To calculate the loss function</li>
+                <li>To split data into training and test sets</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 12.2: Multiple Choice</h4>
+            <p><strong>Which activation function is most commonly used in hidden layers of modern neural networks?</strong></p>
+            <ol type="A">
+                <li>Sigmoid</li>
+                <li>ReLU (Rectified Linear Unit)</li>
+                <li>Softmax</li>
+                <li>Linear</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 12.3-12.10</h4>
+            <p>See Week 12 lecture notes for remaining questions (CNN advantage, learning rate, pooling layer, training steps, activation functions comparison, convolutional layer, DeepFace application, and neural networks comprehensive essay)</p>
+        </div>
+
+        <h3>WEEK 13 QUESTIONS: Reinforcement Learning</h3>
+
+        <div class="test-question">
+            <h4>Question 13.1: Multiple Choice</h4>
+            <p><strong>What is the main difference between reinforcement learning and supervised learning?</strong></p>
+            <ol type="A">
+                <li>RL uses more data than supervised learning</li>
+                <li>RL learns from rewards through trial and error, supervised learning uses labeled examples</li>
+                <li>RL is faster to train</li>
+                <li>RL can only work with images</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 13.2: Multiple Choice</h4>
+            <p><strong>In the exploration-exploitation tradeoff, what does "exploitation" mean?</strong></p>
+            <ol type="A">
+                <li>Trying new random actions to discover better strategies</li>
+                <li>Using known good actions to maximize immediate reward</li>
+                <li>Punishing bad actions</li>
+                <li>Sharing knowledge with other agents</li>
+            </ol>
+            <p><strong>Answer:</strong> B</p>
+        </div>
+
+        <div class="test-question">
+            <h4>Question 13.3-13.10</h4>
+            <p>See Week 13 lecture notes for remaining questions (gamma discount factor, DQN development, AlphaGo Zero, RL cycle, ε-greedy strategy, Q-learning equation, AlphaGo explanation, and comparing ML paradigms essay)</p>
+        </div>
+
+        <h2 id="glossary">📖 Comprehensive Glossary / 包括的用語集</h2>
+
+        <div class="glossary-term">
+            <h4>Accuracy / 精度</h4>
+            <p>Percentage of correct predictions. Formula: (TP + TN) / Total</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Activation Function / 活性化関数</h4>
+            <p>Mathematical function applied to neuron output to introduce non-linearity (e.g., ReLU, Sigmoid, Softmax)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Agent / エージェント</h4>
+            <p>In reinforcement learning, the learner or decision-maker that interacts with the environment</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Algorithm / アルゴリズム</h4>
+            <p>A step-by-step procedure for solving a problem or completing a task</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Artificial Intelligence (AI) / 人工知能</h4>
+            <p>The science of creating machines that can perform tasks requiring human intelligence</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Backpropagation / バックプロパゲーション</h4>
+            <p>Algorithm for training neural networks by calculating gradients and updating weights backward through the network</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Bias / バイアス</h4>
+            <p>A parameter in neural networks that allows shifting the activation function. Also refers to systematic error in predictions.</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Centroid / 重心</h4>
+            <p>The center point of a cluster in K-means, calculated as the mean position of all points in the cluster</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Classification / 分類</h4>
+            <p>Supervised learning task of predicting categorical labels (e.g., spam/not spam, cat/dog/bird)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Clustering / クラスタリング</h4>
+            <p>Unsupervised learning task of grouping similar items together without predefined labels</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Convolutional Neural Network (CNN) / 畳み込みニューラルネットワーク</h4>
+            <p>Neural network specialized for processing grid-like data (images) using convolutional layers</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Deep Learning / 深層学習</h4>
+            <p>Machine learning using neural networks with multiple hidden layers (3+)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Decision Tree / 決定木</h4>
+            <p>Tree-structured classification algorithm that makes decisions through yes/no questions</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Discount Factor (γ) / 割引率</h4>
+            <p>In RL, parameter controlling how much future rewards are valued (0-1). High γ = value long-term rewards.</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Elbow Method / エルボー法</h4>
+            <p>Technique for choosing optimal K in K-means by plotting error vs K and finding the "elbow" point</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Epoch / エポック</h4>
+            <p>One complete pass through the entire training dataset during neural network training</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Exploration / 探索</h4>
+            <p>In RL, trying new actions to discover potentially better strategies</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Exploitation / 活用</h4>
+            <p>In RL, using known good actions to maximize immediate reward</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Feature / 特徴量</h4>
+            <p>An individual measurable property or characteristic used as input for machine learning models</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>K-means</h4>
+            <p>Clustering algorithm that partitions data into K clusters by iteratively updating cluster centroids</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>k-Nearest Neighbors (k-NN) / k近傍法</h4>
+            <p>Classification algorithm that predicts based on majority vote of k nearest training examples</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Learning Rate (α) / 学習率</h4>
+            <p>Parameter controlling step size for weight updates in gradient descent (typically 0.001-0.1)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Linear Regression / 線形回帰</h4>
+            <p>Supervised learning algorithm for predicting continuous values using linear relationship (y = mx + b)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Logistic Regression / ロジスティック回帰</h4>
+            <p>Classification algorithm using sigmoid function to predict probabilities (0 to 1)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Machine Learning (ML) / 機械学習</h4>
+            <p>Subset of AI where systems learn from data without being explicitly programmed</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Neural Network / ニューラルネットワーク</h4>
+            <p>ML model inspired by biological neurons, consisting of interconnected layers of artificial neurons</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Overfitting / 過学習</h4>
+            <p>When model learns training data too well, including noise, failing to generalize to new data</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Policy (π) / 方策</h4>
+            <p>In RL, the strategy mapping states to actions that the agent learns</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Precision / 適合率</h4>
+            <p>Of predicted positives, how many are truly positive. Formula: TP / (TP + FP)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Q-Learning / Q学習</h4>
+            <p>RL algorithm that learns Q-values (quality of actions) in each state</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Random Forest / ランダムフォレスト</h4>
+            <p>Ensemble method combining multiple decision trees through voting to improve accuracy</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Recall (Sensitivity) / 再現率</h4>
+            <p>Of actual positives, how many did we find. Formula: TP / (TP + FN)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Regression / 回帰</h4>
+            <p>Supervised learning task of predicting continuous numerical values</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Reinforcement Learning (RL) / 強化学習</h4>
+            <p>ML paradigm where agent learns to make decisions by receiving rewards from environment</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>ReLU (Rectified Linear Unit)</h4>
+            <p>Activation function: f(x) = max(0, x). Most common choice for hidden layers.</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Reward / 報酬</h4>
+            <p>In RL, feedback signal from environment indicating quality of action (positive, negative, or zero)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Sigmoid Function / シグモイド関数</h4>
+            <p>Activation function that maps any value to range (0, 1): σ(x) = 1/(1 + e^(-x))</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Softmax</h4>
+            <p>Activation function that converts vector to probability distribution (sums to 1). Used for multi-class output.</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>State / 状態</h4>
+            <p>In RL, the current situation or configuration of the environment</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Supervised Learning / 教師あり学習</h4>
+            <p>ML approach learning from labeled data to make predictions on new data</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Support Vector Machine (SVM) / サポートベクターマシン</h4>
+            <p>Classification algorithm finding optimal hyperplane that maximizes margin between classes</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Test Set / テストセット</h4>
+            <p>Data held out for evaluating model performance (typically 20-30% of total data)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Training Set / 訓練セット</h4>
+            <p>Data used to train the model (typically 70-80% of total data)</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Underfitting / 未学習</h4>
+            <p>When model is too simple to capture underlying patterns in data</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Unsupervised Learning / 教師なし学習</h4>
+            <p>ML approach discovering patterns in unlabeled data without predefined categories</p>
+        </div>
+
+        <div class="glossary-term">
+            <h4>Weight / 重み</h4>
+            <p>Learned parameter in neural networks that determines importance of each input connection</p>
+        </div>
+
+        <h2>🎯 Final Exam Success Checklist</h2>
+
+        <div class="study-strategy">
+            <h3>Pre-Exam Checklist / 試験前チェックリスト</h3>
+            <ul>
+                <li>☐ Reviewed all 6 weeks of lecture notes</li>
+                <li>☐ Practiced all 60 test questions</li>
+                <li>☐ Can explain concepts in both English and Japanese</li>
+                <li>☐ Memorized key definitions from glossary</li>
+                <li>☐ Can draw: NN architecture, RL cycle, CNN structure, K-means process</li>
+                <li>☐ Understand when to use each ML algorithm</li>
+                <li>☐ Know real-world applications: Netflix, Spotify, Zillow, Amazon, Facebook, AlphaGo</li>
+                <li>☐ Can calculate metrics from confusion matrix</li>
+                <li>☐ Understand supervised, unsupervised, and RL differences</li>
+                <li>☐ Know key parameters: α (learning rate), γ (discount), ε (exploration), K (clusters)</li>
+                <li>☐ Can explain overfitting vs underfitting</li>
+                <li>☐ Reviewed study tips and exam strategies</li>
+            </ul>
+        </div>
+
+        <div class="exam-alert">
+            <h3>GOOD LUCK ON YOUR EXAM! / 試験頑張ってください！</h3>
+            <p>You've learned an incredible amount of material:</p>
+            <ul style="text-align: left; max-width: 600px; margin: 20px auto;">
+                <li>Clustering algorithms (K-means)</li>
+                <li>AI/ML fundamentals and history</li>
+                <li>Supervised learning (regression, classification)</li>
+                <li>Classification algorithms (Trees, Forests, k-NN, SVM)</li>
+                <li>Neural networks and deep learning (CNNs)</li>
+                <li>Reinforcement learning (Q-learning, AlphaGo)</li>
+            </ul>
+            <p><strong>Remember: Understanding WHY is more important than memorizing WHAT!</strong></p>
+            <p>Trust your preparation and do your best!</p>
+        </div>
+
+        <div class="navigation">
+            <a href="../../index.html">← Course Home</a>
+            <a href="../week-13/lecture.html">← Week 13</a>
+            <a href="#study-plan">↑ Back to Top</a>
+        </div>
+
+        <footer style="margin-top: 50px; padding-top: 20px; border-top: 2px solid #e5e7eb; text-align: center; color: #666;">
+            <p>Week 14 Comprehensive Exam Study Guide - Introduction to AI and Data Science</p>
+            <p>Chukyo University - 2025</p>
+            <p style="margin-top: 10px; font-style: italic;">Review thoroughly, practice consistently, and success will follow!</p>
+        </footer>
+    </div>
+</body>
+</html>

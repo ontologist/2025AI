@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 3: History of Artificial Intelligence 3</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .slide {
+            display: none;
+            background: white;
+            width: 90%;
+            max-width: 1200px;
+            height: 85vh;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 60px 80px;
+            position: relative;
+            overflow-y: auto;
+        }
+
+        .slide.active {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .slide h1 {
+            font-size: 3em;
+            color: #2563eb;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .slide h2 {
+            font-size: 2.2em;
+            color: #7c3aed;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #2563eb;
+            padding-bottom: 10px;
+        }
+
+        .slide h3 {
+            font-size: 1.8em;
+            color: #2563eb;
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .slide h4 {
+            font-size: 1.4em;
+            color: #555;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .slide p {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-bottom: 15px;
+            color: #444;
+        }
+
+        .slide ul, .slide ol {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin-left: 40px;
+            margin-bottom: 20px;
+        }
+
+        .slide li {
+            margin-bottom: 10px;
+        }
+
+        .bilingual {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .english, .japanese {
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .success-box {
+            background: #d1fae5;
+            border-left: 5px solid #10b981;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 5px;
+        }
+
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        .navigation {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+            z-index: 1000;
+        }
+
+        .nav-btn {
+            background: white;
+            color: #2563eb;
+            border: 2px solid #2563eb;
+            padding: 12px 30px;
+            font-size: 1.1em;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .nav-btn:hover {
+            background: #2563eb;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .slide-number {
+            position: fixed;
+            top: 70px;
+            right: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 1.1em;
+            color: #2563eb;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+        }
+
+        .title-slide {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            height: 100%;
+        }
+
+        .title-slide h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .title-slide .subtitle {
+            font-size: 2em;
+            color: #7c3aed;
+            margin-bottom: 40px;
+        }
+
+        .title-slide .info {
+            font-size: 1.3em;
+            color: #666;
+            margin: 10px 0;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin: 20px 0;
+        }
+
+        /* Responsive Design */
+        @media screen and (max-width: 1024px) {
+            .slide {
+                padding: 40px 50px;
+            }
+
+            .slide h1 {
+                font-size: 2.5em;
+            }
+
+            .slide h2 {
+                font-size: 2em;
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            .slide-container {
+                padding: 0;
+            }
+
+            .slide {
+                width: 100vw;
+                height: auto;
+                min-height: 100vh;
+                padding: 20px;
+                border-radius: 0;
+            }
+
+            .slide h1 {
+                font-size: 2em;
+            }
+
+            .slide h2 {
+                font-size: 1.6em;
+            }
+
+            .bilingual {
+                gap: 15px;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .title-slide h1 {
+                font-size: 2.5em;
+            }
+
+            .title-slide .subtitle {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                bottom: 15px;
+                gap: 10px;
+            }
+
+            .nav-btn {
+                padding: 10px 20px;
+                font-size: 0.95em;
+            }
+        }
+
+    </style>
+    <link rel="stylesheet" href="../../styles.css">
+</head>
+<body>
+    <div class="slide-number" id="slideNumber">Slide 1 / 15</div>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide active title-slide">
+            <h1>Week 3</h1>
+            <p class="subtitle">History of Artificial Intelligence 3<br>人工知能の歴史3</p>
+            <p class="info"><strong>Course:</strong> Artificial Intelligence</p>
+            <p class="info"><strong>Topic:</strong> Deep Learning Revolution and Current Trends</p>
+            <p class="info"><strong>Duration:</strong> 15-20 minutes / 15-20分</p>
+        </div>
+
+        <!-- Slide 2: Journey So Far -->
+        <div class="slide">
+            <h2>The Journey So Far</h2>
+            <h2>これまでの旅</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Week 1 & 2 Recap:</h3>
+                    <ul>
+                        <li><strong>1950s:</strong> Birth of AI, early optimism</li>
+                        <li><strong>1970s:</strong> First AI Winter - funding cuts, lost enthusiasm</li>
+                        <li><strong>1980s:</strong> Expert systems boom</li>
+                        <li><strong>Late 1980s-1990s:</strong> Second AI Winter - bubble burst</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>第1週と第2週の復習：</h3>
+                    <ul>
+                        <li><strong>1950年代：</strong>AIの誕生、初期の楽観主義</li>
+                        <li><strong>1970年代：</strong>第一のAI冬 - 資金削減、熱意喪失</li>
+                        <li><strong>1980年代：</strong>エキスパートシステムブーム</li>
+                        <li><strong>1980年代後半-1990年代：</strong>第二のAI冬 - バブル崩壊</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 3: Today's Learning Goals -->
+        <div class="slide">
+            <h2>Today's Learning Goals</h2>
+            <h2>本日の学習目標</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>What We'll Learn:</h3>
+                    <ul>
+                        <li>Understand the revival of neural networks (1990s-2000s)</li>
+                        <li>Discover the deep learning breakthrough (2012)</li>
+                        <li>Explore modern AI applications</li>
+                        <li>Learn about current AI trends and capabilities</li>
+                        <li>Consider future directions and challenges</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>学ぶこと：</h3>
+                    <ul>
+                        <li>ニューラルネットワークの復活を理解する（1990年代-2000年代）</li>
+                        <li>ディープラーニングのブレークスルーを発見する（2012年）</li>
+                        <li>現代のAI応用を探る</li>
+                        <li>現在のAIトレンドと能力について学ぶ</li>
+                        <li>将来の方向性と課題を考える</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 4: Quiet Progress (1990s) -->
+        <div class="slide">
+            <h2>Quiet Progress in the 1990s</h2>
+            <h2>1990年代の静かな進歩</h2>
+            <div class="highlight-box">
+                <h3>Working in the Shadows / 影での作業</h3>
+                <p>Despite the AI Winter, important research continued</p>
+                <p>AI冬にもかかわらず、重要な研究は続いた</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Developments:</h4>
+                    <ul>
+                        <li><strong>Backpropagation:</strong> Refined training for neural networks</li>
+                        <li><strong>Support Vector Machines (1995):</strong> Powerful classification method</li>
+                        <li><strong>Statistical methods:</strong> Focus on probability and data</li>
+                        <li><strong>Practical applications:</strong> OCR, speech recognition, data mining</li>
+                        <li><strong>Machine learning:</strong> Term becomes more popular than "AI"</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>主要な発展：</h4>
+                    <ul>
+                        <li><strong>バックプロパゲーション：</strong>ニューラルネットワークの訓練を改善</li>
+                        <li><strong>サポートベクターマシン（1995年）：</strong>強力な分類方法</li>
+                        <li><strong>統計的手法：</strong>確率とデータに焦点を当てる</li>
+                        <li><strong>実用的応用：</strong>OCR、音声認識、データマイニング</li>
+                        <li><strong>機械学習：</strong>「AI」よりも用語が人気になる</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 5: Three Key Ingredients -->
+        <div class="slide">
+            <h2>The Three Ingredients for Deep Learning</h2>
+            <h2>ディープラーニングの3つの要素</h2>
+            <div class="success-box">
+                <h3>What Changed? / 何が変わったか？</h3>
+                <p>Three factors came together in the 2000s-2010s</p>
+                <p>3つの要因が2000年代から2010年代に一緒になった</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>1. Big Data</h4>
+                    <ul>
+                        <li>Internet created massive datasets</li>
+                        <li>Millions of labeled images, text, videos</li>
+                        <li>ImageNet (2009): 14 million labeled images</li>
+                    </ul>
+                    <h4>2. Computational Power</h4>
+                    <ul>
+                        <li>GPUs (Graphics Processing Units) repurposed for AI</li>
+                        <li>Cloud computing made power accessible</li>
+                        <li>Moore's Law continued to deliver</li>
+                    </ul>
+                    <h4>3. Better Algorithms</h4>
+                    <ul>
+                        <li>Improved neural network architectures</li>
+                        <li>Better training techniques (dropout, batch normalization)</li>
+                        <li>Open-source frameworks (TensorFlow, PyTorch)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>1. ビッグデータ</h4>
+                    <ul>
+                        <li>インターネットが大規模データセットを作成</li>
+                        <li>数百万のラベル付き画像、テキスト、ビデオ</li>
+                        <li>ImageNet（2009年）：1400万のラベル付き画像</li>
+                    </ul>
+                    <h4>2. 計算能力</h4>
+                    <ul>
+                        <li>GPU（グラフィック処理ユニット）がAI用に転用</li>
+                        <li>クラウドコンピューティングが力をアクセス可能にした</li>
+                        <li>ムーアの法則が提供し続けた</li>
+                    </ul>
+                    <h4>3. より良いアルゴリズム</h4>
+                    <ul>
+                        <li>改善されたニューラルネットワークアーキテクチャ</li>
+                        <li>より良い訓練技術（ドロップアウト、バッチ正規化）</li>
+                        <li>オープンソースフレームワーク（TensorFlow、PyTorch）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: The ImageNet Moment (2012) -->
+        <div class="slide">
+            <h2>The ImageNet Moment (2012)</h2>
+            <h2>ImageNetの瞬間（2012年）</h2>
+            <div class="success-box">
+                <h3>The Breakthrough / ブレークスルー</h3>
+                <p><strong>AlexNet wins ImageNet competition by huge margin</strong></p>
+                <p><strong>AlexNetが大差でImageNetコンペティションに勝利</strong></p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>What Happened:</h4>
+                    <ul>
+                        <li><strong>Team:</strong> Alex Krizhevsky, Ilya Sutskever, Geoffrey Hinton (University of Toronto)</li>
+                        <li><strong>Task:</strong> Classify images into 1,000 categories</li>
+                        <li><strong>Result:</strong> 15.3% error rate (vs. 26% for second place)</li>
+                        <li><strong>Method:</strong> Deep convolutional neural network with 8 layers</li>
+                    </ul>
+                    <h4>Why It Mattered:</h4>
+                    <p>Proved that deep learning could outperform traditional methods on real-world tasks</p>
+                </div>
+                <div class="japanese">
+                    <h4>何が起こったか：</h4>
+                    <ul>
+                        <li><strong>チーム：</strong>アレックス・クリジェフスキー、イリヤ・サツケバー、ジェフリー・ヒントン（トロント大学）</li>
+                        <li><strong>タスク：</strong>画像を1,000カテゴリに分類</li>
+                        <li><strong>結果：</strong>15.3%のエラー率（2位の26%に対して）</li>
+                        <li><strong>方法：</strong>8層の深い畳み込みニューラルネットワーク</li>
+                    </ul>
+                    <h4>なぜ重要だったか：</h4>
+                    <p>ディープラーニングが実世界のタスクで従来の方法を上回ることができることを証明した</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 7: Deep Learning Explosion -->
+        <div class="slide">
+            <h2>The Deep Learning Explosion (2012-Present)</h2>
+            <h2>ディープラーニング爆発（2012年-現在）</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Rapid Progress:</h3>
+                    <ul>
+                        <li><strong>2012-2015:</strong> Image recognition surpasses human performance</li>
+                        <li><strong>2016:</strong> AlphaGo defeats world Go champion</li>
+                        <li><strong>2017:</strong> Transformer architecture revolutionizes NLP</li>
+                        <li><strong>2018:</strong> BERT changes language understanding</li>
+                        <li><strong>2020:</strong> GPT-3 shows emergent abilities</li>
+                        <li><strong>2022:</strong> ChatGPT brings AI to mainstream</li>
+                        <li><strong>2023-2024:</strong> Multimodal models (text, image, audio)</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>急速な進歩：</h3>
+                    <ul>
+                        <li><strong>2012-2015年：</strong>画像認識が人間のパフォーマンスを超える</li>
+                        <li><strong>2016年：</strong>AlphaGoが世界囲碁チャンピオンを倒す</li>
+                        <li><strong>2017年：</strong>Transformerアーキテクチャが自然言語処理を革命化</li>
+                        <li><strong>2018年：</strong>BERTが言語理解を変える</li>
+                        <li><strong>2020年：</strong>GPT-3が創発的能力を示す</li>
+                        <li><strong>2022年：</strong>ChatGPTがAIを主流に持ち込む</li>
+                        <li><strong>2023-2024年：</strong>マルチモーダルモデル（テキスト、画像、音声）</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 8: AlphaGo: A Historic Victory -->
+        <div class="slide">
+            <h2>AlphaGo: Mastering Go (2016)</h2>
+            <h2>AlphaGo：囲碁を制す（2016年）</h2>
+            <div class="highlight-box">
+                <h3>Why Go Was Considered Impossible</h3>
+                <h3>なぜ囲碁が不可能と考えられていたか</h3>
+                <ul>
+                    <li>More possible positions than atoms in the universe</li>
+                    <li>宇宙の原子よりも多くの可能な位置</li>
+                    <li>Requires intuition and strategy, not just calculation</li>
+                    <li>計算だけでなく、直感と戦略が必要</li>
+                </ul>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>The Victory:</h4>
+                    <ul>
+                        <li><strong>March 2016:</strong> AlphaGo defeats Lee Sedol (4-1)</li>
+                        <li>Developed by DeepMind (Google)</li>
+                        <li>Used deep neural networks + Monte Carlo tree search</li>
+                        <li>Played moves that surprised expert players</li>
+                    </ul>
+                    <p><strong>Significance:</strong> Showed AI could master intuitive, creative tasks</p>
+                </div>
+                <div class="japanese">
+                    <h4>勝利：</h4>
+                    <ul>
+                        <li><strong>2016年3月：</strong>AlphaGoがイ・セドルを倒す（4-1）</li>
+                        <li>DeepMind（Google）によって開発</li>
+                        <li>深層ニューラルネットワーク + モンテカルロ木探索を使用</li>
+                        <li>専門プレーヤーを驚かせる手を打つ</li>
+                    </ul>
+                    <p><strong>重要性：</strong>AIが直感的で創造的なタスクを習得できることを示した</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 9: Modern AI Applications -->
+        <div class="slide">
+            <h2>AI in Your Daily Life Today</h2>
+            <h2>今日のあなたの日常生活におけるAI</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Vision / ビジョン</h3>
+                    <ul>
+                        <li>Face recognition (phones, security)</li>
+                        <li>顔認識（携帯電話、セキュリティ）</li>
+                        <li>Medical image analysis</li>
+                        <li>医療画像分析</li>
+                        <li>Autonomous vehicles</li>
+                        <li>自動運転車</li>
+                        <li>Photo organization</li>
+                        <li>写真整理</li>
+                    </ul>
+                    <h3>Language / 言語</h3>
+                    <ul>
+                        <li>Translation (Google Translate, DeepL)</li>
+                        <li>翻訳（Google翻訳、DeepL）</li>
+                        <li>Voice assistants (Siri, Alexa)</li>
+                        <li>音声アシスタント（Siri、Alexa）</li>
+                        <li>ChatGPT and conversational AI</li>
+                        <li>ChatGPTと会話型AI</li>
+                        <li>Email autocomplete</li>
+                        <li>メール自動補完</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Recommendations / 推薦</h3>
+                    <ul>
+                        <li>Netflix, YouTube suggestions</li>
+                        <li>Netflix、YouTube提案</li>
+                        <li>Amazon shopping</li>
+                        <li>Amazon買い物</li>
+                        <li>Spotify playlists</li>
+                        <li>Spotifyプレイリスト</li>
+                        <li>Social media feeds</li>
+                        <li>ソーシャルメディアフィード</li>
+                    </ul>
+                    <h3>Creative / 創造的</h3>
+                    <ul>
+                        <li>Image generation (DALL-E, Midjourney)</li>
+                        <li>画像生成（DALL-E、Midjourney）</li>
+                        <li>Music composition</li>
+                        <li>音楽作曲</li>
+                        <li>Code assistance (GitHub Copilot)</li>
+                        <li>コード支援（GitHub Copilot）</li>
+                        <li>Content creation</li>
+                        <li>コンテンツ作成</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 10: Large Language Models -->
+        <div class="slide">
+            <h2>The Rise of Large Language Models</h2>
+            <h2>大規模言語モデルの台頭</h2>
+            <div class="success-box">
+                <h3>Transformer Revolution (2017)</h3>
+                <h3>Transformer革命（2017年）</h3>
+                <p>"Attention is All You Need" paper from Google</p>
+                <p>Googleの「Attention is All You Need」論文</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Evolution of Language Models:</h4>
+                    <ul>
+                        <li><strong>2018 - BERT:</strong> Better language understanding (Google)</li>
+                        <li><strong>2019 - GPT-2:</strong> Impressive text generation (OpenAI)</li>
+                        <li><strong>2020 - GPT-3:</strong> 175 billion parameters, emergent abilities</li>
+                        <li><strong>2022 - ChatGPT:</strong> Conversational AI goes mainstream</li>
+                        <li><strong>2023 - GPT-4:</strong> Multimodal, more capable</li>
+                        <li><strong>2024 - Claude, Gemini:</strong> Competition drives innovation</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>言語モデルの進化：</h4>
+                    <ul>
+                        <li><strong>2018年 - BERT：</strong>より良い言語理解（Google）</li>
+                        <li><strong>2019年 - GPT-2：</strong>印象的なテキスト生成（OpenAI）</li>
+                        <li><strong>2020年 - GPT-3：</strong>1750億パラメータ、創発的能力</li>
+                        <li><strong>2022年 - ChatGPT：</strong>会話型AIが主流になる</li>
+                        <li><strong>2023年 - GPT-4：</strong>マルチモーダル、より有能</li>
+                        <li><strong>2024年 - Claude、Gemini：</strong>競争がイノベーションを推進</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 11: Generative AI -->
+        <div class="slide">
+            <h2>Generative AI: Creating New Content</h2>
+            <h2>生成AI：新しいコンテンツの作成</h2>
+            <div class="highlight-box">
+                <h3>From Understanding to Creating</h3>
+                <h3>理解から創造へ</h3>
+                <p>AI can now generate realistic images, text, music, and video</p>
+                <p>AIは現在、リアルな画像、テキスト、音楽、ビデオを生成できます</p>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Technologies:</h4>
+                    <ul>
+                        <li><strong>GANs (2014):</strong> Generative Adversarial Networks - two neural networks compete</li>
+                        <li><strong>Diffusion Models (2020s):</strong> Gradually refine noise into images</li>
+                        <li><strong>Applications:</strong>
+                            <ul>
+                                <li>DALL-E, Midjourney: Text-to-image</li>
+                                <li>Stable Diffusion: Open-source image generation</li>
+                                <li>ChatGPT: Text generation and conversation</li>
+                                <li>GitHub Copilot: Code generation</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h4>主要技術：</h4>
+                    <ul>
+                        <li><strong>GAN（2014年）：</strong>敵対的生成ネットワーク - 2つのニューラルネットワークが競争</li>
+                        <li><strong>拡散モデル（2020年代）：</strong>ノイズを徐々に画像に精製</li>
+                        <li><strong>応用：</strong>
+                            <ul>
+                                <li>DALL-E、Midjourney：テキストから画像へ</li>
+                                <li>Stable Diffusion：オープンソース画像生成</li>
+                                <li>ChatGPT：テキスト生成と会話</li>
+                                <li>GitHub Copilot：コード生成</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 12: Current Capabilities -->
+        <div class="slide">
+            <h2>What AI Can Do Today (2024-2025)</h2>
+            <h2>今日のAIができること（2024-2025年）</h2>
+            <div class="two-column">
+                <div>
+                    <h3>Strengths / 強み</h3>
+                    <ul>
+                        <li>Pattern recognition at superhuman levels</li>
+                        <li>超人的レベルのパターン認識</li>
+                        <li>Processing vast amounts of data</li>
+                        <li>膨大なデータの処理</li>
+                        <li>Language translation and understanding</li>
+                        <li>言語翻訳と理解</li>
+                        <li>Game playing (chess, Go, poker)</li>
+                        <li>ゲームプレイ（チェス、囲碁、ポーカー）</li>
+                        <li>Creative content generation</li>
+                        <li>創造的コンテンツ生成</li>
+                        <li>Code assistance and debugging</li>
+                        <li>コード支援とデバッグ</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3>Limitations / 制限</h3>
+                    <ul>
+                        <li>Lacks true understanding or consciousness</li>
+                        <li>真の理解や意識がない</li>
+                        <li>No common sense reasoning</li>
+                        <li>常識的推論がない</li>
+                        <li>Can't explain all decisions</li>
+                        <li>すべての決定を説明できない</li>
+                        <li>Hallucinations (making up facts)</li>
+                        <li>幻覚（事実を作り上げる）</li>
+                        <li>Requires massive data and compute</li>
+                        <li>膨大なデータと計算が必要</li>
+                        <li>Bias from training data</li>
+                        <li>訓練データからのバイアス</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 13: Current Challenges -->
+        <div class="slide">
+            <h2>Current Challenges and Concerns</h2>
+            <h2>現在の課題と懸念</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Technical Challenges:</h3>
+                    <ul>
+                        <li><strong>Explainability:</strong> Understanding why AI makes decisions</li>
+                        <li><strong>Reliability:</strong> Ensuring consistent, accurate performance</li>
+                        <li><strong>Efficiency:</strong> Reducing computational costs and energy use</li>
+                        <li><strong>Generalization:</strong> Working well in new situations</li>
+                    </ul>
+                    <h3>Societal Challenges:</h3>
+                    <ul>
+                        <li><strong>Ethics:</strong> Fairness, bias, discrimination</li>
+                        <li><strong>Privacy:</strong> Protecting personal data</li>
+                        <li><strong>Employment:</strong> Impact on jobs and work</li>
+                        <li><strong>Misinformation:</strong> Deepfakes and fake content</li>
+                        <li><strong>Safety:</strong> Ensuring AI systems are safe and beneficial</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>技術的課題：</h3>
+                    <ul>
+                        <li><strong>説明可能性：</strong>AIがなぜ決定を下すかを理解する</li>
+                        <li><strong>信頼性：</strong>一貫した正確なパフォーマンスを保証する</li>
+                        <li><strong>効率：</strong>計算コストとエネルギー使用を削減する</li>
+                        <li><strong>汎化：</strong>新しい状況でうまく機能する</li>
+                    </ul>
+                    <h3>社会的課題：</h3>
+                    <ul>
+                        <li><strong>倫理：</strong>公平性、バイアス、差別</li>
+                        <li><strong>プライバシー：</strong>個人データの保護</li>
+                        <li><strong>雇用：</strong>仕事と労働への影響</li>
+                        <li><strong>誤情報：</strong>ディープフェイクと偽のコンテンツ</li>
+                        <li><strong>安全性：</strong>AIシステムが安全で有益であることを保証する</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 14: Future Directions -->
+        <div class="slide">
+            <h2>Future Directions</h2>
+            <h2>将来の方向性</h2>
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Where Is AI Heading?</h3>
+                    <ul>
+                        <li><strong>Multimodal AI:</strong> Combining vision, language, audio seamlessly</li>
+                        <li><strong>Embodied AI:</strong> Robots that understand and navigate the physical world</li>
+                        <li><strong>Personalized AI:</strong> Systems adapted to individual needs</li>
+                        <li><strong>Efficient AI:</strong> Smaller models, less energy consumption</li>
+                        <li><strong>Explainable AI:</strong> Systems that can justify their decisions</li>
+                        <li><strong>Human-AI collaboration:</strong> Augmenting rather than replacing humans</li>
+                    </ul>
+                    <p><strong>Question:</strong> Will we see another AI winter, or is this time different?</p>
+                </div>
+                <div class="japanese">
+                    <h3>AIはどこに向かっているか？</h3>
+                    <ul>
+                        <li><strong>マルチモーダルAI：</strong>視覚、言語、音声をシームレスに組み合わせる</li>
+                        <li><strong>具現化AI：</strong>物理世界を理解してナビゲートするロボット</li>
+                        <li><strong>パーソナライズドAI：</strong>個々のニーズに適応したシステム</li>
+                        <li><strong>効率的AI：</strong>より小さなモデル、より少ないエネルギー消費</li>
+                        <li><strong>説明可能なAI：</strong>決定を正当化できるシステム</li>
+                        <li><strong>人間とAIの協力：</strong>人間を置き換えるのではなく補強する</li>
+                    </ul>
+                    <p><strong>質問：</strong>別のAI冬が来るのか、それとも今回は違うのか？</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 15: Summary -->
+        <div class="slide">
+            <h2>Summary: The AI Journey</h2>
+            <h2>まとめ：AIの旅</h2>
+            <div class="highlight-box">
+                <h3>From Dreams to Reality</h3>
+                <h3>夢から現実へ</h3>
+            </div>
+            <div class="bilingual">
+                <div class="english">
+                    <h4>Key Lessons from AI History:</h4>
+                    <ul>
+                        <li><strong>Persistence pays off:</strong> Ideas from the 1950s finally working</li>
+                        <li><strong>Infrastructure matters:</strong> Data + compute + algorithms</li>
+                        <li><strong>Boom-bust cycles:</strong> Manage expectations realistically</li>
+                        <li><strong>Practical applications:</strong> Real-world value drives progress</li>
+                        <li><strong>Continuous evolution:</strong> AI is still developing</li>
+                    </ul>
+                    <h4>Next Week:</h4>
+                    <p>We shift from history to techniques: <strong>Search Algorithms</strong></p>
+                    <p>Learn how AI systems find solutions to problems</p>
+                </div>
+                <div class="japanese">
+                    <h4>AI歴史からの重要な教訓：</h4>
+                    <ul>
+                        <li><strong>粘り強さが報われる：</strong>1950年代のアイデアがついに機能</li>
+                        <li><strong>インフラが重要：</strong>データ + 計算 + アルゴリズム</li>
+                        <li><strong>好況不況サイクル：</strong>期待を現実的に管理する</li>
+                        <li><strong>実用的応用：</strong>実世界の価値が進歩を推進する</li>
+                        <li><strong>継続的進化：</strong>AIはまだ発展中</li>
+                    </ul>
+                    <h4>来週：</h4>
+                    <p>歴史から技術へ移行：<strong>探索アルゴリズム</strong></p>
+                    <p>AIシステムがどのように問題の解決策を見つけるかを学ぶ</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="navigation">
+        <button class="nav-btn" id="prevBtn" onclick="changeSlide(-1)">◀ Previous</button>
+        <button class="nav-btn" id="nextBtn" onclick="changeSlide(1)">Next ▶</button>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+
+        function showSlide(n) {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (n + totalSlides) % totalSlides;
+            slides[currentSlide].classList.add('active');
+
+            document.getElementById('slideNumber').textContent = `Slide ${currentSlide + 1} / ${totalSlides}`;
+
+            document.getElementById('prevBtn').disabled = currentSlide === 0;
+            document.getElementById('nextBtn').disabled = currentSlide === totalSlides - 1;
+        }
+
+        function changeSlide(direction) {
+            showSlide(currentSlide + direction);
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'ArrowLeft') {
+                changeSlide(-1);
+            } else if (event.key === 'ArrowRight' || event.key === ' ') {
+                event.preventDefault();
+                changeSlide(1);
+            } else if (event.key === 'Home') {
+                showSlide(0);
+            } else if (event.key === 'End') {
+                showSlide(totalSlides - 1);
+            }
+        });
+
+        // Initialize
+        showSlide(0);
+    </script>
+</body>
+</html>

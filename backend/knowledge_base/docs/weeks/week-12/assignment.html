@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 12 Assignment: Neural Networks & Gradient Descent</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+            color: #333;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #2563eb;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 4px solid #7c3aed;
+            padding-bottom: 15px;
+        }
+        h2 {
+            font-size: 1.8em;
+            color: #7c3aed;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            border-left: 5px solid #2563eb;
+            padding-left: 15px;
+        }
+        h3 {
+            font-size: 1.4em;
+            color: #2563eb;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+        .bilingual {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .english, .japanese {
+            padding: 15px;
+            border-radius: 8px;
+        }
+        .english {
+            background: #dbeafe;
+            border-left: 4px solid #2563eb;
+        }
+        .japanese {
+            background: #f3e8ff;
+            border-left: 4px solid #7c3aed;
+        }
+        .highlight-box {
+            background: #fef3cd;
+            border-left: 5px solid #f59e0b;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .info-box {
+            background: #e0f2fe;
+            border: 2px solid #0ea5e9;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 15px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .nav-links {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .nav-links a {
+            color: #2563eb;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+        }
+        .nav-links a:hover {
+            text-decoration: underline;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        table, th, td {
+            border: 1px solid #cbd5e1;
+        }
+        th {
+            background: #2563eb;
+            color: white;
+            padding: 12px;
+            text-align: left;
+        }
+        td {
+            padding: 10px;
+        }
+        .code-box {
+            background: #f4f4f4;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        @media screen and (max-width: 768px) {
+            .container { padding: 20px; }
+            h1 { font-size: 2em; }
+            .bilingual { grid-template-columns: 1fr; gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="nav-links">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+
+        <h1>Week 12 Assignment</h1>
+        <h1>第12週課題</h1>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Assignment Title:</h3>
+                <p><strong>Understanding Neural Networks and Gradient Descent</strong></p>
+            </div>
+            <div class="japanese">
+                <h3>課題タイトル:</h3>
+                <p><strong>ニューラルネットワークと勾配降下法の理解</strong></p>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <div class="bilingual">
+                <div class="english">
+                    <p><strong>Due Date:</strong> Before next class (Week 13)</p>
+                    <p><strong>Estimated Time:</strong> 50-60 minutes</p>
+                    <p><strong>Grade Weight:</strong> Part of 40% Individual Reports</p>
+                </div>
+                <div class="japanese">
+                    <p><strong>締切:</strong> 次回授業前（第13週）</p>
+                    <p><strong>予想時間:</strong> 50-60分</p>
+                    <p><strong>成績配分:</strong> 個別レポート40%の一部</p>
+                </div>
+            </div>
+        </div>
+
+        <h2>Learning Objectives / 学習目標</h2>
+        <div class="bilingual">
+            <div class="english">
+                <ul>
+                    <li>Understand neural network architecture components</li>
+                    <li>Trace forward propagation through a simple network</li>
+                    <li>Comprehend gradient descent optimization</li>
+                    <li>Analyze deep learning applications</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <ul>
+                    <li>ニューラルネットワークアーキテクチャコンポーネントを理解する</li>
+                    <li>単純なネットワークを通じて順伝播をトレースする</li>
+                    <li>勾配降下法最適化を理解する</li>
+                    <li>深層学習応用を分析する</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Part 1: Neural Network Components (30 points)</h2>
+        <h2>パート1: ニューラルネットワークコンポーネント（30点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.1 (15 points)</h3>
+                <p>Explain the role of each component in a neural network. For each component, provide:</p>
+                <ul>
+                    <li>A clear definition</li>
+                    <li>Its purpose/function in the network</li>
+                    <li>An analogy to help understand it</li>
+                </ul>
+
+                <p>Components to explain:</p>
+                <ol>
+                    <li><strong>Neurons (Nodes)</strong></li>
+                    <li><strong>Weights</strong></li>
+                    <li><strong>Bias</strong></li>
+                    <li><strong>Activation Functions</strong></li>
+                    <li><strong>Layers (Input, Hidden, Output)</strong></li>
+                </ol>
+                <p><em>Write 40-60 words per component. Total: 200-300 words.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.1（15点）</h3>
+                <p>ニューラルネットワークの各コンポーネントの役割を説明してください。各コンポーネントについて、以下を提供してください:</p>
+                <ul>
+                    <li>明確な定義</li>
+                    <li>ネットワークにおけるその目的/機能</li>
+                    <li>それを理解するのに役立つ類推</li>
+                </ul>
+
+                <p>説明するコンポーネント:</p>
+                <ol>
+                    <li><strong>ニューロン（ノード）</strong></li>
+                    <li><strong>重み</strong></li>
+                    <li><strong>バイアス</strong></li>
+                    <li><strong>活性化関数</strong></li>
+                    <li><strong>層（入力、隠れ、出力）</strong></li>
+                </ol>
+                <p><em>コンポーネントごとに40-60語で記述してください。合計: 200-300語。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 1.2 (15 points)</h3>
+                <p>Activation functions are critical for neural networks. Compare THREE activation functions:</p>
+                <ul>
+                    <li><strong>Sigmoid:</strong> σ(x) = 1/(1+e^-x)</li>
+                    <li><strong>ReLU (Rectified Linear Unit):</strong> f(x) = max(0, x)</li>
+                    <li><strong>Tanh:</strong> tanh(x)</li>
+                </ul>
+
+                <p>For each, explain:</p>
+                <ol>
+                    <li>What is the output range?</li>
+                    <li>When is it typically used (which layers)?</li>
+                    <li>What are its advantages?</li>
+                    <li>What are its disadvantages?</li>
+                    <li>Why can't we just use linear functions (no activation)?</li>
+                </ol>
+                <p><em>Present as a comparison table or structured format. 200-250 words total.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問1.2（15点）</h3>
+                <p>活性化関数はニューラルネットワークにとって重要です。3つの活性化関数を比較してください:</p>
+                <ul>
+                    <li><strong>シグモイド:</strong> σ(x) = 1/(1+e^-x)</li>
+                    <li><strong>ReLU（整流線形ユニット）:</strong> f(x) = max(0, x)</li>
+                    <li><strong>Tanh:</strong> tanh(x)</li>
+                </ul>
+
+                <p>それぞれについて、以下を説明してください:</p>
+                <ol>
+                    <li>出力範囲は何ですか？</li>
+                    <li>通常いつ使用されますか（どの層）？</li>
+                    <li>その利点は何ですか？</li>
+                    <li>その欠点は何ですか？</li>
+                    <li>なぜ線形関数だけを使用できないのですか（活性化なし）？</li>
+                </ol>
+                <p><em>比較表または構造化された形式として提示してください。合計200-250語。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 2: Simple Neural Network Calculation (35 points)</h2>
+        <h2>パート2: 単純なニューラルネットワーク計算（35点）</h2>
+
+        <div class="highlight-box">
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Simple Network Scenario</h3>
+                    <p>Consider a tiny neural network with:</p>
+                    <ul>
+                        <li><strong>Input layer:</strong> 2 neurons (x₁ = 0.5, x₂ = 0.3)</li>
+                        <li><strong>Hidden layer:</strong> 2 neurons (h₁, h₂)</li>
+                        <li><strong>Output layer:</strong> 1 neuron (y)</li>
+                    </ul>
+                    <p>Use ReLU activation for hidden layer, Sigmoid for output.</p>
+                </div>
+                <div class="japanese">
+                    <h3>単純なネットワークシナリオ</h3>
+                    <p>以下を持つ小さなニューラルネットワークを考えてください:</p>
+                    <ul>
+                        <li><strong>入力層:</strong> 2つのニューロン（x₁ = 0.5、x₂ = 0.3）</li>
+                        <li><strong>隠れ層:</strong> 2つのニューロン（h₁、h₂）</li>
+                        <li><strong>出力層:</strong> 1つのニューロン（y）</li>
+                    </ul>
+                    <p>隠れ層にはReLU活性化、出力にはシグモイドを使用します。</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="code-box">
+Weights (Input to Hidden):
+  w₁₁ = 0.4  (x₁ to h₁)
+  w₁₂ = 0.6  (x₁ to h₂)
+  w₂₁ = 0.3  (x₂ to h₁)
+  w₂₂ = 0.2  (x₂ to h₂)
+
+Bias (Hidden layer):
+  b₁ = 0.1  (for h₁)
+  b₂ = 0.2  (for h₂)
+
+Weights (Hidden to Output):
+  v₁ = 0.5  (h₁ to y)
+  v₂ = 0.8  (h₂ to y)
+
+Bias (Output layer):
+  b_out = 0.3
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.1 (20 points)</h3>
+                <p>Perform forward propagation step-by-step. Show ALL calculations:</p>
+
+                <ol>
+                    <li><strong>Calculate h₁ (before activation):</strong>
+                        <ul>
+                            <li>Formula: h₁ = (x₁ × w₁₁) + (x₂ × w₂₁) + b₁</li>
+                            <li>Show your calculation</li>
+                            <li>Apply ReLU: h₁ = max(0, h₁)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Calculate h₂ (before activation):</strong>
+                        <ul>
+                            <li>Formula: h₂ = (x₁ × w₁₂) + (x₂ × w₂₂) + b₂</li>
+                            <li>Show your calculation</li>
+                            <li>Apply ReLU: h₂ = max(0, h₂)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Calculate output y (before activation):</strong>
+                        <ul>
+                            <li>Formula: y = (h₁ × v₁) + (h₂ × v₂) + b_out</li>
+                            <li>Show your calculation</li>
+                            <li>Apply Sigmoid: y = 1/(1 + e^-y)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Final output:</strong> What is the final predicted value?</li>
+                </ol>
+
+                <p><em>Show each step clearly with numbers. You may use a calculator.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問2.1（20点）</h3>
+                <p>順伝播をステップバイステップで実行してください。すべての計算を示してください:</p>
+
+                <ol>
+                    <li><strong>h₁を計算（活性化前）:</strong>
+                        <ul>
+                            <li>式: h₁ = (x₁ × w₁₁) + (x₂ × w₂₁) + b₁</li>
+                            <li>計算を示す</li>
+                            <li>ReLUを適用: h₁ = max(0, h₁)</li>
+                        </ul>
+                    </li>
+                    <li><strong>h₂を計算（活性化前）:</strong>
+                        <ul>
+                            <li>式: h₂ = (x₁ × w₁₂) + (x₂ × w₂₂) + b₂</li>
+                            <li>計算を示す</li>
+                            <li>ReLUを適用: h₂ = max(0, h₂)</li>
+                        </ul>
+                    </li>
+                    <li><strong>出力yを計算（活性化前）:</strong>
+                        <ul>
+                            <li>式: y = (h₁ × v₁) + (h₂ × v₂) + b_out</li>
+                            <li>計算を示す</li>
+                            <li>シグモイドを適用: y = 1/(1 + e^-y)</li>
+                        </ul>
+                    </li>
+                    <li><strong>最終出力:</strong> 最終的な予測値は何ですか？</li>
+                </ol>
+
+                <p><em>各ステップを数値で明確に示してください。計算機を使用できます。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 2.2 (15 points)</h3>
+                <p>Based on your calculation above:</p>
+                <ol>
+                    <li>If this was a binary classification problem (0 or 1), what would the predicted class be? (Assume threshold = 0.5)</li>
+                    <li>What does the output value represent in terms of probability?</li>
+                    <li>If the true label was 1, is this prediction correct?</li>
+                    <li>How could we improve the network's prediction? (Describe conceptually what would happen during training)</li>
+                    <li>Which weights should increase or decrease to make the prediction closer to 1?</li>
+                </ol>
+                <p><em>Write 150-200 words explaining your reasoning.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問2.2（15点）</h3>
+                <p>上記の計算に基づいて:</p>
+                <ol>
+                    <li>これが二値分類問題（0または1）だった場合、予測されるクラスは何ですか？（閾値 = 0.5と仮定）</li>
+                    <li>出力値は確率の観点から何を表していますか？</li>
+                    <li>真のラベルが1だった場合、この予測は正しいですか？</li>
+                    <li>ネットワークの予測をどのように改善できますか？（訓練中に何が起こるかを概念的に説明）</li>
+                    <li>予測を1に近づけるために、どの重みを増加または減少させるべきですか？</li>
+                </ol>
+                <p><em>推論を説明して150-200語で記述してください。</em></p>
+            </div>
+        </div>
+
+        <h2>Part 3: Gradient Descent Analysis (35 points)</h2>
+        <h2>パート3: 勾配降下法分析（35点）</h2>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 3.1 (20 points)</h3>
+                <p>Explain gradient descent using the mountain analogy:</p>
+
+                <ol>
+                    <li><strong>The Mountain Analogy (100 words):</strong>
+                        <ul>
+                            <li>Explain how gradient descent is like descending a mountain in fog</li>
+                            <li>What does the mountain represent?</li>
+                            <li>What does each step down represent?</li>
+                            <li>What is the valley at the bottom?</li>
+                        </ul>
+                    </li>
+                    <li><strong>Learning Rate (100 words):</strong>
+                        <ul>
+                            <li>What is the learning rate?</li>
+                            <li>What happens if it's too large? Give a concrete example</li>
+                            <li>What happens if it's too small? Give a concrete example</li>
+                            <li>How do practitioners choose a good learning rate?</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><em>Total: 200 words with clear explanations.</em></p>
+            </div>
+            <div class="japanese">
+                <h3>質問3.1（20点）</h3>
+                <p>山の類推を使用して勾配降下法を説明してください:</p>
+
+                <ol>
+                    <li><strong>山の類推（100語）:</strong>
+                        <ul>
+                            <li>勾配降下法が霧の中で山を降りることに似ている方法を説明する</li>
+                            <li>山は何を表していますか？</li>
+                            <li>各下り坂のステップは何を表していますか？</li>
+                            <li>底にある谷は何ですか？</li>
+                        </ul>
+                    </li>
+                    <li><strong>学習率（100語）:</strong>
+                        <ul>
+                            <li>学習率とは何ですか？</li>
+                            <li>大きすぎる場合はどうなりますか？具体的な例を挙げる</li>
+                            <li>小さすぎる場合はどうなりますか？具体的な例を挙げる</li>
+                            <li>実務家はどのように良い学習率を選択しますか？</li>
+                        </ul>
+                    </li>
+                </ol>
+                <p><em>合計: 明確な説明で200語。</em></p>
+            </div>
+        </div>
+
+        <div class="bilingual">
+            <div class="english">
+                <h3>Question 3.2 (15 points)</h3>
+                <p>Compare the three types of gradient descent:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Type</th>
+                            <th>Data Used Per Update</th>
+                            <th>Speed</th>
+                            <th>Accuracy</th>
+                            <th>Best For</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Batch GD</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>Stochastic GD</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>Mini-batch GD</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>Fill in the table and then answer (100-150 words):</p>
+                <ul>
+                    <li>Why is mini-batch GD most commonly used?</li>
+                    <li>What batch size would you recommend for a dataset of 100,000 examples? Why?</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>質問3.2（15点）</h3>
+                <p>3つのタイプの勾配降下法を比較してください:</p>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>タイプ</th>
+                            <th>更新ごとに使用されるデータ</th>
+                            <th>速度</th>
+                            <th>精度</th>
+                            <th>最適な用途</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>バッチGD</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>確率的GD</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                        <tr>
+                            <td>ミニバッチGD</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                            <td>?</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p>表を埋めてから答えてください（100-150語）:</p>
+                <ul>
+                    <li>なぜミニバッチGDが最も一般的に使用されるのですか？</li>
+                    <li>100,000の例のデータセットにどのようなバッチサイズを推奨しますか？なぜですか？</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Submission Instructions / 提出方法</h2>
+        <div class="bilingual">
+            <div class="english">
+                <h3>Format:</h3>
+                <ul>
+                    <li>Submit as a PDF or Word document</li>
+                    <li>Include your name and student ID at the top</li>
+                    <li>Show all calculations clearly for Part 2</li>
+                    <li>You may use a calculator for numerical calculations</li>
+                    <li>Label each part clearly</li>
+                </ul>
+            </div>
+            <div class="japanese">
+                <h3>形式:</h3>
+                <ul>
+                    <li>PDFまたはWordドキュメントとして提出</li>
+                    <li>上部に氏名と学生IDを記載</li>
+                    <li>パート2のすべての計算を明確に示す</li>
+                    <li>数値計算には計算機を使用できる</li>
+                    <li>各パートを明確にラベル付けする</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2>Grading Rubric / 採点基準</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Component / 項目</th>
+                    <th>Points / 配点</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Part 1: Neural network components and activation functions<br>パート1: ニューラルネットワークコンポーネントと活性化関数</td>
+                    <td>30</td>
+                </tr>
+                <tr>
+                    <td>Part 2: Forward propagation calculations and analysis<br>パート2: 順伝播計算と分析</td>
+                    <td>35</td>
+                </tr>
+                <tr>
+                    <td>Part 3: Gradient descent understanding and comparison<br>パート3: 勾配降下法の理解と比較</td>
+                    <td>35</td>
+                </tr>
+                <tr>
+                    <td><strong>Total / 合計</strong></td>
+                    <td><strong>100</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="highlight-box">
+            <div class="bilingual">
+                <div class="english">
+                    <h3>Tips for Success:</h3>
+                    <ul>
+                        <li>Review lecture notes on neural network architecture</li>
+                        <li>For calculations, work step-by-step and double-check</li>
+                        <li>Use the mountain analogy to explain gradient descent clearly</li>
+                        <li>Connect concepts to real-world applications when possible</li>
+                        <li>Show your work - partial credit for correct process</li>
+                    </ul>
+                </div>
+                <div class="japanese">
+                    <h3>成功のためのヒント:</h3>
+                    <ul>
+                        <li>ニューラルネットワークアーキテクチャに関する講義ノートを確認</li>
+                        <li>計算については、ステップバイステップで作業し、再確認する</li>
+                        <li>山の類推を使用して勾配降下法を明確に説明する</li>
+                        <li>可能な場合は概念を実世界の応用に結び付ける</li>
+                        <li>作業を示す - 正しいプロセスに対する部分点</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="nav-links" style="margin-top: 30px;">
+            <a href="../../index.html">← Course Home</a>
+            <a href="slides.html">Slides</a>
+            <a href="lecture.html">Lecture Notes</a>
+        </div>
+    </div>
+</body>
+</html>

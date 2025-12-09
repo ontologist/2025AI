@@ -1,0 +1,4 @@
+2025-12-09 17:47:18,129 - chromadb.telemetry.product.posthog - INFO - Anonymized telemetry enabled. See                     https://docs.trychroma.com/telemetry for more information.
+2025-12-09 17:47:18,347 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientStartEvent: capture() takes 1 positional argument but 3 were given
+2025-12-09 17:47:18,347 - app.services.rag_service - INFO - Loaded existing collection: course_knowledge_ai300
+2025-12-09 17:47:18,348 - chromadb.telemetry.product.posthog - ERROR - Failed to send telemetry event ClientCreateCollectionEvent: capture() takes 1 positional argument but 3 were given
