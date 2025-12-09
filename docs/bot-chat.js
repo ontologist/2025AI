@@ -160,15 +160,18 @@ class AI300BotChat {
                 throw new Error(`API error: ${response.status} - ${errorText.substring(0, 100)}`);
             }
             
-            const responseText = await response.text();
+            // Use response.json() directly for better handling
             let data;
             try {
-                data = JSON.parse(responseText);
+                data = await response.json();
             } catch (parseError) {
-                if (responseText.includes('html') || responseText.length === 0) {
-                    throw new Error('Service unavailable. Please check if the backend is running.');
-                }
-                throw new Error(`Invalid response: ${responseText.substring(0, 200)}`);
+                console.error('JSON parse error:', parseError);
+                // Try to get the raw text for debugging
+                throw new Error('Failed to parse response. The server may be overloaded. Please try again.');
+            }
+            
+            if (!data || !data.response) {
+                throw new Error('Invalid response format from server.');
             }
             
             // Add messages to history
