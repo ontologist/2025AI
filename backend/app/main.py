@@ -65,8 +65,10 @@ async def health():
 
 
 # Include routers
-from app.api import chat
+from app.api import chat, progress, quiz
 app.include_router(chat.router, prefix="/api", tags=["chat"])
+app.include_router(progress.router, prefix="/api", tags=["progress"])
+app.include_router(quiz.router, prefix="/api", tags=["quiz"])
 
 
 if __name__ == "__main__":

@@ -3,6 +3,7 @@ from typing import List, Dict, Optional
 from app.services.ollama_service import OllamaService
 from app.services.rag_service import RAGService
 from app.services.web_search_service import WebSearchService
+from app.services.progress_service import ProgressService
 from app.core.config import settings
 import logging
 

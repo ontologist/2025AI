@@ -6,6 +6,8 @@
     <title>AI-300: Basic Artificial Intelligence - Fall 2025</title>
     <link rel="stylesheet" href="styles.css">
     <script src="bot-chat.js" defer></script>
+    <script src="progress-tracker.js" defer></script>
+    <script src="quiz.js" defer></script>
 </head>
 <body>
     <header>
@@ -19,9 +21,13 @@
     <nav class="main-nav">
         <div class="container">
             <a href="#overview">Overview / 概要</a>
+            <a href="#progress">Progress / 進捗</a>
             <a href="#curriculum">Curriculum / カリキュラム</a>
             <a href="#bot-portal">AI-300 Bot / ボット</a>
             <a href="#resources">Resources / リソース</a>
+        </div>
+        <div class="header-progress-bar">
+            <div id="header-progress" class="header-progress-fill" style="width: 0%"></div>
         </div>
     </nav>
 
@@ -57,6 +63,63 @@
                     <li><strong>Probability & Bayes' Theorem:</strong> Foundation for reasoning under uncertainty</li>
                     <li><strong>Machine Learning Basics:</strong> Supervised and unsupervised learning, reinforcement learning</li>
                 </ul>
+            </div>
+        </section>
+
+        <!-- Progress Dashboard Section -->
+        <section id="progress" class="section">
+            <h2>📊 Your Progress / あなたの進捗</h2>
+            
+            <div id="progress-dashboard" class="progress-dashboard">
+                <div class="progress-card">
+                    <div class="progress-ring-container" id="content-progress">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52" />
+                            <circle class="progress-ring-circle" cx="60" cy="60" r="52" />
+                        </svg>
+                        <span class="progress-ring-text">0%</span>
+                    </div>
+                    <h3>📚 Content Viewed</h3>
+                    <p>コンテンツ閲覧</p>
+                    <span id="content-text" class="progress-detail">0/21</span>
+                </div>
+                
+                <div class="progress-card">
+                    <div class="progress-icon-large">💬</div>
+                    <h3>Bot Questions</h3>
+                    <p>ボット質問数</p>
+                    <span id="bot-count" class="progress-number">0</span>
+                </div>
+                
+                <div class="progress-card">
+                    <div class="progress-ring-container" id="assignment-progress">
+                        <svg class="progress-ring" width="120" height="120">
+                            <circle class="progress-ring-bg" cx="60" cy="60" r="52" />
+                            <circle class="progress-ring-circle assignment" cx="60" cy="60" r="52" />
+                        </svg>
+                        <span class="progress-ring-text">0%</span>
+                    </div>
+                    <h3>📝 Assignments</h3>
+                    <p>課題提出</p>
+                    <span id="assignment-text" class="progress-detail">0/6</span>
+                </div>
+                
+                <div class="progress-card">
+                    <div class="progress-icon-large">🎯</div>
+                    <h3>Quizzes</h3>
+                    <p>クイズ</p>
+                    <span id="quiz-text" class="progress-detail">0 passed</span>
+                    <span id="quiz-avg" class="progress-subtext">0% avg</span>
+                </div>
+            </div>
+            
+            <div class="progress-actions">
+                <button onclick="window.progressTracker?.syncProgress().then(() => window.progressTracker?.updateProgressDisplay())" class="btn btn-secondary">
+                    🔄 Sync Progress / 同期
+                </button>
+                <a href="#bot-portal" class="btn btn-primary">
+                    🎯 Take a Quiz / クイズに挑戦
+                </a>
             </div>
         </section>
 
@@ -360,6 +423,56 @@
                         📚 Powered by course materials + 🔍 AI web search | 
                         🌐 Bilingual EN/JA
                     </small>
+                </div>
+            </div>
+            
+            <!-- Quiz Section -->
+            <div id="quiz-section" class="quiz-container">
+                <div class="quiz-header">
+                    <h3>🎯 Adaptive Quiz / アダプティブクイズ</h3>
+                    <p>Test your knowledge with AI-generated quizzes that adapt to your progress.<br>
+                    AIが生成するクイズであなたの知識をテストしましょう。</p>
+                </div>
+                
+                <div id="quiz-start" class="quiz-start">
+                    <div class="quiz-options">
+                        <label for="quiz-week">Week / 週:</label>
+                        <select id="quiz-week">
+                            <option value="">Auto (based on progress)</option>
+                            <option value="1">Week 1: AI History 1</option>
+                            <option value="2">Week 2: AI History 2</option>
+                            <option value="3">Week 3: AI History 3</option>
+                            <option value="4">Week 4: BFS & DFS</option>
+                            <option value="5">Week 5: Best-first & A*</option>
+                            <option value="6">Week 6: Game Theory</option>
+                            <option value="7">Week 7: Probability & Bayes</option>
+                            <option value="8">Week 8: Clustering</option>
+                            <option value="9">Week 9: AI/ML Overview</option>
+                            <option value="10">Week 10: Supervised Learning</option>
+                            <option value="11">Week 11: Classification</option>
+                            <option value="12">Week 12: ML Algorithms</option>
+                            <option value="13">Week 13: Reinforcement Learning</option>
+                        </select>
+                        
+                        <label for="quiz-questions">Questions / 問題数:</label>
+                        <select id="quiz-questions">
+                            <option value="3">3 questions</option>
+                            <option value="5" selected>5 questions</option>
+                            <option value="10">10 questions</option>
+                        </select>
+                    </div>
+                    
+                    <button id="start-quiz-btn" class="btn btn-primary btn-large" onclick="startQuiz()">
+                        🚀 Start Quiz / クイズ開始
+                    </button>
+                </div>
+                
+                <div id="quiz-content" class="quiz-content" style="display: none;">
+                    <!-- Quiz questions will be rendered here -->
+                </div>
+                
+                <div id="quiz-results" class="quiz-results" style="display: none;">
+                    <!-- Quiz results will be shown here -->
                 </div>
             </div>
         </section>
