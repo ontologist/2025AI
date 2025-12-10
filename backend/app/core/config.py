@@ -45,6 +45,7 @@ class Settings(BaseSettings):
 
     # Assignment Grading / Resource Limits
     ASSIGNMENT_RESOURCE_LIMIT: float = float(os.getenv("ASSIGNMENT_RESOURCE_LIMIT", "0.2"))
+    EMAIL_DOMAIN: str = os.getenv("EMAIL_DOMAIN", "kwansei.ac.jp")
     
     # Logging
     LOG_LEVEL: str = "INFO"

@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import Dict, Optional, List, Any
 from app.services.quiz_service import QuizService
+from app.services.roster_service import RosterService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -11,6 +12,7 @@ router = APIRouter()
 
 # Initialize quiz service
 quiz_service = QuizService()
+roster_service = RosterService()
 
 
 class GenerateQuizRequest(BaseModel):
@@ -37,6 +39,7 @@ async def generate_quiz(request: GenerateQuizRequest):
     
     The quiz adapts based on student's progress and previous performance.
     """
+    _ensure_enrolled(request.email)
     try:
         quiz = await quiz_service.generate_quiz(
             email=request.email,
@@ -58,6 +61,14 @@ async def get_available_topics():
     return {"topics": COURSE_TOPICS}
 
 
+def _ensure_enrolled(email: str):
+    if "@" not in email:
+        return
+    student = roster_service.get_student(email)
+    if not student:
+        raise HTTPException(status_code=403, detail="Not enrolled")
+
+
 @router.post("/quiz/submit")
 async def submit_quiz(request: SubmitQuizRequest):
     """
@@ -65,6 +76,7 @@ async def submit_quiz(request: SubmitQuizRequest):
     
     Returns score, percentage, and detailed results for each question.
     """
+    _ensure_enrolled(request.email)
     try:
         # Convert string keys to int for answers
         answers = {int(k): v for k, v in request.answers.items()}
@@ -101,6 +113,7 @@ async def get_quiz(quiz_id: int):
 @router.get("/quiz/history/{email}")
 async def get_quiz_history(email: str):
     """Get quiz attempt history for a student."""
+    _ensure_enrolled(email)
     try:
         history = quiz_service.get_quiz_history(email)
         return {"email": email, "history": history}

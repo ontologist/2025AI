@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instructor Dashboard</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 2px 6px rgba(0,0,0,0.08); margin-bottom: 16px; }
+    .grid { display: grid; gap: 16px; }
+    .grid-2 { grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); }
+    .drag-area { border: 2px dashed #2563eb; border-radius: 12px; padding: 16px; text-align: center; color: #2563eb; cursor: pointer; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 8px; border-bottom: 1px solid #e5e7eb; text-align: left; }
+    th { background: #f3f4f6; }
+    .badge { display: inline-block; padding: 4px 8px; border-radius: 8px; background: #e5e7eb; margin-left: 6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Instructor Dashboard</h1>
+    <p>Upload roster (CSV or Excel), and view student progress, assignment, and quiz reports.</p>
+
+    <div class="card">
+      <h3>Upload Roster</h3>
+      <p>Accepted: .csv or .xlsx. User IDs are mapped to username@kwansei.ac.jp.</p>
+      <div id="upload-area" class="drag-area">Drag & drop file here or click to select</div>
+      <input type="file" id="roster-file" accept=".csv,.xlsx" style="display:none">
+      <button id="upload-btn" class="btn btn-primary" style="margin-top:10px;">Upload</button>
+      <div id="upload-status" style="margin-top:10px;color:#2563eb;"></div>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <h3>Student Progress</h3>
+        <div id="progress-table">Loading...</div>
+      </div>
+      <div class="card">
+        <h3>Assignments</h3>
+        <div id="assignment-table">Loading...</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Quizzes</h3>
+      <div id="quiz-table">Loading...</div>
+    </div>
+  </div>
+
+  <script src="progress-tracker.js"></script>
+  <script>
+    const apiBase = window.progressTracker ? window.progressTracker.apiUrl : '';
+    const instructorEmail = localStorage.getItem('cf_access_email') || '';
+
+    async function fetchJSON(url, opts={}) {
+      const res = await fetch(url, opts);
+      if (!res.ok) throw new Error(await res.text());
+      return res.json();
+    }
+
+    async function uploadRoster(file) {
+      const form = new FormData();
+      form.append('file', file);
+      form.append('instructor_email', instructorEmail);
+      return fetchJSON(`${apiBase}/instructor/roster/upload`, { method: 'POST', body: form });
+    }
+
+    function renderTable(el, rows, headers) {
+      if (!rows.length) { el.innerHTML = 'No data'; return; }
+      const thead = '<thead><tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr></thead>';
+      const tbody = '<tbody>' + rows.map(r => '<tr>' + headers.map(h => `<td>${r[h] ?? ''}</td>`).join('') + '</tr>').join('') + '</tbody>';
+      el.innerHTML = `<table>${thead}${tbody}</table>`;
+    }
+
+    async function loadProgress() {
+      const data = await fetchJSON(`${apiBase}/instructor/reports/progress?instructor_email=${encodeURIComponent(instructorEmail)}`);
+      const rows = data.students.map(s => ({
+        email: s.email,
+        role: s.role,
+        content_pct: s.content_pct,
+        assignments_pct: s.assignments_pct,
+        quizzes_avg: s.quizzes_avg,
+        quizzes_passed: s.quizzes_passed,
+        quizzes_attempted: s.quizzes_attempted,
+      }));
+      renderTable(document.getElementById('progress-table'), rows, ['email','role','content_pct','assignments_pct','quizzes_avg','quizzes_passed','quizzes_attempted']);
+    }
+
+    async function loadAssignments() {
+      const data = await fetchJSON(`${apiBase}/instructor/reports/assignments?instructor_email=${encodeURIComponent(instructorEmail)}`);
+      const rows = [];
+      data.students.forEach(s => {
+        (s.assignments || []).forEach(a => {
+          const week = a.week_number ?? '';
+          const title = a.title ?? '';
+          const status = a.submission_status ?? '';
+          const score = a.score ?? '';
+          rows.push({ email: s.email, week, title, status, score });
+        });
+      });
+      renderTable(document.getElementById('assignment-table'), rows, ['email','week','title','status','score']);
+    }
+
+    async function loadQuizzes() {
+      const data = await fetchJSON(`${apiBase}/instructor/reports/quizzes?instructor_email=${encodeURIComponent(instructorEmail)}`);
+      const rows = Object.entries(data.topics || {}).map(([week, topic]) => ({ week, topic: topic.en || topic }));
+      renderTable(document.getElementById('quiz-table'), rows, ['week','topic']);
+    }
+
+    function setupUpload() {
+      const area = document.getElementById('upload-area');
+      const input = document.getElementById('roster-file');
+      const btn = document.getElementById('upload-btn');
+      const status = document.getElementById('upload-status');
+
+      const handleFile = async file => {
+        status.textContent = 'Uploading...';
+        try {
+          const res = await uploadRoster(file);
+          status.textContent = `Uploaded. Ingested ${res.ingested}, created ${res.created}, updated ${res.updated}`;
+          await loadProgress();
+          await loadAssignments();
+        } catch (e) {
+          status.textContent = `Upload failed: ${e.message}`;
+        }
+      };
+
+      area.addEventListener('click', () => input.click());
+      area.addEventListener('dragover', e => { e.preventDefault(); area.classList.add('dragging'); });
+      area.addEventListener('dragleave', e => { e.preventDefault(); area.classList.remove('dragging'); });
+      area.addEventListener('drop', e => {
+        e.preventDefault();
+        area.classList.remove('dragging');
+        const file = e.dataTransfer.files[0];
+        if (file) handleFile(file);
+      });
+      input.addEventListener('change', e => {
+        const file = e.target.files[0];
+        if (file) handleFile(file);
+      });
+      btn.addEventListener('click', () => {
+        if (input.files[0]) handleFile(input.files[0]);
+        else input.click();
+      });
+    }
+
+    async function init() {
+      if (!instructorEmail) {
+        alert('Instructor email not found; please authenticate first.');
+        return;
+      }
+      setupUpload();
+      await loadProgress();
+      await loadAssignments();
+      await loadQuizzes();
+    }
+
+    init();
+  </script>
+</body>
+</html>
+

@@ -25,12 +25,15 @@ def init_database():
     conn = get_db_connection()
     cursor = conn.cursor()
     
-    # Students table - stores student info from Cloudflare Access
+    # Students table - stores student info from roster/auth
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS students (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             email TEXT UNIQUE NOT NULL,
             name TEXT,
+            student_number TEXT,
+            user_id TEXT,
+            role TEXT DEFAULT 'student',
             created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
             last_active TIMESTAMP DEFAULT CURRENT_TIMESTAMP
         )
@@ -138,6 +141,21 @@ def init_database():
         )
     ''')
     
+    conn.commit()
+
+    # Ensure new columns exist on students table
+    cursor.execute("PRAGMA table_info(students)")
+    cols = {row["name"] for row in cursor.fetchall()}
+    for col, ddl in [
+        ("student_number", "ALTER TABLE students ADD COLUMN student_number TEXT"),
+        ("user_id", "ALTER TABLE students ADD COLUMN user_id TEXT"),
+        ("role", "ALTER TABLE students ADD COLUMN role TEXT DEFAULT 'student'"),
+    ]:
+        if col not in cols:
+            try:
+                cursor.execute(ddl)
+            except Exception:
+                pass
     conn.commit()
     
     # Initialize course content if empty

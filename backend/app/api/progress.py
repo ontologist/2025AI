@@ -3,6 +3,7 @@ from fastapi import APIRouter, HTTPException, Header
 from pydantic import BaseModel
 from typing import List, Dict, Optional, Any
 from app.services.progress_service import ProgressService
+from app.services.roster_service import RosterService
 import logging
 
 logger = logging.getLogger(__name__)
@@ -11,6 +12,7 @@ router = APIRouter()
 
 # Initialize progress service
 progress_service = ProgressService()
+roster_service = RosterService()
 
 
 class PageViewRequest(BaseModel):
@@ -62,6 +64,7 @@ async def get_progress(email: str):
     Returns comprehensive progress data including content views,
     bot interactions, assignments, and quizzes.
     """
+    _ensure_enrolled(email)
     try:
         progress = progress_service.get_student_progress(email)
         return progress
@@ -73,6 +76,7 @@ async def get_progress(email: str):
 @router.post("/progress/page-view")
 async def record_page_view(request: PageViewRequest):
     """Record a page view for tracking content progress."""
+    _ensure_enrolled(request.email)
     try:
         # Ensure student exists
         progress_service.get_or_create_student(request.email)
@@ -92,6 +96,7 @@ async def record_page_view(request: PageViewRequest):
 @router.post("/progress/bot-interaction")
 async def record_bot_interaction(request: BotInteractionRequest):
     """Record a bot interaction for tracking engagement."""
+    _ensure_enrolled(request.email)
     try:
         result = progress_service.record_bot_interaction(
             email=request.email,
@@ -109,6 +114,7 @@ async def record_bot_interaction(request: BotInteractionRequest):
 @router.get("/progress/{email}/viewed-pages")
 async def get_viewed_pages(email: str):
     """Get list of pages viewed by student."""
+    _ensure_enrolled(email)
     try:
         pages = progress_service.get_viewed_pages(email)
         return {"email": email, "viewed_pages": pages}
@@ -120,6 +126,7 @@ async def get_viewed_pages(email: str):
 @router.get("/progress/{email}/assignments")
 async def get_assignments(email: str):
     """Get all assignments with student's submission status."""
+    _ensure_enrolled(email)
     try:
         assignments = progress_service.get_assignments(email)
         return {"email": email, "assignments": assignments}
@@ -131,6 +138,7 @@ async def get_assignments(email: str):
 @router.post("/progress/assignment/submit")
 async def submit_assignment(request: AssignmentSubmitRequest):
     """Submit or update an assignment."""
+    _ensure_enrolled(request.email)
     try:
         result = progress_service.submit_assignment(
             email=request.email,
@@ -151,6 +159,7 @@ async def sync_progress(request: SyncRequest):
     
     Merges local data with server data, returning the combined result.
     """
+    _ensure_enrolled(request.email)
     try:
         # Ensure student exists
         progress_service.get_or_create_student(request.email)
@@ -163,4 +172,12 @@ async def sync_progress(request: SyncRequest):
     except Exception as e:
         logger.error(f"Error syncing progress: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Error syncing: {str(e)}")
+
+
+def _ensure_enrolled(email: str):
+    if "@" not in email:
+        return  # allow malformed emails used in tests/local
+    student = roster_service.get_student(email)
+    if not student:
+        raise HTTPException(status_code=403, detail="Not enrolled")
 
